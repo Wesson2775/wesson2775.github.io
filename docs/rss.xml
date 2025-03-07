@@ -1,10 +1,8 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" version="2.0"><channel><title>片刻</title><link>https://wesson2775.github.io</link><description>或许，平凡才是人生唯一的追求。</description><copyright>片刻</copyright><docs>http://www.rssboard.org/rss-specification</docs><generator>python-feedgen</generator><image><url>https://wesson2775.github.io/favicon.svg</url><title>avatar</title><link>https://wesson2775.github.io</link></image><lastBuildDate>Fri, 07 Mar 2025 05:05:38 +0000</lastBuildDate><managingEditor>片刻</managingEditor><ttl>60</ttl><webMaster>片刻</webMaster><item><title>如何快速处理大光比图片，保留细节不过曝</title><link>https://wesson2775.github.io/post/ru-he-kuai-su-chu-li-da-guang-bi-tu-pian-%EF%BC%8C-bao-liu-xi-jie-bu-guo-pu.html</link><description>针对大光比照片处理的前提是：图片为Raw文件，在没有机会拍摄包围曝光的情况下使用此万能方法拯救照片
+<rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" version="2.0"><channel><title>片刻</title><link>https://wesson2775.github.io</link><description>或许，平凡才是人生唯一的追求。</description><copyright>片刻</copyright><docs>http://www.rssboard.org/rss-specification</docs><generator>python-feedgen</generator><image><url>https://wesson2775.github.io/favicon.svg</url><title>avatar</title><link>https://wesson2775.github.io</link></image><lastBuildDate>Fri, 07 Mar 2025 05:25:52 +0000</lastBuildDate><managingEditor>片刻</managingEditor><ttl>60</ttl><webMaster>片刻</webMaster><item><title>如何快速处理大光比图片，保留细节不过曝</title><link>https://wesson2775.github.io/post/ru-he-kuai-su-chu-li-da-guang-bi-tu-pian-%EF%BC%8C-bao-liu-xi-jie-bu-guo-pu.html</link><description>针对大光比照片处理的前提是：图片为Raw文件，在没有机会拍摄包围曝光的情况下使用此万能方法拯救照片
 
 -1.拉灰图片，校正偏色
--2.初步还原灰度，分区微调
--3.彻底还原灰度
-。</description><guid isPermaLink="true">https://wesson2775.github.io/post/ru-he-kuai-su-chu-li-da-guang-bi-tu-pian-%EF%BC%8C-bao-liu-xi-jie-bu-guo-pu.html</guid><pubDate>Fri, 07 Mar 2025 05:05:19 +0000</pubDate></item><item><title>二建实务 第一讲</title><link>https://wesson2775.github.io/post/er-jian-shi-wu-%20-di-yi-jiang.html</link><description># 第 1 篇 市政公用工程技术
+    camera raw 中 对比度、高光、白色向左拉到底，阴影和黑色向右拉到底，调整曝光讲波峰调整到画面中间。</description><guid isPermaLink="true">https://wesson2775.github.io/post/ru-he-kuai-su-chu-li-da-guang-bi-tu-pian-%EF%BC%8C-bao-liu-xi-jie-bu-guo-pu.html</guid><pubDate>Fri, 07 Mar 2025 05:05:19 +0000</pubDate></item><item><title>二建实务 第一讲</title><link>https://wesson2775.github.io/post/er-jian-shi-wu-%20-di-yi-jiang.html</link><description># 第 1 篇 市政公用工程技术
 
 ## 第 1 章 城镇道路工程
 
