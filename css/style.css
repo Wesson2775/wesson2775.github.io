@@ -1,0 +1,147 @@
+body {
+    -webkit-font-smoothing: antialiased; /* antialiased */
+    -moz-osx-font-smoothing: grayscale; /* antialiased */
+    margin-top: 0;
+    font-family: 'Inter', Arial, Helvetica, sans-serif; 
+}
+
+.container {
+    min-height: 100vh; 
+    display: flex; 
+    flex-direction: column; 
+    justify-content: space-between; 
+    padding-top: 0; 
+    padding: 2rem; 
+    background-color: #282c35; 
+    color: #e5e7eb;
+    line-height: 0.6;
+}
+.main {
+    max-width: 60ch;
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
+    margin-top: 1.5rem;
+}
+
+.header {
+    position: relative;
+    display: block; /* 确保横向通长 */
+    overflow: hidden;
+    height: 1.2rem; /* 确保与 .blog-name-zh 的高度一致 */
+    width: 100%; /* 确保横向通长 */
+    font-size: 1.2rem;
+    font-weight: 700;
+}
+.blog-name-zh, .blog-name-en {
+    display: block;
+    transition: transform 0.5s, opacity 0.5s;
+    line-height: 1em; /* 确保行高一致 */
+    width: 100%; /* 确保横向通长 */
+    text-align: left; /* 左对齐 */
+    
+}
+
+.blog-name-en {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    opacity: 0;
+}
+
+.header:hover .blog-name-zh {
+    transform: translateY(-100%);
+    opacity: 0;
+}
+
+.header:hover .blog-name-en {
+    transform: translateY(-100%);
+    opacity: 1;
+}
+
+.profile {
+    margin-top: -0.4rem;
+}
+
+.main {
+    margin: 0 auto; 
+    width: 705px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 10px;
+}
+
+.nav {
+    margin-top: 1rem;
+}
+
+.nav a {
+    text-decoration: none;
+    font-size: 1.1rem;
+    color: #e5e7eb;
+    transition: color 0.3s ease;
+}
+
+.nav a:hover {
+    color: #444a80;
+}
+
+.nav span {
+    color: #e5e7eb;
+    font-size: 1.2rem;
+    font-weight: 700;
+    padding: 0.4rem;
+}
+
+.content {
+    font-size: 1rem;
+}
+
+.year p {
+    color: #c3cad3;
+    margin-top: 2rem;
+    font-size: 1rem;
+    font-weight: 700;
+}
+
+.article a {
+    text-decoration: none;
+    color: #cccccc;
+}
+
+.article a:hover {
+    text-decoration: underline;
+}
+
+.article span {
+    padding-left: 1rem;
+    color: #777f92;
+    opacity: 0;
+    transition: opacity 0.3s ease;  
+}
+
+.article a:hover + span {
+    opacity: 1;
+}
+
+.footer {
+    display: flex;
+    justify-content: center; 
+}
+
+.footer p {
+    font-size: 0.8rem;
+    color: #a7afbe;
+}
+
+.footer a {
+    font-size: 0.8rem;
+    color: #a7afbe;
+    text-decoration: none;
+}
+@media (min-width: 768px) {
+    .container {
+        padding-top: 2rem; 
+    }
+}
