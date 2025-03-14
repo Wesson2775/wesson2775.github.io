@@ -7,14 +7,14 @@ body {
 }
 
 .container {
-    min-height: calc(100vh - 50px); 
+    box-sizing: border-box;
+    min-height: calc(100vh); 
     display: flex; 
     flex-direction: column; 
     justify-content: space-between; 
-    padding-top: 0; 
-    padding: 2rem; 
+    padding: 2rem;
     color: #e5e7eb;
-    line-height: 0.6;
+    line-height: 0.61;
 }
 .main {
     max-width: 60ch;
@@ -60,11 +60,13 @@ body {
 
 .profile {
     margin-top: -0.4rem;
+    line-height: 01;
 }
 
 .nav {
-    display: flex;
-    margin-top: 1rem;
+    display: flex;  
+    align-items: center;
+    margin-top: 5rem;
 }
 
 .nav a {
@@ -88,7 +90,7 @@ body {
 .content {
     display: flex;
     font-size: 1rem;
-    margin-bottom: 1rem;
+    
 }
 
 .year p {
