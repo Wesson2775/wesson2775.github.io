@@ -3,6 +3,7 @@ body {
     -moz-osx-font-smoothing: grayscale; /* antialiased */
     margin-top: 0;
     font-family: 'Inter', Arial, Helvetica, sans-serif; 
+    background-color: #282c35; 
 }
 
 .container {
@@ -12,7 +13,6 @@ body {
     justify-content: space-between; 
     padding-top: 0; 
     padding: 2rem; 
-    background-color: #282c35; 
     color: #e5e7eb;
     line-height: 0.6;
 }
@@ -21,9 +21,8 @@ body {
     margin-left: auto;
     margin-right: auto;
     width: 100%;
-    margin-top: 1.5rem;
+    margin-top: 1.5rem; 
 }
-
 .header {
     position: relative;
     display: block; /* 确保横向通长 */
@@ -63,16 +62,8 @@ body {
     margin-top: -0.4rem;
 }
 
-.main {
-    margin: 0 auto; 
-    width: 705px;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    padding: 10px;
-}
-
 .nav {
+    display: flex;
     margin-top: 1rem;
 }
 
@@ -95,7 +86,9 @@ body {
 }
 
 .content {
+    display: flex;
     font-size: 1rem;
+    margin-bottom: 1rem;
 }
 
 .year p {
