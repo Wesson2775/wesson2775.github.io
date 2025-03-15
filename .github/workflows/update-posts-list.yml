@@ -1,0 +1,153 @@
+name: 更新文章列表和生成索引0
+
+on:
+  push:
+    paths:
+      - 'docs/**/*.md'
+  workflow_dispatch:
+
+jobs:
+  convert-and-update:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    
+    steps:
+      - name: 检出代码
+        uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
+      
+      - name: 设置 Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+          
+      - name: 安装依赖
+        run: |
+          npm init -y
+          npm install markdown-it
+
+      - name: 检查目录结构
+        run: |
+          mkdir -p docs posts
+          echo "目录结构："
+          tree .
+
+      - name: 转换 MD 到 HTML 并更新文章列表
+        id: convert
+        run: |
+          node -e "
+          const fs = require('fs');
+          const path = require('path');
+          const md = require('markdown-it')();
+          
+          const docsDir = path.join(process.cwd(), 'docs');
+          const postsDir = path.join(process.cwd(), 'posts');
+          
+          if (!fs.existsSync(docsDir)) fs.mkdirSync(docsDir, { recursive: true });
+          if (!fs.existsSync(postsDir)) fs.mkdirSync(postsDir, { recursive: true });
+          
+          const files = fs.readdirSync(docsDir).filter(f => f.endsWith('.md'));
+          console.log('找到的 Markdown 文件：', files);
+          
+          let hasChanges = false;
+          let fileList = [];
+          
+          for (const file of files) {
+            try {
+              const mdPath = path.join(docsDir, file);
+              const htmlPath = path.join(postsDir, file.replace('.md', '.html'));
+              
+              const content = fs.readFileSync(mdPath, 'utf8');
+              const html = '<!DOCTYPE html>'+
+              '<html lang=\"zh-CN\">'+
+              '<head>'+
+                  '<meta charset=\"utf-8\">' +
+                  '<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">'+
+                  '<link rel=\"stylesheet\" href=\"./css/normalize.min.css\">'+
+                  '<link rel=\"stylesheet\" href=\"./css/style.css\">'+
+                  '<title>'+file.replace('.md', '')+'</title>'+
+              '</head>'+
+              '<body>'+
+                  '<div class=\"container\">'+
+                      '<div class=\"main\">'+
+                          '<div class=\"nav-blog\">'+
+                          '</div>'+
+
+                          '<div class=\"blog-content\">'+
+                              md.render(content) +
+                          '</div>'+
+
+                          '<div class=\"footer-blog\">'+
+                              '<h1>'+'<a href=\"./index.html\">'+'回到主页'+'</a>'+'</h1>'+
+                          '</div>'+
+                      '</div>'+
+                  '</div>'+
+              '</body>'+
+              '</html>';
+              
+              fs.writeFileSync(htmlPath, html.trim());
+              console.log('已生成：' + htmlPath);
+              
+              fileList.push(file.replace('.md', '.html'));
+              hasChanges = true;
+            } catch (error) {
+              console.error('处理 ' + file + ' 时出错:', error);
+              process.exit(1);
+            }
+          }
+          
+          if (hasChanges) {
+            const scriptsPath = path.join(process.cwd(), 'scripts.js');
+            const scriptsContent = 'document.addEventListener(\"DOMContentLoaded\", () => {' +
+              'const posts = ' + JSON.stringify(fileList, null, 2) + ';' +
+              'const postsPath = \"./posts/\";' +
+              'const article = document.querySelector(\".article\");' +
+              'posts.forEach(post => {' +
+              'const filePath = postsPath + post;' +
+              'fetch(filePath)' +
+              '.then(async response => {' +
+              'const text = await response.text();' +
+              'const parser = new DOMParser();' +
+              'const doc = parser.parseFromString(text, \"text/html\");' +
+              'const blogContent = doc.getElementById(\"blog\")?.textContent;' +
+              'const dateContent = doc.getElementById(\"date\")?.textContent;' +
+              'if (!blogContent) return;' +
+              'const newP = document.createElement(\"p\");' +
+              'const newA = document.createElement(\"a\");' +
+              'newA.id = \"head\";' +
+              'newA.href = filePath;' +
+              'newA.textContent = blogContent;' +
+              'const newSpan = document.createElement(\"span\");' +
+              'newSpan.id = \"date\";' +
+              'newSpan.textContent = dateContent;' +
+              'newP.appendChild(newA);' +
+              'newP.appendChild(document.createTextNode(\" \"));' +
+              'newP.appendChild(newSpan);' +
+              'article.appendChild(newP);' +
+              '})' +
+              '.catch(error => {' +
+              'console.error(\"加载\" + post + \"时出错:\", error);' +
+              '});' +
+              '});' +
+              '});';
+            
+            fs.writeFileSync(scriptsPath, scriptsContent);
+            console.log('已更新 scripts.js');
+            
+            fs.writeFileSync(process.env.GITHUB_ENV, 'HAS_CHANGES=true', { flag: 'a' });
+          }
+          "
+
+      
+      - name: 提交更改
+        if: env.HAS_CHANGES == 'true'
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add posts/ scripts.js
+          git commit -m "更新：将 Markdown 转换为 HTML 并更新文章列表"
+          git pull --rebase
+          git push
