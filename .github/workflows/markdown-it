@@ -1,0 +1,47 @@
+name: Markdown 转换为 HTML
+
+on:
+  push:
+    paths:
+      - 'docs/**/*.md'
+  workflow_dispatch:
+
+jobs:
+  convert:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: 检出仓库
+      uses: actions/checkout@v2
+      with:
+        token: ${{ secrets.PAT }}
+
+    - name: 设置 Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '16'
+
+    - name: 安装依赖
+      run: |
+        npm install markdown-it
+
+    - name: 转换 Markdown 为 HTML
+      run: |
+        node -e "
+        const fs = require('fs');
+        const path = require('path');
+        const MarkdownIt = require('markdown-it');
+        const md = new MarkdownIt();
+
+        // 创建 posts 目录（如果不存在）
+        if (!fs.existsSync('posts')) {
+          fs.mkdirSync('posts');
+        }
+
+        // 获取修改的 md 文件
+        const changedFiles = process.env.GITHUB_EVENT_PATH
+          ? JSON.parse(fs.readFileSync(process.env.GITHUB_EVENT_PATH, 'utf8')).commits
+              .reduce((files, commit) => {
+                return files.concat(
+                  commit.added.concat(commit.modified)
+                    .filter(file => file.startsWith('docs/') && file.endsWith('.md'))
