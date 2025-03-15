@@ -36,59 +36,63 @@ jobs:
           const path = require("path");
           const md = require("markdown-it")();
           
-          // 检查 docs 目录是否存在
-          if (!fs.existsSync("docs")) {
-            console.log("创建 docs 目录");
-            fs.mkdirSync("docs", { recursive: true });
-          }
-          
-          // 检查 posts 目录是否存在
-          if (!fs.existsSync("posts")) {
-            console.log("创建 posts 目录");
-            fs.mkdirSync("posts", { recursive: true });
-          }
-          
-          // 读取所有 md 文件
-          const files = fs.readdirSync("docs")
-            .filter(f => f.endsWith(".md"));
-          
-          console.log("找到的 Markdown 文件：", files);
-          
-          if (files.length === 0) {
-            console.log("没有找到 Markdown 文件");
-            return;
-          }
-          
-          files.forEach(file => {
-            try {
-              console.log(`处理文件：${file}`);
-              const content = fs.readFileSync(path.join("docs", file), "utf8");
-              const title = file.replace(".md", "");
-              
-              const html = `<!DOCTYPE html>
-              <html lang="zh-CN">
-                <head>
-                  <meta charset="utf-8">
-                  <title>${title}</title>
-                  <link rel="stylesheet" href="../style.css">
-                </head>
-                <body>
-                  <header>
-                    <h1>${title}</h1>
-                    <time datetime="${new Date().toISOString()}">${new Date().toLocaleDateString("zh-CN")}</time>
-                  </header>
-                  <article>${md.render(content)}</article>
-                </body>
-              </html>`;
-              
-              const outputPath = path.join("posts", file.replace(".md", ".html"));
-              fs.writeFileSync(outputPath, html.trim());
-              console.log(`已生成 HTML 文件：${outputPath}`);
-            } catch (error) {
-              console.error(`处理 ${file} 时出错:`, error);
-              process.exit(1);
+          function processMarkdownFiles() {
+            // 检查 docs 目录是否存在
+            if (!fs.existsSync("docs")) {
+              console.log("创建 docs 目录");
+              fs.mkdirSync("docs", { recursive: true });
             }
-          });
+            
+            // 检查 posts 目录是否存在
+            if (!fs.existsSync("posts")) {
+              console.log("创建 posts 目录");
+              fs.mkdirSync("posts", { recursive: true });
+            }
+            
+            // 读取所有 md 文件
+            const files = fs.readdirSync("docs")
+              .filter(f => f.endsWith(".md"));
+            
+            console.log("找到的 Markdown 文件：", files);
+            
+            if (files.length === 0) {
+              console.log("没有找到 Markdown 文件");
+              return;
+            }
+            
+            files.forEach(file => {
+              try {
+                console.log(`处理文件：${file}`);
+                const content = fs.readFileSync(path.join("docs", file), "utf8");
+                const title = file.replace(".md", "");
+                
+                const html = `<!DOCTYPE html>
+                <html lang="zh-CN">
+                  <head>
+                    <meta charset="utf-8">
+                    <title>${title}</title>
+                    <link rel="stylesheet" href="../style.css">
+                  </head>
+                  <body>
+                    <header>
+                      <h1>${title}</h1>
+                      <time datetime="${new Date().toISOString()}">${new Date().toLocaleDateString("zh-CN")}</time>
+                    </header>
+                    <article>${md.render(content)}</article>
+                  </body>
+                </html>`;
+                
+                const outputPath = path.join("posts", file.replace(".md", ".html"));
+                fs.writeFileSync(outputPath, html.trim());
+                console.log(`已生成 HTML 文件：${outputPath}`);
+              } catch (error) {
+                console.error(`处理 ${file} 时出错:`, error);
+                process.exit(1);
+              }
+            });
+          }
+
+          processMarkdownFiles();
           '
           
       - name: List generated files
