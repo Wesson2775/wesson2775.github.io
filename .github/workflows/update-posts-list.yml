@@ -16,10 +16,10 @@ jobs:
       with:
         token: ${{ secrets.PAT }}
 
-    - name: 列出 posts 文件
+    - name: 列出 html 文件
       id: list_files
       run: |
-        ls posts > post_files.txt
+        find posts -name "*.html" -type f -printf "%f\n" > post_files.txt
 
     - name: 生成 posts 数组
       id: generate_array
