@@ -17,23 +17,22 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: 检出仓库
-      uses: actions/checkout@v3
-      with:
-        token: ${{ secrets.PAT }}
+      - name: 检出仓库
+        uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.PAT }}
 
-    - name: 设置 Node.js
-      uses: actions/setup-node@v3
-      with:
-        node-version: '16'
+      - name: 设置 Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16'
 
-    - name: 安装依赖
-      run: |
-        npm install markdown-it
+      - name: 安装依赖
+        run: npm install markdown-it
 
-    - name: 转换 Markdown 为 HTML
-      run: |
-        node -e "
+      - name: 转换 Markdown 为 HTML
+        run: |
+          node << 'EOF'
           const fs = require('fs');
           const path = require('path');
           const MarkdownIt = require('markdown-it');
@@ -50,30 +49,27 @@ jobs:
             const content = fs.readFileSync(path.join('docs', file), 'utf8');
             const result = md.render(content);
             
-            const html = \`<!DOCTYPE html>
-<html>
-<head>
-  <meta charset='utf-8'>
-  <title>\${file.replace('.md', '')}</title>
-  <link rel='stylesheet' href='../style.css'>
-</head>
-<body>
-  <div id='blog'>\${file.replace('.md', '')}</div>
-  <div id='date'>\${new Date().toISOString().split('T')[0]}</div>
-  <article>\${result}</article>
-</body>
-</html>\`;
+            const html = `<!DOCTYPE html>
+          <html>
+          <head>
+            <meta charset='utf-8'>
+            <title>${file.replace('.md', '')}</title>
+            <link rel='stylesheet' href='../style.css'>
+          </head>
+          <body>
+            <div id='blog'>${file.replace('.md', '')}</div>
+            <div id='date'>${new Date().toISOString().split('T')[0]}</div>
+            <article>${result}</article>
+          </body>
+          </html>`;
 
             const htmlFile = file.replace('.md', '.html');
             fs.writeFileSync(path.join('posts', htmlFile), html);
           });
-        "
+          EOF
 
-    - name: 提交更改
-      run: |
-        git config --global user.name "GitHub Action"
-        git config --global user.email "action@github.com"
-        git remote set-url origin https://x-access-token:${{ secrets.PAT }}@github.com/${{ github.repository }}
-        git add posts/
-        git commit -m "将 Markdown 转换为 HTML"
-        git push
+      - name: 提交更改
+        run: |
+          git config --global user.name "GitHub Action"
+          git config --global user.email "action@github.com"
+          git remote set-url origin https://x-access-token:${{ secrets.PAT }}@github.com/${{ github.repository }}
