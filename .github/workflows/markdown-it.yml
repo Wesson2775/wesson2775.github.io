@@ -1,69 +1,8 @@
-name: MD to HTML Converter
-
-on:
-  push:
-    paths:
-      - 'docs/**/*.md'
-  workflow_dispatch:
-
-jobs:
-  convert:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '16'
-          
-      - name: Install dependencies
-        run: npm install markdown-it
-        
-      - name: Convert MD to HTML
-        run: |
-          node -e '
-          const fs = require("fs");
-          const path = require("path");
-          const md = require("markdown-it")();
-          
-          // Create posts directory if not exists
-          if (!fs.existsSync("posts")) {
-            fs.mkdirSync("posts");
-          }
-          
-          // Read all md files
-          const files = fs.readdirSync("docs").filter(f => f.endsWith(".md"));
-          
-          files.forEach(file => {
-            const content = fs.readFileSync(path.join("docs", file), "utf8");
-            const html = `
-              <!DOCTYPE html>
-              <html>
-                <head>
-                  <meta charset="utf-8">
-                  <title>${file.replace(".md", "")}</title>
-                  <link rel="stylesheet" href="../style.css">
-                </head>
-                <body>
-                  <div id="blog">${file.replace(".md", "")}</div>
-                  <div id="date">${new Date().toISOString().split("T")[0]}</div>
-                  <article>${md.render(content)}</article>
-                </body>
-              </html>
-            `;
-            
-            fs.writeFileSync(
-              path.join("posts", file.replace(".md", ".html")),
-              html.trim()
-            );
-          });
-          '
-          
-      - name: Commit changes
-        run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git add posts/
-          git commit -m "Convert MD to HTML" || echo "No changes to commit"
-          git push || echo "No changes to push"
+your-repo/
+  ├── docs/
+  │   └── example.md
+  ├── posts/
+  ├── style.css
+  └── .github/
+      └── workflows/
+          └── md-to-html.yml
