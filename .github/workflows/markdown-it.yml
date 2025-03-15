@@ -1,8 +1,105 @@
-your-repo/
-  ├── docs/
-  │   └── example.md
-  ├── posts/
-  ├── style.css
-  └── .github/
-      └── workflows/
-          └── md-to-html.yml
+name: MD to HTML Converter
+
+on:
+  push:
+    paths:
+      - 'docs/**/*.md'
+  workflow_dispatch:
+
+jobs:
+  convert:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+          
+      - name: Check directory structure
+        run: |
+          echo "当前目录内容："
+          ls -la
+          echo "docs 目录内容："
+          ls -la docs || echo "docs 目录不存在"
+          
+      - name: Install dependencies
+        run: |
+          npm init -y
+          npm install markdown-it
+        
+      - name: Convert MD to HTML
+        run: |
+          node -e '
+          const fs = require("fs");
+          const path = require("path");
+          const md = require("markdown-it")();
+          
+          // 检查 docs 目录是否存在
+          if (!fs.existsSync("docs")) {
+            console.log("创建 docs 目录");
+            fs.mkdirSync("docs", { recursive: true });
+          }
+          
+          // 检查 posts 目录是否存在
+          if (!fs.existsSync("posts")) {
+            console.log("创建 posts 目录");
+            fs.mkdirSync("posts", { recursive: true });
+          }
+          
+          // 读取所有 md 文件
+          const files = fs.readdirSync("docs")
+            .filter(f => f.endsWith(".md"));
+          
+          console.log("找到的 Markdown 文件：", files);
+          
+          if (files.length === 0) {
+            console.log("没有找到 Markdown 文件");
+            return;
+          }
+          
+          files.forEach(file => {
+            try {
+              console.log(`处理文件：${file}`);
+              const content = fs.readFileSync(path.join("docs", file), "utf8");
+              const title = file.replace(".md", "");
+              
+              const html = `<!DOCTYPE html>
+              <html lang="zh-CN">
+                <head>
+                  <meta charset="utf-8">
+                  <title>${title}</title>
+                  <link rel="stylesheet" href="../style.css">
+                </head>
+                <body>
+                  <header>
+                    <h1>${title}</h1>
+                    <time datetime="${new Date().toISOString()}">${new Date().toLocaleDateString("zh-CN")}</time>
+                  </header>
+                  <article>${md.render(content)}</article>
+                </body>
+              </html>`;
+              
+              const outputPath = path.join("posts", file.replace(".md", ".html"));
+              fs.writeFileSync(outputPath, html.trim());
+              console.log(`已生成 HTML 文件：${outputPath}`);
+            } catch (error) {
+              console.error(`处理 ${file} 时出错:`, error);
+              process.exit(1);
+            }
+          });
+          '
+          
+      - name: List generated files
+        run: |
+          echo "posts 目录内容："
+          ls -la posts || echo "posts 目录为空"
+          
+      - name: Commit changes
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add posts/
+          git status
+          git diff --cached --quiet || (git commit -m "将 Markdown 转换为 HTML" && git push)
