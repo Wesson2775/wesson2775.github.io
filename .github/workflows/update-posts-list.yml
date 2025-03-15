@@ -49,6 +49,9 @@ jobs:
           if (!fs.existsSync(docsDir)) fs.mkdirSync(docsDir, { recursive: true });
           if (!fs.existsSync(postsDir)) fs.mkdirSync(postsDir, { recursive: true });
           
+          // 读取模板文件
+          const modelContent = fs.readFileSync('model.html', 'utf8');
+          
           const files = fs.readdirSync(docsDir).filter(f => f.endsWith('.md'));
           console.log('找到的 Markdown 文件：', files);
           
@@ -61,23 +64,15 @@ jobs:
               const htmlPath = path.join(postsDir, file.replace('.md', '.html'));
               
               const content = fs.readFileSync(mdPath, 'utf8');
-              const html = '<!DOCTYPE html>' +
-                '<html lang=\"zh-CN\">' +
-                '<head>' +
-                '<meta charset=\"utf-8\">' +
-                '<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">' +
-                '<title>' + file.replace('.md', '') + '</title>' +
-                '<link rel=\"stylesheet\" href=\"../style.css\">' +
-                '</head>' +
-                '<body>' +
-                '<div id=\"blog\">' +
-                md.render(content) +
-                '</div>' +
-                '<div id=\"date\">' + new Date().toLocaleString('zh-CN') + '</div>' +
-                '</body>' +
-                '</html>';
+              const htmlContent = md.render(content);
               
-              fs.writeFileSync(htmlPath, html.trim());
+              // 将 Markdown 转换后的 HTML 插入到模板中
+              const finalHtml = modelContent.replace(
+                '<div class=\"blog-content\">121232</div>',
+                `<div class=\"blog-content\">${htmlContent}</div>`
+              );
+              
+              fs.writeFileSync(htmlPath, finalHtml);
               console.log('已生成：' + htmlPath);
               
               fileList.push(file.replace('.md', '.html'));
@@ -101,20 +96,14 @@ jobs:
               'const text = await response.text();' +
               'const parser = new DOMParser();' +
               'const doc = parser.parseFromString(text, \"text/html\");' +
-              'const blogContent = doc.getElementById(\"blog\")?.textContent;' +
-              'const dateContent = doc.getElementById(\"date\")?.textContent;' +
+              'const blogContent = doc.querySelector(\".blog-content\")?.textContent;' +
               'if (!blogContent) return;' +
               'const newP = document.createElement(\"p\");' +
               'const newA = document.createElement(\"a\");' +
               'newA.id = \"head\";' +
               'newA.href = filePath;' +
               'newA.textContent = blogContent;' +
-              'const newSpan = document.createElement(\"span\");' +
-              'newSpan.id = \"date\";' +
-              'newSpan.textContent = dateContent;' +
               'newP.appendChild(newA);' +
-              'newP.appendChild(document.createTextNode(\" \"));' +
-              'newP.appendChild(newSpan);' +
               'article.appendChild(newP);' +
               '})' +
               '.catch(error => {' +
@@ -130,7 +119,6 @@ jobs:
           }
           "
 
-      
       - name: 提交更改
         if: env.HAS_CHANGES == 'true'
         run: |

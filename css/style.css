@@ -87,6 +87,31 @@ body {
     display: flex;
     align-items: center;
 }
+.nav-blog{
+    display: flex;
+    align-items: center;
+}
+.nav-blog a{ 
+    color: #c3cad3;
+    font-size: 1rem;
+    font-weight: 700;
+    text-decoration: none;
+}
+.blog-content{
+    color: #36c912;
+}
+.nav-blog a:hover{
+    text-decoration: underline;
+}
+.footer-blog a{ 
+    color: #c3cad3;
+    font-size: 1rem;
+    font-weight: 300;
+    transition: color 0.3s ease;
+}
+.footer-blog a:hover{
+    color:rgb(112, 146, 186)
+}
 
 .nav a {
     text-decoration: none;
