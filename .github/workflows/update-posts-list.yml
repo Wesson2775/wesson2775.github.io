@@ -29,11 +29,11 @@ jobs:
       run: |
         node -e "
         const fs = require('fs');
-        const postsArray = ${{ steps.generate_array.outputs.posts_array }};
+        const postsArray = JSON.parse(process.env.POSTS_ARRAY);
         let script = fs.readFileSync('scripts.js', 'utf8');
-        script = script.replace(/const posts = \\[.*?\\];/s, `const posts = ${postsArray};`);
+        script = script.replace(/const posts = \\[.*?\\];/s, `const posts = ${JSON.stringify(postsArray, null, 2)};`);
         fs.writeFileSync('scripts.js', script);
-        "
+        " POSTS_ARRAY="${{ steps.generate_array.outputs.posts_array }}"
 
     - name: 提交更改
       run: |
