@@ -38,21 +38,19 @@ jobs:
       - name: 转换 MD 到 HTML 并更新文章列表
         id: convert
         run: |
-          node -e '
-          const fs = require("fs");
-          const path = require("path");
-          const md = require("markdown-it")();
+          node -e "
+          const fs = require('fs');
+          const path = require('path');
+          const md = require('markdown-it')();
           
-          const docsDir = path.join(process.cwd(), "docs");
-          const postsDir = path.join(process.cwd(), "posts");
+          const docsDir = path.join(process.cwd(), 'docs');
+          const postsDir = path.join(process.cwd(), 'posts');
           
-          // 确保目录存在
           if (!fs.existsSync(docsDir)) fs.mkdirSync(docsDir, { recursive: true });
           if (!fs.existsSync(postsDir)) fs.mkdirSync(postsDir, { recursive: true });
           
-          // 获取所有 md 文件
-          const files = fs.readdirSync(docsDir).filter(f => f.endsWith(".md"));
-          console.log("找到的 Markdown 文件：", files);
+          const files = fs.readdirSync(docsDir).filter(f => f.endsWith('.md'));
+          console.log('找到的 Markdown 文件：', files);
           
           let hasChanges = false;
           let fileList = [];
@@ -60,85 +58,77 @@ jobs:
           for (const file of files) {
             try {
               const mdPath = path.join(docsDir, file);
-              const htmlPath = path.join(postsDir, file.replace(".md", ".html"));
+              const htmlPath = path.join(postsDir, file.replace('.md', '.html'));
               
-              const content = fs.readFileSync(mdPath, "utf8");
-              const html = `<!DOCTYPE html>
-              <html lang="zh-CN">
-                <head>
-                  <meta charset="utf-8">
-                  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                  <title>${file.replace(".md", "")}</title>
-                  <link rel="stylesheet" href="../style.css">
-                </head>
-                <body>
-                  <div id="blog">
-                    ${md.render(content)}
-                  </div>
-                  <div id="date">${new Date().toLocaleString("zh-CN")}</div>
-                </body>
-              </html>`;
+              const content = fs.readFileSync(mdPath, 'utf8');
+              const html = '<!DOCTYPE html>' +
+                '<html lang=\"zh-CN\">' +
+                '<head>' +
+                '<meta charset=\"utf-8\">' +
+                '<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">' +
+                '<title>' + file.replace('.md', '') + '</title>' +
+                '<link rel=\"stylesheet\" href=\"../style.css\">' +
+                '</head>' +
+                '<body>' +
+                '<div id=\"blog\">' +
+                md.render(content) +
+                '</div>' +
+                '<div id=\"date\">' + new Date().toLocaleString('zh-CN') + '</div>' +
+                '</body>' +
+                '</html>';
               
               fs.writeFileSync(htmlPath, html.trim());
-              console.log(`已生成：${htmlPath}`);
+              console.log('已生成：' + htmlPath);
               
-              // 添加到文件列表
-              fileList.push(file.replace(".md", ".html"));
+              fileList.push(file.replace('.md', '.html'));
               hasChanges = true;
             } catch (error) {
-              console.error(`处理 ${file} 时出错:`, error);
+              console.error('处理 ' + file + ' 时出错:', error);
               process.exit(1);
             }
           }
           
-          // 更新 scripts.js 中的文件列表
           if (hasChanges) {
-            const scriptsPath = path.join(process.cwd(), "scripts.js");
-            const scriptsContent = `document.addEventListener("DOMContentLoaded", () => {
-              const posts = ${JSON.stringify(fileList, null, 2)};
-              const postsPath = "./posts/";
-              const article = document.querySelector(".article");
-            
-              posts.forEach(post => {
-                const filePath = postsPath + post;
-                fetch(filePath)
-                  .then(async response => {
-                    const text = await response.text();
-                    const parser = new DOMParser();
-                    const doc = parser.parseFromString(text, "text/html");
-                    const blogContent = doc.getElementById("blog")?.textContent;
-                    const dateContent = doc.getElementById("date")?.textContent;
-            
-                    if (!blogContent) return;
-            
-                    const newP = document.createElement("p");
-                    const newA = document.createElement("a");
-                    newA.id = "head";
-                    newA.href = filePath;
-                    newA.textContent = blogContent;
-            
-                    const newSpan = document.createElement("span");
-                    newSpan.id = "date";
-                    newSpan.textContent = dateContent;
-            
-                    newP.appendChild(newA);
-                    newP.appendChild(document.createTextNode(" "));
-                    newP.appendChild(newSpan);
-            
-                    article.appendChild(newP);
-                  })
-                  .catch(error => {
-                    console.error(`加载${post}时出错:`, error);
-                  });
-              });
-            });`;
+            const scriptsPath = path.join(process.cwd(), 'scripts.js');
+            const scriptsContent = 'document.addEventListener(\"DOMContentLoaded\", () => {' +
+              'const posts = ' + JSON.stringify(fileList, null, 2) + ';' +
+              'const postsPath = \"./posts/\";' +
+              'const article = document.querySelector(\".article\");' +
+              'posts.forEach(post => {' +
+              'const filePath = postsPath + post;' +
+              'fetch(filePath)' +
+              '.then(async response => {' +
+              'const text = await response.text();' +
+              'const parser = new DOMParser();' +
+              'const doc = parser.parseFromString(text, \"text/html\");' +
+              'const blogContent = doc.getElementById(\"blog\")?.textContent;' +
+              'const dateContent = doc.getElementById(\"date\")?.textContent;' +
+              'if (!blogContent) return;' +
+              'const newP = document.createElement(\"p\");' +
+              'const newA = document.createElement(\"a\");' +
+              'newA.id = \"head\";' +
+              'newA.href = filePath;' +
+              'newA.textContent = blogContent;' +
+              'const newSpan = document.createElement(\"span\");' +
+              'newSpan.id = \"date\";' +
+              'newSpan.textContent = dateContent;' +
+              'newP.appendChild(newA);' +
+              'newP.appendChild(document.createTextNode(\" \"));' +
+              'newP.appendChild(newSpan);' +
+              'article.appendChild(newP);' +
+              '})' +
+              '.catch(error => {' +
+              'console.error(\"加载\" + post + \"时出错:\", error);' +
+              '});' +
+              '});' +
+              '});';
             
             fs.writeFileSync(scriptsPath, scriptsContent);
-            console.log("已更新 scripts.js");
+            console.log('已更新 scripts.js');
             
-            fs.writeFileSync(process.env.GITHUB_ENV, `HAS_CHANGES=true`, { flag: "a" });
+            fs.writeFileSync(process.env.GITHUB_ENV, 'HAS_CHANGES=true', { flag: 'a' });
           }
-          '
+          "
 
       - name: 提交更改
         if: env.HAS_CHANGES == 'true'
