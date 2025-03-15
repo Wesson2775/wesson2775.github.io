@@ -1,4 +1,4 @@
-name: 更新文章列表
+name: 更新文章列表2
 
 on:
   push:
