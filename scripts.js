@@ -2,7 +2,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const posts = [
     'wutai.html',
     'xianggang.html',
-    'tianxia.html',
   ];
   const postsPath = './posts/';
   const article = document.querySelector('.article');
