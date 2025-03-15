@@ -1,9 +1,9 @@
-name: 更新 posts 数组
+name: 更新文章列表
 
 on:
   push:
     paths:
-      - 'posts/**'
+      - 'posts/**/*.html'
   workflow_dispatch:
 
 jobs:
@@ -11,37 +11,67 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: 检出仓库
-      uses: actions/checkout@v2
+    - name: 检出代码仓库
+      uses: actions/checkout@v3
       with:
         token: ${{ secrets.PAT }}
 
-    - name: 列出 html 文件
+    - name: 获取 HTML 文件列表
       id: list_files
       run: |
-        find posts -name "*.html" -type f -printf "%f\n" > post_files.txt
+        mkdir -p temp
+        find posts -name "*.html" -type f -printf "%f\n" > temp/post_files.txt
 
-    - name: 生成 posts 数组
+    - name: 生成文章数组
       id: generate_array
       run: |
-        files=$(cat post_files.txt | jq -R -s -c 'split("\n") | map(select(length > 0))')
+        if [ ! -f temp/post_files.txt ]; then
+          echo "错误：未找到 post_files.txt"
+          exit 1
+        fi
+        files=$(cat temp/post_files.txt | jq -R -s -c 'split("\n") | map(select(length > 0))')
         echo "posts_array=$files" >> $GITHUB_ENV
 
-    - name: 更新 scripts.js
+    - name: 更新 scripts.js 文件
       run: |
+        if [ ! -f scripts.js ]; then
+          echo "const posts = [];" > scripts.js
+        fi
+        
         node -e "
-        const fs = require('fs');
-        const postsArray = JSON.parse(process.env.posts_array);
-        let script = fs.readFileSync('scripts.js', 'utf8');
-        script = script.replace(/const posts = \\[.*?\\];/s, 'const posts = ' + JSON.stringify(postsArray, null, 2) + ';');
-        fs.writeFileSync('scripts.js', script);
+        try {
+          const fs = require('fs');
+          const postsArray = JSON.parse(process.env.posts_array);
+          let script = fs.readFileSync('scripts.js', 'utf8');
+          
+          // 如果文件中没有 posts 数组定义，则添加一个
+          if (!script.includes('const posts =')) {
+            script = 'const posts = [];\n' + script;
+          }
+          
+          const newContent = 'const posts = ' + JSON.stringify(postsArray, null, 2) + ';';
+          script = script.replace(/const posts = \[.*?\];/s, newContent);
+          fs.writeFileSync('scripts.js', script);
+        } catch (error) {
+          console.error('错误：', error.message);
+          process.exit(1);
+        }
         "
 
     - name: 提交更改
       run: |
-        git config --global user.name "GitHub Action"
-        git config --global user.email "action@github.com"
+        git config --global user.name "GitHub Actions Bot"
+        git config --global user.email "github-actions[bot]@users.noreply.github.com"
         git remote set-url origin https://x-access-token:${{ secrets.PAT }}@github.com/${{ github.repository }}
+        
+        # 检查是否有更改
         git add scripts.js
-        git commit -m "更新 scripts.js 中的 posts 数组"
-        git push
+        if git diff --cached --quiet; then
+          echo "没有需要提交的更改"
+        else
+          git commit -m "更新 scripts.js 中的文章列表"
+          git push
+        fi
+        
+        # 清理临时文件
+        rm -rf temp
