@@ -28,20 +28,46 @@ jobs:
     - name: 转换 Markdown 为 HTML
       run: |
         node -e "
-        const fs = require('fs');
-        const path = require('path');
-        const MarkdownIt = require('markdown-it');
-        const md = new MarkdownIt();
+          const fs = require('fs');
+          const path = require('path');
+          const MarkdownIt = require('markdown-it');
+          const md = new MarkdownIt();
 
-        // 创建 posts 目录（如果不存在）
-        if (!fs.existsSync('posts')) {
-          fs.mkdirSync('posts');
-        }
+          if (!fs.existsSync('posts')) {
+            fs.mkdirSync('posts');
+          }
 
-        // 获取修改的 md 文件
-        const changedFiles = process.env.GITHUB_EVENT_PATH
-          ? JSON.parse(fs.readFileSync(process.env.GITHUB_EVENT_PATH, 'utf8')).commits
-              .reduce((files, commit) => {
-                return files.concat(
-                  commit.added.concat(commit.modified)
-                    .filter(file => file.startsWith('docs/') && file.endsWith('.md'))
+          const mdFiles = fs.readdirSync('docs')
+            .filter(file => file.endsWith('.md'));
+
+          mdFiles.forEach(file => {
+            const content = fs.readFileSync(path.join('docs', file), 'utf8');
+            const result = md.render(content);
+            
+            const html = \`<!DOCTYPE html>
+<html>
+<head>
+  <meta charset='utf-8'>
+  <title>\${file.replace('.md', '')}</title>
+  <link rel='stylesheet' href='../style.css'>
+</head>
+<body>
+  <div id='blog'>\${file.replace('.md', '')}</div>
+  <div id='date'>\${new Date().toISOString().split('T')[0]}</div>
+  <article>\${result}</article>
+</body>
+</html>\`;
+
+            const htmlFile = file.replace('.md', '.html');
+            fs.writeFileSync(path.join('posts', htmlFile), html);
+          });
+        "
+
+    - name: 提交更改
+      run: |
+        git config --global user.name "GitHub Action"
+        git config --global user.email "action@github.com"
+        git remote set-url origin https://x-access-token:${{ secrets.PAT }}@github.com/${{ github.repository }}
+        git add posts/
+        git commit -m "将 Markdown 转换为 HTML"
+        git push
