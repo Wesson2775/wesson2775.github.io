@@ -1,6 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {const posts = [
   "关于我.html",
-  "友情链接.html",
   "如何快速处理大光比图片，保留细节不过曝.html",
   "如何进行胶片调色.html",
   "第一讲.html"
