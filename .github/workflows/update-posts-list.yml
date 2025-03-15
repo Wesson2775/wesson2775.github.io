@@ -19,10 +19,21 @@ jobs:
       run: |
         ls posts > post_files.txt
 
+    - name: 生成 posts 数组
+      id: generate_array
+      run: |
+        files=$(cat post_files.txt | jq -R -s -c 'split("\n") | map(select(length > 0))')
+        echo "::set-output name=posts_array::$files"
+
     - name: 更新 scripts.js
       run: |
-        files=$(cat post_files.txt | awk '{print "    \x27" $0 "\x27,"}')
-        sed -i "/const posts = \[/,/];/c\  const posts = [\n$files\n  ];" scripts.js
+        node -e "
+        const fs = require('fs');
+        const postsArray = ${{ steps.generate_array.outputs.posts_array }};
+        let script = fs.readFileSync('scripts.js', 'utf8');
+        script = script.replace(/const posts = \\[.*?\\];/s, `const posts = ${postsArray};`);
+        fs.writeFileSync('scripts.js', script);
+        "
 
     - name: 提交更改
       run: |
