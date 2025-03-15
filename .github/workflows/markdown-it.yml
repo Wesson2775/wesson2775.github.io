@@ -1,24 +1,24 @@
-name: Markdown 转换为 HTML
+name: 更新博客文章
 
-# 添加手动触发和文件变化触发
 on:
   push:
     paths:
       - 'docs/**/*.md'
-  workflow_dispatch:    # 添加这个来支持手动触发
-    inputs:            # 可以添加手动触发时的输入参数（可选）
+  workflow_dispatch:
+    inputs:
       reason:
-        description: '触发原因'
+        description: '手动触发原因'
         required: false
+        type: string
         default: '手动更新'
 
 jobs:
-  convert:
+  convert-and-update:
     runs-on: ubuntu-latest
 
     steps:
     - name: 检出仓库
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
       with:
         token: ${{ secrets.PAT }}
 
