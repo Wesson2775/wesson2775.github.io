@@ -23,17 +23,17 @@ jobs:
       id: generate_array
       run: |
         files=$(cat post_files.txt | jq -R -s -c 'split("\n") | map(select(length > 0))')
-        echo "::set-output name=posts_array::$files"
+        echo "posts_array=$files" >> $GITHUB_ENV
 
     - name: 更新 scripts.js
       run: |
         node -e "
         const fs = require('fs');
-        const postsArray = JSON.parse(process.env.POSTS_ARRAY);
+        const postsArray = ${{ env.posts_array }};
         let script = fs.readFileSync('scripts.js', 'utf8');
-        script = script.replace(/const posts = \\[.*?\\];/s, `const posts = ${JSON.stringify(postsArray, null, 2)};`);
+        script = script.replace(/const posts = \\[.*?\\];/s, `const posts = ${postsArray};`);
         fs.writeFileSync('scripts.js', script);
-        " POSTS_ARRAY="${{ steps.generate_array.outputs.posts_array }}"
+        "
 
     - name: 提交更改
       run: |
