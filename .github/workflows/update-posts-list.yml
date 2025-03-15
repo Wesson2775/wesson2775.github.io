@@ -1,4 +1,4 @@
-name: Update Posts Array
+name: 更新 posts 数组
 
 on:
   push:
@@ -12,23 +12,23 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout repository
+    - name: 检出仓库
       uses: actions/checkout@v2
 
-    - name: List post files
+    - name: 列出 posts 文件
       id: list_files
       run: |
         ls posts > post_files.txt
 
-    - name: Update scripts.js
+    - name: 更新 scripts.js
       run: |
         files=$(cat post_files.txt | awk '{print "    \x27" $0 "\x27,"}')
-        sed -i '/const posts = \[/,/];/c\  const posts = [\n'"$files"'\n  ];' scripts.js
+        sed -i "/const posts = \[/,/];/c\  const posts = [\n$files\n  ];" scripts.js
 
-    - name: Commit changes
+    - name: 提交更改
       run: |
         git config --global user.name 'github-actions[bot]'
         git config --global user.email 'github-actions[bot]@users.noreply.github.com'
         git add scripts.js
-        git commit -m 'Update posts array in scripts.js'
+        git commit -m '更新 scripts.js 中的 posts 数组'
         git push
