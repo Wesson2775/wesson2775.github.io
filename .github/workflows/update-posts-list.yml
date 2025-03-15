@@ -68,13 +68,13 @@ jobs:
                   '<meta name="viewport" content="width=device-width, initial-scale=1.0">'+
                   '<link rel="stylesheet" href="./css/normalize.min.css">'+
                   '<link rel="stylesheet" href="./css/style.css">'+
-                  '<title>Document</title>'+
+                  '<title>'+file.replace('.md', '')+'</title>'+
               '</head>'+
               '<body>'+
                   '<div class="container">'+
                       '<div class="main">'+
                           '<div class="nav-blog">'+
-                              '<h1><a href="./index.html">啃冬瓜的小傻瓜</a></h1>'+
+                              '<h1>'+'<a href="./index.html">'+'啃冬瓜的小傻瓜'+'</a>'+'</h1>'+
                           '</div>'+
 
                           '<div class="blog-content">'+
@@ -82,7 +82,7 @@ jobs:
                           '</div>'+
 
                           '<div class="footer-blog">'+
-                              '<h1><a href="./index.html">回到主页</a></h1>'+
+                              '<h1>'+'<a href="./index.html">'+'回到主页'+'</a>'+'</h1>'+
                           '</div>'+
                       '</div>'+
                   '</div>'+
