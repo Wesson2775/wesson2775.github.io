@@ -1,8 +1,10 @@
 document.addEventListener('DOMContentLoaded', () => {
   const posts = [
-    'wutai.html',
-    'xianggang.html',
-  ];
+  "1",
+  "tianxia.html",
+  "wutai.html",
+  "xianggang.html"
+];
   const postsPath = './posts/';
   const article = document.querySelector('.article');
 
