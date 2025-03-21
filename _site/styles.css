@@ -348,7 +348,6 @@ body {
 
     /* 头部调整 */
     .head {
-        flex-direction: column;
         align-items: flex-start;
     }
 
@@ -363,7 +362,6 @@ body {
         margin-top: 2rem;
         height: auto;
         flex-wrap: nowrap; /* 确保不换行 */
-        justify-content: space-between; /* 均匀分布 */
     }
 
     .nav a {
