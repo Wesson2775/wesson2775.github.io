@@ -2,22 +2,7 @@
 layout: default
 title: 关于我
 ---
-<div class="container">
-  <main class="main">
-    <header class="head">
-      <h1 class="header">
-        <span class="blog-name-zh">{{ site.title }}</span>
-        <span class="blog-name-en">Wesson</span>
-        <span class="profile">{{ site.description }}</span>
-      </h1>
-    </header>
-    <nav class="nav">
-      <a href="{{ site.url }}">博文</a>
-      <span>/</span>
-      <a href="/fragments.html">杂念</a>
-      <span>/</span>
-      <a href="/about.html">关于我</a>
-    </nav>
+<div class="content">
     <section class="about-content">
       <p>{{ site.description2 }}</p>
       <figure>
@@ -36,7 +21,7 @@ title: 关于我
         <a href="{{ site.github }}"">GitHub</a>
       </div>
     </section>
-  </main>
+  
   <footer class="footer">
     <p>© 2025 | @Wesson | <a href="{{ site.url }}">主页</a></p> | <p>本站已运行：<span id="uptime"></span></p>
   </footer>

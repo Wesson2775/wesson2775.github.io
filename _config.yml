@@ -1,8 +1,7 @@
 title: 孤舟听雨
+email: 862832617@qq.com
 description: 岁月如歌，静听风雨。
-theme: minima  # 可选，使用 Jekyll 默认主题，或者你自定义的样式
-plugins:
-  - jekyll-feed
+description2: 岁月如歌，静听风雨。2
 collections:
   posts:
     output: true
@@ -15,4 +14,13 @@ defaults:
       type: posts
     values:
       layout: post
-repository: wesson2775/wesson2775.github.io
+baseurl: "zor666.me" # the subpath of your site, e.g. /blog
+url: "" # the base hostname & protocol for your site, e.g. http://example.com
+twitter_username: jekyllrb
+github_username:  jekyll
+
+# Build settings
+theme: minima
+plugins:
+  - jekyll-feed
+

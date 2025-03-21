@@ -134,3 +134,7 @@ body {
     font-size: 14px;
     color: #888888;
 }
+.article div {
+    margin-top: 10px; /* 内容与标题/日期的间距 */
+    line-height: 2; /* 与 .content 一致的行高 */
+}
