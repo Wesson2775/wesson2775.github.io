@@ -358,3 +358,6 @@ body {
 .about-link a:hover {
     color: var(--color-primary-hover);
 }
+.home a{
+   text-decoration: none;
+}
