@@ -1,16 +1,39 @@
 ---
 layout: default
+title: 博文
 ---
-{% for post in site.posts %}
-    {% assign current_year = post.date | date: "%Y" %}
-    {% if current_year != previous_year %}
-        </div> <!-- 关闭上一个年份的 content div，如果有的话 -->
-        <div class="year">{{ current_year }}</div>
-        {% assign previous_year = current_year %}
-    {% endif %}
-    <div class="article">
-        <a href="{{ post.url }}">{{ post.title }}</a>
-        <span class="date">{{ post.date | date: "%Y-%m-%d" }}</span>
+<div class="card-base">
+{% assign posts_by_year = site.posts | group_by_exp: "post", "post.date | date: '%Y'" %}
+{% for year_group in posts_by_year %}
+    <div class="year-section">
+        <div class="year-header">
+            <div class="year-container">
+                <span class="year">{{ year_group.name }}</span>
+            </div>
+            <div class="year-circle">
+                <div class="year-circle-dot"></div>
+            </div>
+            <div class="post-count-container">
+                <span class="post-count">{{ year_group.items | size }} posts</span>
+            </div>
+        </div>
+        {% assign sorted_posts = year_group.items | sort: "date" | reverse %}
+        {% for post in sorted_posts %}
+            <div class="article">
+                <div class="date">{{ post.date | date: "%m-%d" }}</div>
+                <div class="dash-line">
+                    <div class="dash-line-dot"></div>
+                </div>
+                <div class="title-and-tags">
+                    <a href="{{ post.url }}" class="article-title">{{ post.title }}</a>
+                    {% if post.tags %}
+                        <div class="tags">
+                            {% for tag in post.tags %}#{{ tag }} {% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        {% endfor %}
     </div>
 {% endfor %}
-</div> <!-- 关闭最后一个年份的 content div -->
+</div>

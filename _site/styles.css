@@ -1,13 +1,244 @@
+/* 基础样式 */
 body {
     margin: 0;
     background-color: #1e1e2e;
     color: #cccccc;
     font-family: Arial, sans-serif;
     padding: 40px;
-
-
 }
 
+/* 自定义变量 */
+:root {
+    --primary: #6a86d8; /* 主色调，与导航链接一致 */
+    --card-bg: #fc9797; /* 卡片背景，与 body 一致 */
+    --btn-plain-bg-hover: #6a86d8; /* 悬浮时的背景色 */
+    --btn-plain-bg-active: #ffcc00; /* 点击时的背景色 */
+    --hue: 240deg; /* 色调，用于时间线点的颜色 */
+}
+
+/* Main 块 */
+.main {
+    width: 25rem;
+    margin: 0 auto;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+/* 卡片容器（主页） */
+.card-base {
+    padding: 2rem 2rem;
+    padding-left: 0;
+    margin-left: 0;
+}
+
+/* 年份部分（主页） */
+.year-section {
+    position: relative;
+    padding: 0;
+}
+
+.year-header {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: 2.5rem;
+}
+
+/* 年份和日期的容器（主页） */
+.year-container {
+    width: 3rem;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.year {
+    font-size: 20px;
+    font-weight: bold;
+    color: #6a86d8;
+    transition: all 0.3s ease;
+}
+
+/* 时间线圆点和线（主页） */
+.year-circle {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    width: 0.5rem;
+    margin-left: 2rem;
+    margin-right: 2rem;
+}
+
+.year-circle::before {
+    content: '';
+    position: absolute;
+    top: 0.75rem;
+    bottom: 0;
+    left: 50%;
+    width: 2px;
+    background: #888888;
+    transform: translateX(-50%);
+    z-index: 1;
+}
+
+.year-circle-dot {
+    background: #888888;
+    outline: 3px solid var(--primary);
+    outline-offset: -2px;
+    height: 0.3rem;
+    width: 0.3rem;
+    border-radius: 9999px;
+    z-index: 2;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* 文章数量（主页） */
+.post-count-container {
+    display: flex;
+    align-items: center;
+}
+
+.post-count {
+    font-size: 14px;
+    color: #bebdbd;
+    line-height: 1;
+    transition: all 0.3s ease;
+}
+
+/* 文章条目（主页） */
+.article {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: 2.5rem;
+    position: relative;
+    cursor: pointer;
+}
+
+/* 日期（主页） */
+.date {
+    font-size: 14px;
+    color: #b1b0b0;
+    width: 3rem;
+    text-align: right;
+}
+
+/* 时间线点和线（主页） */
+.dash-line {
+    position: relative;
+    width: 0.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: 2rem;
+    margin-right: 2rem;
+    height: 100%;
+}
+
+.dash-line::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    width: 2px;
+    background: #888888;
+    transform: translateX(-50%);
+    z-index: 1;
+}
+
+.dash-line-dot {
+    background: oklch(0.5 0.05 var(--hue));
+    outline: 2px solid var(--card-bg);
+    height: 1px;
+    width: 1px;
+    border-radius: 9999px;
+    margin: 0 auto;
+    z-index: 2;
+    transition: all 0.3s ease;
+}
+
+.article:hover .dash-line-dot {
+    background: var(--primary);
+    height: 1.25rem;
+    outline-color: var(--card-bg);
+}
+
+.article:active .dash-line-dot {
+    outline-color: var(--btn-plain-bg-active);
+}
+
+/* 标题和标签（主页） */
+.title-and-tags {
+    display: flex;
+    align-items: center;
+    flex: 1;
+    min-width: 0;
+}
+
+.article-title {
+    color: #cccccc;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: bold;
+    flex: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding-right: 1rem;
+    transition: all 0.3s ease;
+    text-align: left;
+}
+
+.article-title:hover {
+    color: var(--primary);
+    transform: translateX(0.25rem);
+}
+
+.tags {
+    font-size: 14px;
+    color: #6a86d8;
+    white-space: nowrap;
+    transition: all 0.3s ease;
+    text-align: left;
+    margin-left: -0.5rem;
+    flex-shrink: 0;
+}
+
+/* 导航栏 */
+.nav {
+    margin-top: 3rem;
+    display: flex;
+    align-items: center;
+    height: 28px;
+}
+
+/* 导航链接 */
+.nav a {
+    height: 28px;
+    line-height: 28px;
+    color: #6a86d8;
+    font-weight: bold;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.nav a:hover {
+    color: var(--btn-plain-bg-active); /* 鼠标悬停时变为 #ffcc00 */
+}
+
+/* 分隔符 */
+.nav span {
+    margin: 0 1rem;
+    font-weight: 700;
+    font-size: 24px;
+    color: #cccccc;
+    line-height: 28px;
+}
+
+/* 原始样式（保持不变） */
 .head {
     display: flex;
     justify-content: flex-start;
@@ -15,117 +246,49 @@ body {
 }
 
 .blog-name {
-    position: relative; /* 设置相对定位 */
-    overflow: hidden; /* 隐藏超出部分 */
-    height: 30; /* 设置固定高度，确保超出部分被隐藏 */
-    font-size: 15;
+    position: relative;
+    overflow: hidden;
+    height: 30px;
+    font-size: 15px;
 }
 
 .blog-name h1 {
     margin: 0;
-    height: 30px; /* 确保每个 h1 的高度一致 */
-    line-height: 30px; /* 垂直居中 */
-    transition: transform 0.5s ease-in-out; /* 添加过渡效果 */
+    height: 30px;
+    line-height: 30px;
+    transition: transform 0.5s ease-in-out;
 }
 
 /* Wesson 初始状态：隐藏在下方 */
 .blog-name h1:nth-child(2) {
-    position: absolute; /* 绝对定位 */
-    top: 100%; /* 初始位置在孤舟听雨的正下方 */
+    position: absolute;
+    top: 100%;
     left: 0;
     color: #ffcc00;
-    transform: translateY(0); /* 初始位置 */
+    transform: translateY(0);
 }
 
 /* 鼠标悬浮时效果 */
 .blog-name:hover h1:nth-child(1) {
-    transform: translateY(-100%); /* 孤舟听雨向上滑动 */
+    transform: translateY(-100%);
 }
 
 .blog-name:hover h1:nth-child(2) {
-    transform: translateY(-100%); /* Wesson 跟随上滑 */
+    transform: translateY(-100%);
 }
 
-.profile{
-    height: 40px; 
-    display: flex; 
-    align-items: flex-end; 
-}
-.profile h3{
-    margin: 0; /* 移除默认的 margin */
-    font-size: 16px; /* 确保字体大小一致 */
-    color: #888888; /* 设置颜色 */
-    line-height: 1; /* 确保行高正常 */
-    padding-left: 1rem;
-}
-/* 导航栏 */
-.nav {
-    margin-top: 3rem;
-    /* 向下移动 3rem */
+.profile {
+    height: 40px;
     display: flex;
-    align-items: center;
-    height: 28px;
+    align-items: flex-end;
 }
 
-/* 左对齐导航链接 */
-.nav a {
-    height: 28px;
-    color: #6a86d8;
-    font-weight: bold;
-    text-decoration: none;
-    transition: color 0.3s ease;
-}
-
-/* 鼠标悬浮时改变颜色 */
-.nav a:hover {
-    color: #ffcc00;
-}
-
-.nav span {
-    margin: 0 1rem;
-    font-weight: 700;
-    font-size: 24px;
-    /* / 与左右链接的距离 */
-    color: #cccccc;
-}
-
-/* 文章内容 */
-.content {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-}
-
-/* 年份 */
-.year {
-    font-size: 20px;
-    font-weight: bold;
-    color: #6a86d8;
-    /* 和导航文字同色 */
-    margin-top: 20px;
-}
-
-/* 文章标题 */
-.article {
-    margin-left: 0px;
-    /* 让文章标题左对齐 */
-    position: relative;
-    cursor: pointer;
-}
-
-/* 隐藏日期，鼠标悬停时显示 */
-.date {
-    visibility: hidden;
-    opacity: 0;
-    transition: opacity 0.3s ease;
-    font-size: 14px;
+.profile h3 {
+    margin: 0;
+    font-size: 16px;
     color: #888888;
-    margin-left: 10px;
-}
-
-.article:hover .date {
-    visibility: visible;
-    opacity: 1;
+    line-height: 1;
+    padding-left: 1rem;
 }
 
 /* 页脚 */
@@ -133,4 +296,42 @@ body {
     margin-top: 50px;
     font-size: 14px;
     color: #888888;
+}
+
+/* 杂念页面样式 */
+.fragments {
+    padding: 1rem 0;
+}
+
+.fragment-year-section {
+    margin-bottom: 2rem;
+    /* 移除块元素样式，仅作为分组容器 */
+}
+
+.fragment-year {
+    font-size: 20px;
+    font-weight: bold;
+    color: #6a86d8;
+    margin-bottom: 1rem;
+    text-align: left;
+}
+
+.fragment-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 0.5rem;
+    text-align: left;
+}
+
+.fragment-date {
+    font-size: 14px;
+    color: #b1b0b0;
+    width: 3rem;
+    margin-right: 1rem;
+}
+
+.fragment-content {
+    font-size: 14px;
+    color: #cccccc;
+    flex: 1;
 }
