@@ -1,0 +1,136 @@
+body {
+    margin: 0;
+    background-color: #1e1e2e;
+    color: #cccccc;
+    font-family: Arial, sans-serif;
+    padding: 40px;
+
+
+}
+
+.head {
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-end;
+}
+
+.blog-name {
+    position: relative; /* 设置相对定位 */
+    overflow: hidden; /* 隐藏超出部分 */
+    height: 30; /* 设置固定高度，确保超出部分被隐藏 */
+    font-size: 15;
+}
+
+.blog-name h1 {
+    margin: 0;
+    height: 30px; /* 确保每个 h1 的高度一致 */
+    line-height: 30px; /* 垂直居中 */
+    transition: transform 0.5s ease-in-out; /* 添加过渡效果 */
+}
+
+/* Wesson 初始状态：隐藏在下方 */
+.blog-name h1:nth-child(2) {
+    position: absolute; /* 绝对定位 */
+    top: 100%; /* 初始位置在孤舟听雨的正下方 */
+    left: 0;
+    color: #ffcc00;
+    transform: translateY(0); /* 初始位置 */
+}
+
+/* 鼠标悬浮时效果 */
+.blog-name:hover h1:nth-child(1) {
+    transform: translateY(-100%); /* 孤舟听雨向上滑动 */
+}
+
+.blog-name:hover h1:nth-child(2) {
+    transform: translateY(-100%); /* Wesson 跟随上滑 */
+}
+
+.profile{
+    height: 40px; 
+    display: flex; 
+    align-items: flex-end; 
+}
+.profile h3{
+    margin: 0; /* 移除默认的 margin */
+    font-size: 16px; /* 确保字体大小一致 */
+    color: #888888; /* 设置颜色 */
+    line-height: 1; /* 确保行高正常 */
+    padding-left: 1rem;
+}
+/* 导航栏 */
+.nav {
+    margin-top: 3rem;
+    /* 向下移动 3rem */
+    display: flex;
+    align-items: center;
+    height: 28px;
+}
+
+/* 左对齐导航链接 */
+.nav a {
+    height: 28px;
+    color: #6a86d8;
+    font-weight: bold;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+/* 鼠标悬浮时改变颜色 */
+.nav a:hover {
+    color: #ffcc00;
+}
+
+.nav span {
+    margin: 0 1rem;
+    font-weight: 700;
+    font-size: 24px;
+    /* / 与左右链接的距离 */
+    color: #cccccc;
+}
+
+/* 文章内容 */
+.content {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+/* 年份 */
+.year {
+    font-size: 20px;
+    font-weight: bold;
+    color: #6a86d8;
+    /* 和导航文字同色 */
+    margin-top: 20px;
+}
+
+/* 文章标题 */
+.article {
+    margin-left: 0px;
+    /* 让文章标题左对齐 */
+    position: relative;
+    cursor: pointer;
+}
+
+/* 隐藏日期，鼠标悬停时显示 */
+.date {
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    font-size: 14px;
+    color: #888888;
+    margin-left: 10px;
+}
+
+.article:hover .date {
+    visibility: visible;
+    opacity: 1;
+}
+
+/* 页脚 */
+.footer {
+    margin-top: 50px;
+    font-size: 14px;
+    color: #888888;
+}

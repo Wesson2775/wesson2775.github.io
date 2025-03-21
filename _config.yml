@@ -1,0 +1,18 @@
+title: 孤舟听雨
+description: 岁月如歌，静听风雨。
+theme: minima  # 可选，使用 Jekyll 默认主题，或者你自定义的样式
+plugins:
+  - jekyll-feed
+collections:
+  posts:
+    output: true
+    permalink: /:year/:month/:day/:title.html
+  fragments:
+    output: false  # 不生成独立页面，仅用于列表展示
+defaults:
+  - scope:
+      path: ""
+      type: posts
+    values:
+      layout: post
+repository: wesson2775/wesson2775.github.io
