@@ -203,7 +203,7 @@ body {
     align-items: center;
     width: 100%;
     height: 2.5rem;
-    position: relative;
+    position:  relative;
     cursor: pointer;
 }
 
@@ -330,4 +330,159 @@ body {
     font-size: 14px;
     color: #cccccc;
     flex: 1;
+}
+
+/* 移动端样式（屏幕宽度 <= 768px）
+-------------------------------------------------- */
+@media (max-width: 768px) {
+    /* 全局调整 */
+    body {
+        padding: 20px; /* 减小外边距，节省空间 */
+    }
+
+    .main {
+        width: 90%; /* 使用百分比宽度，适配屏幕 */
+        overflow: visible; /* 允许内容溢出 */
+        white-space: normal; /* 允许换行 */
+    }
+
+    /* 头部调整 */
+    .head {
+        flex-direction: column; /* 垂直排列 */
+        align-items: flex-start;
+    }
+
+    .profile h3 {
+        font-size: 14px; /* 减小字体 */
+        padding-left: 0;
+        margin-top: 0.5rem;
+    }
+
+    /* 导航栏调整 */
+    .nav {
+        flex-direction: column; /* 垂直排列 */
+        height: auto;
+        margin-top: 2rem;
+    }
+
+    .nav a {
+        height: auto;
+        line-height: 2rem; /* 增加行高，方便点击 */
+        font-size: 16px; /* 增大字体 */
+    }
+
+    .nav span {
+        display: none; /* 隐藏分隔符 */
+    }
+
+    /* 页脚调整 */
+    .footer {
+        font-size: 16px; /* 增大字体 */
+        text-align: center; /* 居中对齐 */
+    }
+
+    #running-days {
+        font-size: 16px;
+    }
+
+    /* 主页调整 */
+    .card-base {
+        padding: 1rem 0; /* 减小内边距 */
+    }
+
+    .year-header {
+        height: auto; /* 高度自适应 */
+    }
+
+    .year-container {
+        width: 4rem; /* 增加宽度 */
+    }
+
+    .year {
+        font-size: 18px; /* 减小字体 */
+    }
+
+    .year-circle {
+        margin-left: 1rem; /* 减小间距 */
+        margin-right: 1rem;
+    }
+
+    .post-count {
+        font-size: 12px; /* 减小字体 */
+    }
+
+    .article {
+        height: auto; /* 高度自适应 */
+        padding: 0.5rem 0; /* 增加内边距 */
+    }
+
+    .date {
+        font-size: 16px; /* 增大字体 */
+        width: 4rem; /* 增加宽度 */
+    }
+
+    .dash-line {
+        margin-left: 1rem; /* 减小间距 */
+        margin-right: 1rem;
+    }
+
+    .title-and-tags {
+        flex-direction: column; /* 垂直排列 */
+        align-items: flex-start;
+    }
+
+    .article-title {
+        font-size: 16px; /* 增大字体 */
+        white-space: normal; /* 允许换行 */
+        padding-right: 0;
+    }
+
+    .tags {
+        font-size: 14px;
+        margin-left: 0;
+        margin-top: 0.25rem;
+        white-space: normal; /* 允许换行 */
+    }
+
+    /* 杂念页面调整 */
+    .fragments {
+        padding: 0.5rem 0;
+    }
+
+    .fragment-year {
+        font-size: 18px; /* 减小字体 */
+    }
+
+    .fragment-item {
+        margin-bottom: 0.75rem; /* 增加间距 */
+    }
+
+    .fragment-date {
+        font-size: 16px; /* 增大字体 */
+        width: 4rem;
+    }
+
+    .fragment-content {
+        font-size: 16px; /* 增大字体 */
+    }
+}
+
+/* 超小屏幕调整（屏幕宽度 <= 480px）
+-------------------------------------------------- */
+@media (max-width: 480px) {
+    body {
+        padding: 10px; /* 进一步减小外边距 */
+    }
+
+    .main {
+        width: 95%; /* 进一步增加宽度 */
+    }
+
+    .year {
+        font-size: 16px;
+    }
+
+    .fragment-year {
+        font-size: 16px;
+    }
 }
