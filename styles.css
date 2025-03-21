@@ -9,11 +9,11 @@ body {
 
 /* 自定义变量 */
 :root {
-    --primary: #6a86d8; /* 主色调，与导航链接一致 */
-    --card-bg: #fc9797; /* 卡片背景，与 body 一致 */
-    --btn-plain-bg-hover: #6a86d8; /* 悬浮时的背景色 */
-    --btn-plain-bg-active: #ffcc00; /* 点击时的背景色 */
-    --hue: 240deg; /* 色调，用于时间线点的颜色 */
+    --primary: #6a86d8;
+    --card-bg: #fc9797;
+    --btn-plain-bg-hover: #6a86d8;
+    --btn-plain-bg-active: #ffcc00;
+    --hue: 240deg;
 }
 
 /* Main 块 */
@@ -226,7 +226,7 @@ body {
 }
 
 .nav a:hover {
-    color: var(--btn-plain-bg-active); /* 鼠标悬停时变为 #ffcc00 */
+    color: var(--btn-plain-bg-active);
 }
 
 /* 分隔符 */
@@ -298,6 +298,12 @@ body {
     color: #888888;
 }
 
+/* 运行天数样式 */
+#running-days {
+    color: #888888;
+    font-size: 14px;
+}
+
 /* 杂念页面样式 */
 .fragments {
     padding: 1rem 0;
@@ -305,7 +311,6 @@ body {
 
 .fragment-year-section {
     margin-bottom: 2rem;
-    /* 移除块元素样式，仅作为分组容器 */
 }
 
 .fragment-year {

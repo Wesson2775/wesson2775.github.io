@@ -1,7 +1,7 @@
 title: 孤舟听雨
 email: 862832617@qq.com
 description: 岁月如歌，静听风雨。
-description2: 岁月如歌，静听风雨。2
+description2: 孤舟行将江月冷，独酌无心夜风寒。
 collections:
   posts:
     output: true
@@ -14,7 +14,7 @@ defaults:
       type: posts
     values:
       layout: post
-baseurl: "" # the subpath of your site, e.g. /blog
+baseurl: "zor666.me" # the subpath of your site, e.g. /blog
 url: "" # the base hostname & protocol for your site, e.g. http://example.com
 twitter_username: jekyllrb
 github_username:  jekyll
