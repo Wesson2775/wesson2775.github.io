@@ -1,4 +1,5 @@
-/* 基础样式 */
+/* 全局样式
+-------------------------------------------------- */
 body {
     margin: 0;
     background-color: #1e1e2e;
@@ -16,7 +17,8 @@ body {
     --hue: 240deg;
 }
 
-/* Main 块 */
+/* 通用样式
+-------------------------------------------------- */
 .main {
     width: 25rem;
     margin: 0 auto;
@@ -24,14 +26,106 @@ body {
     white-space: nowrap;
 }
 
-/* 卡片容器（主页） */
+/* 头部样式 */
+.head {
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-end;
+}
+
+.blog-name {
+    position: relative;
+    overflow: hidden;
+    height: 30px;
+    font-size: 15px;
+}
+
+.blog-name h1 {
+    margin: 0;
+    height: 30px;
+    line-height: 30px;
+    transition: transform 0.5s ease-in-out;
+}
+
+.blog-name h1:nth-child(2) {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    color: #ffcc00;
+    transform: translateY(0);
+}
+
+.blog-name:hover h1:nth-child(1) {
+    transform: translateY(-100%);
+}
+
+.blog-name:hover h1:nth-child(2) {
+    transform: translateY(-100%);
+}
+
+.profile {
+    height: 40px;
+    display: flex;
+    align-items: flex-end;
+}
+
+.profile h3 {
+    margin: 0;
+    font-size: 16px;
+    color: #888888;
+    line-height: 1;
+    padding-left: 1rem;
+}
+
+/* 导航栏样式 */
+.nav {
+    margin-top: 3rem;
+    display: flex;
+    align-items: center;
+    height: 28px;
+}
+
+.nav a {
+    height: 28px;
+    line-height: 28px;
+    color: #6a86d8;
+    font-weight: bold;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.nav a:hover {
+    color: var(--btn-plain-bg-active);
+}
+
+.nav span {
+    margin: 0 1rem;
+    font-weight: 700;
+    font-size: 24px;
+    color: #cccccc;
+    line-height: 28px;
+}
+
+/* 页脚样式 */
+.footer {
+    margin-top: 50px;
+    font-size: 14px;
+    color: #888888;
+}
+
+#running-days {
+    color: #888888;
+    font-size: 14px;
+}
+
+/* 主页样式（博文页面）
+-------------------------------------------------- */
 .card-base {
     padding: 2rem 2rem;
     padding-left: 0;
     margin-left: 0;
 }
 
-/* 年份部分（主页） */
 .year-section {
     position: relative;
     padding: 0;
@@ -45,7 +139,6 @@ body {
     height: 2.5rem;
 }
 
-/* 年份和日期的容器（主页） */
 .year-container {
     width: 3rem;
     display: flex;
@@ -60,7 +153,6 @@ body {
     transition: all 0.3s ease;
 }
 
-/* 时间线圆点和线（主页） */
 .year-circle {
     position: relative;
     display: flex;
@@ -94,7 +186,6 @@ body {
     margin-right: auto;
 }
 
-/* 文章数量（主页） */
 .post-count-container {
     display: flex;
     align-items: center;
@@ -107,7 +198,6 @@ body {
     transition: all 0.3s ease;
 }
 
-/* 文章条目（主页） */
 .article {
     display: flex;
     align-items: center;
@@ -117,7 +207,6 @@ body {
     cursor: pointer;
 }
 
-/* 日期（主页） */
 .date {
     font-size: 14px;
     color: #b1b0b0;
@@ -125,7 +214,6 @@ body {
     text-align: right;
 }
 
-/* 时间线点和线（主页） */
 .dash-line {
     position: relative;
     width: 0.5rem;
@@ -170,7 +258,6 @@ body {
     outline-color: var(--btn-plain-bg-active);
 }
 
-/* 标题和标签（主页） */
 .title-and-tags {
     display: flex;
     align-items: center;
@@ -207,104 +294,8 @@ body {
     flex-shrink: 0;
 }
 
-/* 导航栏 */
-.nav {
-    margin-top: 3rem;
-    display: flex;
-    align-items: center;
-    height: 28px;
-}
-
-/* 导航链接 */
-.nav a {
-    height: 28px;
-    line-height: 28px;
-    color: #6a86d8;
-    font-weight: bold;
-    text-decoration: none;
-    transition: color 0.3s ease;
-}
-
-.nav a:hover {
-    color: var(--btn-plain-bg-active);
-}
-
-/* 分隔符 */
-.nav span {
-    margin: 0 1rem;
-    font-weight: 700;
-    font-size: 24px;
-    color: #cccccc;
-    line-height: 28px;
-}
-
-/* 原始样式（保持不变） */
-.head {
-    display: flex;
-    justify-content: flex-start;
-    align-items: flex-end;
-}
-
-.blog-name {
-    position: relative;
-    overflow: hidden;
-    height: 30px;
-    font-size: 15px;
-}
-
-.blog-name h1 {
-    margin: 0;
-    height: 30px;
-    line-height: 30px;
-    transition: transform 0.5s ease-in-out;
-}
-
-/* Wesson 初始状态：隐藏在下方 */
-.blog-name h1:nth-child(2) {
-    position: absolute;
-    top: 100%;
-    left: 0;
-    color: #ffcc00;
-    transform: translateY(0);
-}
-
-/* 鼠标悬浮时效果 */
-.blog-name:hover h1:nth-child(1) {
-    transform: translateY(-100%);
-}
-
-.blog-name:hover h1:nth-child(2) {
-    transform: translateY(-100%);
-}
-
-.profile {
-    height: 40px;
-    display: flex;
-    align-items: flex-end;
-}
-
-.profile h3 {
-    margin: 0;
-    font-size: 16px;
-    color: #888888;
-    line-height: 1;
-    padding-left: 1rem;
-}
-
-/* 页脚 */
-.footer {
-    margin-top: 50px;
-    font-size: 14px;
-    color: #888888;
-}
-
-/* 运行天数样式 */
-#running-days {
-    color: #888888;
-    font-size: 14px;
-}
-
-/* 杂念页面样式 */
+/* 杂念页面样式
+-------------------------------------------------- */
 .fragments {
     padding: 1rem 0;
 }
