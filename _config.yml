@@ -22,7 +22,7 @@ github_username:  jekyll
 # Build settings
 theme: minima
 plugins:
-  - jekyll-feed
-  - other-plugin-1
-  - other-plugin-2
+ - jekyll-feed
+ - other-plugin-1
+ - other-plugin-2
 

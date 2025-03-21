@@ -1,20 +1,29 @@
 /* 全局样式
 -------------------------------------------------- */
-body {
-    margin: 0;
-    background-color: #1e1e2e;
-    color: #cccccc;
-    font-family: Arial, sans-serif;
-    padding: 40px;
+:root {
+    /* 主色调 */
+    --color-primary: #90aead; /* 灰绿色，作为暗色调中的主要强调色，用于导航栏、年份、标签等 */
+    --color-primary-hover: #e64833; /* 红色，保持悬停效果的醒目感 */
+    --color-primary-active: #874f41; /* 深棕色，用于激活状态，稍作调整以适应暗色调 */
+
+    /* 背景色 */
+    --color-background: #1a2526; /* 深灰绿色，替换浅米色，作为暗色调页面背景 */
+
+    /* 文字颜色 */
+    --color-text-light: #d9e2e3; /* 浅灰色，用于普通文字，提升暗背景下的可读性 */
+    --color-text-special: #e64833; /* 红色，保留用于博客名称等特殊文字 */
+    --color-text-special-secondary: #874f41; /* 深棕色，用于博客名称第二行，保持一致 */
+
+    /* 辅助颜色 */
+    --color-dash-line: #90aead; /* 灰绿色，虚线点颜色，与主色调一致 */
+    --color-outline: #d9e2e3; /* 浅灰色，用于轮廓，与文字颜色协调 */
 }
 
-/* 自定义变量 */
-:root {
-    --primary: #d8d8d8;
-    --card-bg: #faf2ad;
-    --btn-plain-bg-hover: #97b1ff;
-    --btn-plain-bg-active: #ffcc00;
-    --hue: 240deg;
+body {
+    margin: 0;
+    background-color: var(--color-background);
+    font-family: Arial, sans-serif;
+    padding: 40px;
 }
 
 /* 通用样式
@@ -38,6 +47,7 @@ body {
     overflow: hidden;
     height: 30px;
     font-size: 15px;
+    color: var(--color-text-special);
 }
 
 .blog-name h1 {
@@ -51,7 +61,7 @@ body {
     position: absolute;
     top: 100%;
     left: 0;
-    color: #ffcc00;
+    color: var(--color-text-special-secondary);
     transform: translateY(0);
 }
 
@@ -63,16 +73,18 @@ body {
     transform: translateY(-100%);
 }
 
-.profile {
-    height: 40px;
-    display: flex;
-    align-items: flex-end;
+.profile h3,
+.footer,
+#running-days,
+.year-circle::before,
+.dash-line::before,
+.post-count {
+    color: var(--color-text-light);
 }
 
 .profile h3 {
     margin: 0;
     font-size: 16px;
-    color: #888888;
     line-height: 1;
     padding-left: 1rem;
 }
@@ -88,21 +100,21 @@ body {
 .nav a {
     height: 28px;
     line-height: 28px;
-    color: var(--primary);
+    color: var(--color-primary);
     font-weight: bold;
     text-decoration: none;
     transition: color 0.3s ease;
 }
 
 .nav a:hover {
-    color: var(--btn-plain-bg-active);
+    color: var(--color-primary-hover);
 }
 
 .nav span {
     margin: 0 1rem;
     font-weight: 700;
     font-size: 24px;
-    color: #cccccc;
+    color: var(--color-text-light);
     line-height: 28px;
 }
 
@@ -110,11 +122,9 @@ body {
 .footer {
     margin-top: 50px;
     font-size: 14px;
-    color: #888888;
 }
 
 #running-days {
-    color: #888888;
     font-size: 14px;
 }
 
@@ -123,7 +133,7 @@ body {
 .card-base {
     padding: 2rem 2rem;
     padding-left: 0;
-    margin-left: 0;
+    margin-left: 0; 
 }
 
 .year-section {
@@ -149,7 +159,7 @@ body {
 .year {
     font-size: 20px;
     font-weight: bold;
-    color: var(--primary);
+    color: var(--color-primary);
     transition: all 0.3s ease;
 }
 
@@ -169,14 +179,14 @@ body {
     bottom: 0;
     left: 50%;
     width: 2px;
-    background: #888888;
+    background: var(--color-text-light);
     transform: translateX(-50%);
     z-index: 1;
 }
 
 .year-circle-dot {
-    background: #888888;
-    outline: 3px solid var(--primary);
+    background: var(--color-text-light);
+    outline: 3px solid var(--color-primary);
     outline-offset: -2px;
     height: 0.3rem;
     width: 0.3rem;
@@ -193,7 +203,6 @@ body {
 
 .post-count {
     font-size: 14px;
-    color: #bebdbd;
     line-height: 1;
     transition: all 0.3s ease;
 }
@@ -207,10 +216,19 @@ body {
     cursor: pointer;
 }
 
-.date {
+.content h2,
+.content p {
+    color: var(--color-primary);
+}
+
+.date,
+.fragment-date {
     font-size: 14px;
-    color: #b1b0b0;
+    color: var(--color-text-light);
     width: 3rem;
+}
+
+.date {
     text-align: right;
 }
 
@@ -232,14 +250,14 @@ body {
     bottom: 0;
     left: 50%;
     width: 2px;
-    background: #888888;
+    background: var(--color-text-light);
     transform: translateX(-50%);
     z-index: 1;
 }
 
 .dash-line-dot {
-    background: oklch(0.5 0.05 var(--hue));
-    outline: 2px solid var(--card-bg);
+    background: var(--color-dash-line);
+    outline: 2px solid var(--color-text-special);
     height: 1px;
     width: 1px;
     border-radius: 9999px;
@@ -249,13 +267,13 @@ body {
 }
 
 .article:hover .dash-line-dot {
-    background: var(--primary);
+    background: var(--color-text-special);
     height: 1.25rem;
-    outline-color: var(--card-bg);
+    outline-color: var(--color-text-special);
 }
 
 .article:active .dash-line-dot {
-    outline-color: var(--btn-plain-bg-active);
+    outline-color: var(--color-primary-active);
 }
 
 .title-and-tags {
@@ -265,10 +283,15 @@ body {
     min-width: 0;
 }
 
-.article-title {
-    color: #cccccc;
-    text-decoration: none;
+.article-title,
+.fragment-content,
+.about-content p {
+    color: var(--color-text-light);
     font-size: 14px;
+}
+
+.article-title {
+    text-decoration: none;
     font-weight: bold;
     flex: 1;
     white-space: nowrap;
@@ -280,13 +303,13 @@ body {
 }
 
 .article-title:hover {
-    color: var(--primary);
+    color: var(--color-primary-hover);
     transform: translateX(0.25rem);
 }
 
 .tags {
     font-size: 14px;
-    color: var(--primary);
+    color: var(--color-primary);
     white-space: nowrap;
     transition: all 0.3s ease;
     text-align: left;
@@ -297,6 +320,7 @@ body {
 /* 杂念页面样式
 -------------------------------------------------- */
 .fragments {
+    line-height: 0;
     padding: 1rem 0;
 }
 
@@ -307,7 +331,7 @@ body {
 .fragment-year {
     font-size: 20px;
     font-weight: bold;
-    color: var(--primary);
+    color: var(--color-primary);
     margin-bottom: 1rem;
     text-align: left;
 }
@@ -315,186 +339,22 @@ body {
 .fragment-item {
     display: flex;
     align-items: center;
-    margin-bottom: 0.5rem;
     text-align: left;
 }
 
-.fragment-date {
-    font-size: 14px;
-    color: #b1b0b0;
-    width: 3rem;
-    margin-right: 1rem;
-}
-
 .fragment-content {
-    font-size: 14px;
-    color: #cccccc;
     flex: 1;
 }
 
-/* 移动端样式（屏幕宽度 <= 768px）
--------------------------------------------------- */
-@media (max-width: 768px) {
-    /* 全局调整 */
-    body {
-        padding: 20px;
-    }
-
-    .main {
-        width: 90%;
-        overflow: visible;
-        white-space: normal;
-    }
-
-    /* 头部调整 */
-    .head {
-        align-items: flex-start;
-    }
-
-    .profile h3 {
-        font-size: 14px;
-        padding-left: 0;
-        margin-top: 0.5rem;
-    }
-
-    /* 导航栏调整 */
-    .nav {
-        margin-top: 2rem;
-        height: auto;
-        flex-wrap: nowrap; /* 确保不换行 */
-    }
-
-    .nav a {
-        height: auto;
-        line-height: 2rem;
-        font-size: 14px; /* 减小字体，避免挤压 */
-        padding: 0 0.5rem; /* 增加内边距，方便点击 */
-    }
-
-    .nav span {
-        margin: 0 0.5rem; /* 减小分隔符间距 */
-        font-size: 20px; /* 减小分隔符字体 */
-    }
-
-    /* 页脚调整 */
-    .footer {
-        font-size: 16px;
-        text-align: center;
-    }
-
-    #running-days {
-        font-size: 16px;
-    }
-
-    /* 主页调整 */
-    .card-base {
-        padding: 1rem 0;
-    }
-
-    .year-header {
-        height: auto;
-    }
-
-    .year-container {
-        width: 4rem;
-    }
-
-    .year {
-        font-size: 18px;
-    }
-
-    .year-circle {
-        margin-left: 1rem;
-        margin-right: 1rem;
-    }
-
-    .post-count {
-        font-size: 12px;
-    }
-
-    .article {
-        height: auto;
-        padding: 0.5rem 0;
-    }
-
-    .date {
-        font-size: 16px;
-        width: 4rem;
-    }
-
-    .dash-line {
-        margin-left: 1rem;
-        margin-right: 1rem;
-    }
-
-    .title-and-tags {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-
-    .article-title {
-        font-size: 16px;
-        white-space: normal;
-        padding-right: 0;
-    }
-
-    .tags {
-        font-size: 14px;
-        margin-left: 0;
-        margin-top: 0.25rem;
-        white-space: normal;
-    }
-
-    /* 杂念页面调整 */
-    .fragments {
-        padding: 0.5rem 0;
-    }
-
-    .fragment-year {
-        font-size: 18px;
-    }
-
-    .fragment-item {
-        margin-bottom: 0.75rem;
-    }
-
-    .fragment-date {
-        font-size: 16px;
-        width: 4rem;
-    }
-
-    .fragment-content {
-        font-size: 16px;
-    }
+.fragment-content p {
+    color: var(--color-text-light);
 }
 
-/* 超小屏幕调整（屏幕宽度 <= 480px）
--------------------------------------------------- */
-@media (max-width: 480px) {
-    body {
-        padding: 10px;
-    }
+.about-link a {
+    text-decoration: none;
+    color: var(--color-primary);
+}
 
-    .main {
-        width: 95%;
-    }
-
-    .year {
-        font-size: 16px;
-    }
-
-    .fragment-year {
-        font-size: 16px;
-    }
-
-    /* 导航栏进一步调整 */
-    .nav a {
-        font-size: 12px; /* 进一步减小字体 */
-        padding: 0 0.3rem;
-    }
-
-    .nav span {
-        margin: 0 0.3rem;
-        font-size: 16px;
-    }
+.about-link a:hover {
+    color: var(--color-primary-hover);
 }
