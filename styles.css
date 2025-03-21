@@ -203,7 +203,7 @@ body {
     align-items: center;
     width: 100%;
     height: 2.5rem;
-    position:  relative;
+    position: relative;
     cursor: pointer;
 }
 
@@ -337,48 +337,51 @@ body {
 @media (max-width: 768px) {
     /* 全局调整 */
     body {
-        padding: 20px; /* 减小外边距，节省空间 */
+        padding: 20px;
     }
 
     .main {
-        width: 90%; /* 使用百分比宽度，适配屏幕 */
-        overflow: visible; /* 允许内容溢出 */
-        white-space: normal; /* 允许换行 */
+        width: 90%;
+        overflow: visible;
+        white-space: normal;
     }
 
     /* 头部调整 */
     .head {
-        flex-direction: column; /* 垂直排列 */
+        flex-direction: column;
         align-items: flex-start;
     }
 
     .profile h3 {
-        font-size: 14px; /* 减小字体 */
+        font-size: 14px;
         padding-left: 0;
         margin-top: 0.5rem;
     }
 
     /* 导航栏调整 */
     .nav {
-        flex-direction: column; /* 垂直排列 */
-        height: auto;
         margin-top: 2rem;
+        height: auto;
+        flex-wrap: nowrap; /* 确保不换行 */
+        justify-content: space-between; /* 均匀分布 */
     }
 
     .nav a {
         height: auto;
-        line-height: 2rem; /* 增加行高，方便点击 */
-        font-size: 16px; /* 增大字体 */
+        line-height: 2rem;
+        font-size: 14px; /* 减小字体，避免挤压 */
+        padding: 0 0.5rem; /* 增加内边距，方便点击 */
     }
 
     .nav span {
-        display: none; /* 隐藏分隔符 */
+        margin: 0 0.5rem; /* 减小分隔符间距 */
+        font-size: 20px; /* 减小分隔符字体 */
     }
 
     /* 页脚调整 */
     .footer {
-        font-size: 16px; /* 增大字体 */
-        text-align: center; /* 居中对齐 */
+        font-size: 16px;
+        text-align: center;
     }
 
     #running-days {
@@ -387,53 +390,53 @@ body {
 
     /* 主页调整 */
     .card-base {
-        padding: 1rem 0; /* 减小内边距 */
+        padding: 1rem 0;
     }
 
     .year-header {
-        height: auto; /* 高度自适应 */
+        height: auto;
     }
 
     .year-container {
-        width: 4rem; /* 增加宽度 */
+        width: 4rem;
     }
 
     .year {
-        font-size: 18px; /* 减小字体 */
+        font-size: 18px;
     }
 
     .year-circle {
-        margin-left: 1rem; /* 减小间距 */
+        margin-left: 1rem;
         margin-right: 1rem;
     }
 
     .post-count {
-        font-size: 12px; /* 减小字体 */
+        font-size: 12px;
     }
 
     .article {
-        height: auto; /* 高度自适应 */
-        padding: 0.5rem 0; /* 增加内边距 */
+        height: auto;
+        padding: 0.5rem 0;
     }
 
     .date {
-        font-size: 16px; /* 增大字体 */
-        width: 4rem; /* 增加宽度 */
+        font-size: 16px;
+        width: 4rem;
     }
 
     .dash-line {
-        margin-left: 1rem; /* 减小间距 */
+        margin-left: 1rem;
         margin-right: 1rem;
     }
 
     .title-and-tags {
-        flex-direction: column; /* 垂直排列 */
+        flex-direction: column;
         align-items: flex-start;
     }
 
     .article-title {
-        font-size: 16px; /* 增大字体 */
-        white-space: normal; /* 允许换行 */
+        font-size: 16px;
+        white-space: normal;
         padding-right: 0;
     }
 
@@ -441,7 +444,7 @@ body {
         font-size: 14px;
         margin-left: 0;
         margin-top: 0.25rem;
-        white-space: normal; /* 允许换行 */
+        white-space: normal;
     }
 
     /* 杂念页面调整 */
@@ -450,20 +453,20 @@ body {
     }
 
     .fragment-year {
-        font-size: 18px; /* 减小字体 */
+        font-size: 18px;
     }
 
     .fragment-item {
-        margin-bottom: 0.75rem; /* 增加间距 */
+        margin-bottom: 0.75rem;
     }
 
     .fragment-date {
-        font-size: 16px; /* 增大字体 */
+        font-size: 16px;
         width: 4rem;
     }
 
     .fragment-content {
-        font-size: 16px; /* 增大字体 */
+        font-size: 16px;
     }
 }
 
@@ -471,11 +474,11 @@ body {
 -------------------------------------------------- */
 @media (max-width: 480px) {
     body {
-        padding: 10px; /* 进一步减小外边距 */
+        padding: 10px;
     }
 
     .main {
-        width: 95%; /* 进一步增加宽度 */
+        width: 95%;
     }
 
     .year {
@@ -483,6 +486,17 @@ body {
     }
 
     .fragment-year {
+        font-size: 16px;
+    }
+
+    /* 导航栏进一步调整 */
+    .nav a {
+        font-size: 12px; /* 进一步减小字体 */
+        padding: 0 0.3rem;
+    }
+
+    .nav span {
+        margin: 0 0.3rem;
         font-size: 16px;
     }
 }
