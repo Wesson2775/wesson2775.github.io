@@ -4,7 +4,7 @@
     /* 主色调 */
     --color-primary: #818888; /* 灰绿色，作为暗色调中的主要强调色，用于导航栏、年份、标签等 */
     --color-primary-hover: #e64833; /* 红色，保持悬停效果的醒目感 */
-    --color-primary-active: #874f41; /* 深棕色，用于激活状态，稍作调整以适应暗色调 */
+    --color-primary-active: #3e5397; /* 深棕色，用于激活状态，稍作调整以适应暗色调 */
 
     /* 背景色 */
     --color-background: #1a2526; /* 深灰绿色，替换浅米色，作为暗色调页面背景 */
@@ -122,6 +122,10 @@ body {
 .footer {
     margin-top: 50px;
     font-size: 14px;
+}
+
+.footer a {
+    text-decoration: none;
 }
 
 #running-days {
@@ -357,7 +361,4 @@ body {
 
 .about-link a:hover {
     color: var(--color-primary-hover);
-}
-.home a{
-   text-decoration: none;
 }
