@@ -31,7 +31,7 @@ title: 杂念
       {% assign sorted_fragments = year_group.items | sort: "date" | reverse %}
       {% for fragment in sorted_fragments %}
         <div class="fragment-item">
-          <span class="fragment-date">{{ fragment.date | date: "%m-%d" }}</span>
+          <span class="fragment-date">{{ fragment.date | date: "%m-%d" }}<br></span>
           <span class="fragment-content">{{ fragment.content }}</span>
         </div>
       {% endfor %}
