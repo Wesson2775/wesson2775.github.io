@@ -363,3 +363,11 @@ body {
 .about-link a:hover {
     color: var(--color-primary-hover);
 }
+
+.backhome a{
+    color: aliceblue;
+    text-decoration: none;
+}
+.backhome a:hover{
+    text-decoration: underline;
+}
