@@ -2,7 +2,7 @@
 -------------------------------------------------- */
 :root {
     /* 主色调 */
-    --color-primary: #818888; /* 灰绿色，作为暗色调中的主要强调色，用于导航栏、年份、标签等 */
+    --color-primary: #becaca; /* 灰绿色，作为暗色调中的主要强调色，用于导航栏、年份、标签等 */
     --color-primary-hover: #e64833; /* 红色，保持悬停效果的醒目感 */
     --color-primary-active: #27548A; /* 深棕色，用于激活状态，稍作调整以适应暗色调 */
 
@@ -10,13 +10,13 @@
     --color-background: #183B4E; /* 深灰绿色，替换浅米色，作为暗色调页面背景 */
 
     /* 文字颜色 */
-    --color-text-light: #F5EEDC; /* 浅灰色，用于普通文字，提升暗背景下的可读性 */
+    --color-text-light: #aaa69d; /* 浅灰色，用于普通文字，提升暗背景下的可读性 */
     --color-text-special: #e64833; /* 红色，保留用于博客名称等特殊文字 */
     --color-text-special-secondary: #27548A; /* 深棕色，用于博客名称第二行，保持一致 */
 
     /* 辅助颜色 */
     --color-dash-line: #90aead; /* 灰绿色，虚线点颜色，与主色调一致 */
-    --color-outline: #F5EEDC; /* 浅灰色，用于轮廓，与文字颜色协调 */
+    --color-outline: #aaa69d; /* 浅灰色，用于轮廓，与文字颜色协调 */
 }
 
 body {
