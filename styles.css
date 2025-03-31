@@ -3,7 +3,7 @@
 :root {
     /* 主色调 */
     --color-primary: #becaca; /* 灰绿色，作为暗色调中的主要强调色，用于导航栏、年份、标签等 */
-    --color-primary-hover: #d87062; /* 红色，保持悬停效果的醒目感 */
+    --color-primary-hover: #dee043; /* 红色，保持悬停效果的醒目感 */
     --color-primary-active: #152c49; /* 深棕色，用于激活状态，稍作调整以适应暗色调 */
 
     /* 背景色 */
