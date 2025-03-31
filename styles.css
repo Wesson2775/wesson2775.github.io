@@ -10,13 +10,13 @@
     --color-background: #0f1416; /* 深灰绿色，替换浅米色，作为暗色调页面背景 */
 
     /* 文字颜色 */
-    --color-text-light: #97958f; /* 浅灰色，用于普通文字，提升暗背景下的可读性 */
+    --color-text-light: #d3d3d3; /* 浅灰色，用于普通文字，提升暗背景下的可读性 */
     --color-text-special: #e64833; /* 红色，保留用于博客名称等特殊文字 */
-    --color-text-special-secondary: #4581ca; /* 深棕色，用于博客名称第二行，保持一致 */
+    --color-text-special-secondary: #dee043; /* 深棕色，用于博客名称第二行，保持一致 */
 
     /* 辅助颜色 */
     --color-dash-line: #90aead; /* 灰绿色，虚线点颜色，与主色调一致 */
-    --color-outline: #97958f; /* 浅灰色，用于轮廓，与文字颜色协调 */
+    --color-outline: #d3d3d3; /* 浅灰色，用于轮廓，与文字颜色协调 */
 }
 
 body {
