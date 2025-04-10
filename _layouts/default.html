@@ -11,180 +11,123 @@
         .main {
             position: relative;
             min-height: 100vh;
-            padding-bottom: 120px; /* 为播放器和页脚留出空间 */
+            padding-bottom: 100px; /* 为页脚和播放器留出空间 */
         }
         
         /* 页脚样式调整 */
         .footer {
             position: absolute;
-            bottom: 60px; /* 播放器高度 */
+            bottom: 35px; /* 播放器高度 */
             width: 100%;
-            padding: 20px 0;
+            padding: 15px 0;
             text-align: center;
             background: #f8f9fa;
+            font-size: 12px;
         }
         
-        /* 音乐播放器样式 */
-        #music-player {
+        /* 音乐播放器容器 */
+        #mini-player {
             position: absolute;
             bottom: 0;
-            left: 0;
-            right: 0;
-            height: 60px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 200px;
+            height: 35px;
             background: #fff;
-            border-top: 1px solid #eaeaea;
-            z-index: 100;
-            box-shadow: 0 -2px 10px rgba(0,0,0,0.05);
-        }
-        
-        /* 胶囊样式播放器容器 */
-        .player-container {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 0 20px;
-            height: 100%;
+            border-radius: 17.5px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
             display: flex;
             align-items: center;
+            padding: 0 10px;
+            z-index: 100;
+            border: 1px solid #eaeaea;
         }
         
-        /* 歌曲封面 */
-        .song-cover {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            overflow: hidden;
-            margin-right: 15px;
-            flex-shrink: 0;
-        }
-        
-        .song-cover img {
+        /* 播放器控制按钮 */
+        .mini-controls {
+            display: flex;
+            align-items: center;
             width: 100%;
             height: 100%;
-            object-fit: cover;
         }
         
-        /* 控制按钮区域 */
-        .player-controls {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            flex-grow: 1;
-        }
-        
-        .control-btn {
-            width: 32px;
-            height: 32px;
+        .mini-btn {
+            width: 24px;
+            height: 24px;
             border-radius: 50%;
             border: none;
-            background: #f0f0f0;
+            background: none;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
             color: #555;
-            transition: all 0.2s;
+            font-size: 12px;
+            padding: 0;
         }
         
-        .control-btn:hover {
-            background: #e0e0e0;
+        .mini-btn:hover {
+            background: #f0f0f0;
         }
         
-        .play-btn {
+        .mini-play-btn {
             background: #4a6fa5;
             color: white;
+            margin: 0 5px;
         }
         
-        .play-btn:hover {
+        .mini-play-btn:hover {
             background: #3a5a8f;
         }
         
-        /* 音量控制 */
-        .volume-control {
-            display: flex;
-            align-items: center;
-            margin-left: auto;
-        }
-        
-        .volume-btn {
-            background: none;
-            border: none;
-            cursor: pointer;
-            color: #666;
-            font-size: 16px;
-            padding: 5px;
-        }
-        
         /* 歌曲列表 */
-        .song-list-container {
+        .mini-list {
             position: absolute;
-            bottom: 60px;
-            left: 0;
-            right: 0;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 180px;
             max-height: 0;
             overflow: hidden;
-            transition: max-height 0.3s ease;
             background: white;
-            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: max-height 0.3s ease;
+            font-size: 12px;
         }
         
-        .song-list-container.show {
-            max-height: 300px;
+        .mini-list.show {
+            max-height: 200px;
             overflow-y: auto;
         }
         
-        .song-list {
-            padding: 10px 0;
-        }
-        
-        .song-item {
-            padding: 8px 20px;
-            display: flex;
-            align-items: center;
+        .mini-list-item {
+            padding: 6px 10px;
             cursor: pointer;
+            border-bottom: 1px solid #f0f0f0;
         }
         
-        .song-item:hover {
+        .mini-list-item:hover {
             background: #f5f5f5;
         }
         
-        .song-item-cover {
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            margin-right: 10px;
-            object-fit: cover;
-        }
-        
-        .song-item-info {
-            flex-grow: 1;
-        }
-        
-        .song-item-title {
-            font-size: 14px;
-            margin: 0;
-        }
-        
-        .song-item-artist {
-            font-size: 12px;
-            color: #888;
-            margin: 0;
-        }
-        
         /* 列表切换按钮 */
-        .toggle-list-btn {
+        .mini-toggle-btn {
             position: absolute;
-            bottom: 60px;
+            bottom: 35px;
             left: 50%;
             transform: translateX(-50%);
-            padding: 5px 15px;
+            width: 80px;
+            padding: 2px 0;
             background: white;
             border: none;
-            border-radius: 15px 15px 0 0;
+            border-radius: 10px 10px 0 0;
             cursor: pointer;
-            font-size: 12px;
+            font-size: 10px;
             color: #666;
             box-shadow: 0 -2px 5px rgba(0,0,0,0.05);
             z-index: 101;
+            text-align: center;
         }
     </style>
 </head>
@@ -217,35 +160,24 @@
         </div>
     </div>
 
-    <!-- 音乐播放器 -->
-    <div id="music-player">
-        <div class="player-container">
-            <!-- 歌曲封面 -->
-            <div class="song-cover">
-                <img id="current-song-cover" src="https://via.placeholder.com/40" alt="封面">
-            </div>
-            
-            <!-- 控制按钮 -->
-            <div class="player-controls">
-                <button class="control-btn" id="prev-btn">⏮</button>
-                <button class="control-btn play-btn" id="play-btn">▶</button>
-                <button class="control-btn" id="next-btn">⏭</button>
-                
-                <!-- 音量控制 -->
-                <div class="volume-control">
-                    <button class="volume-btn" id="vol-down-btn">🔉</button>
-                    <button class="volume-btn" id="vol-up-btn">🔊</button>
-                </div>
-            </div>
+    <!-- 迷你音乐播放器 -->
+    <div id="mini-player">
+        <div class="mini-controls">
+            <button class="mini-btn" id="mini-prev-btn">⏮</button>
+            <button class="mini-btn mini-play-btn" id="mini-play-btn">▶</button>
+            <button class="mini-btn" id="mini-next-btn">⏭</button>
+            <div style="flex-grow: 1;"></div>
+            <button class="mini-btn" id="mini-vol-down">🔉</button>
+            <button class="mini-btn" id="mini-vol-up">🔊</button>
         </div>
     </div>
     
     <!-- 歌曲列表切换按钮 -->
-    <button class="toggle-list-btn" id="toggle-list-btn">显示歌单 ▼</button>
+    <button class="mini-toggle-btn" id="mini-toggle-btn">歌单 ▼</button>
     
-    <!-- 歌曲列表 -->
-    <div class="song-list-container" id="song-list-container">
-        <div class="song-list" id="song-list"></div>
+    <!-- 迷你歌曲列表 -->
+    <div class="mini-list" id="mini-list">
+        <!-- 动态生成 -->
     </div>
 
     <script src="/scripts.js"></script>
@@ -275,63 +207,50 @@
 
         // 初始化播放器
         const ap = new APlayer({
-            container: document.getElementById('music-player'),
-            audio: musicList,
-            fixed: false, // 我们自定义固定位置
-            mini: false,
+            audio: musicList, // 不绑定到DOM，完全自定义UI
             autoplay: false,
             loop: 'all',
             order: 'list',
             volume: 0.7,
             mutex: true,
-            lrcType: 0,
-            listFolded: true
+            lrcType: 0
         });
 
-        // 自定义UI控制
-        function setupCustomUI() {
-            // 隐藏默认APlayer UI
-            document.querySelector('.aplayer-body').style.display = 'none';
-            
-            // 初始化当前歌曲封面
-            updateCurrentCover();
-            
+        // 自定义迷你播放器控制
+        function setupMiniPlayer() {
             // 绑定按钮事件
-            document.getElementById('prev-btn').addEventListener('click', () => ap.skipBack());
-            document.getElementById('next-btn').addEventListener('click', () => ap.skipForward());
-            document.getElementById('play-btn').addEventListener('click', () => {
+            document.getElementById('mini-prev-btn').addEventListener('click', () => ap.skipBack());
+            document.getElementById('mini-next-btn').addEventListener('click', () => ap.skipForward());
+            document.getElementById('mini-play-btn').addEventListener('click', () => {
                 ap.toggle();
                 updatePlayButton();
             });
             
             // 音量控制
-            document.getElementById('vol-down-btn').addEventListener('click', () => {
+            document.getElementById('mini-vol-down').addEventListener('click', () => {
                 ap.volume(Math.max(0, ap.audio.volume - 0.1));
             });
             
-            document.getElementById('vol-up-btn').addEventListener('click', () => {
+            document.getElementById('mini-vol-up').addEventListener('click', () => {
                 ap.volume(Math.min(1, ap.audio.volume + 0.1));
             });
             
             // 歌单切换
-            const toggleBtn = document.getElementById('toggle-list-btn');
-            const songListContainer = document.getElementById('song-list-container');
+            const toggleBtn = document.getElementById('mini-toggle-btn');
+            const miniList = document.getElementById('mini-list');
             
             toggleBtn.addEventListener('click', () => {
-                songListContainer.classList.toggle('show');
-                toggleBtn.textContent = songListContainer.classList.contains('show') 
-                    ? '隐藏歌单 ▲' 
-                    : '显示歌单 ▼';
+                miniList.classList.toggle('show');
+                toggleBtn.textContent = miniList.classList.contains('show') 
+                    ? '收起 ▲' 
+                    : '歌单 ▼';
             });
             
             // 填充歌曲列表
-            renderSongList();
+            renderMiniList();
             
             // 监听歌曲切换
-            ap.on('listswitch', (index) => {
-                updateCurrentCover();
-                updatePlayButton();
-            });
+            ap.on('listswitch', updatePlayButton);
             
             // 播放状态变化
             ap.on('play', updatePlayButton);
@@ -344,48 +263,48 @@
             });
         }
         
-        // 更新当前歌曲封面
-        function updateCurrentCover() {
-            const currentSong = ap.list.audios[ap.list.index];
-            document.getElementById('current-song-cover').src = 
-                currentSong.cover || 'https://via.placeholder.com/40';
-        }
-        
         // 更新播放按钮状态
         function updatePlayButton() {
-            const btn = document.getElementById('play-btn');
+            const btn = document.getElementById('mini-play-btn');
             btn.textContent = ap.audio.paused ? '▶' : '⏸';
         }
         
-        // 渲染歌曲列表
-        function renderSongList() {
-            const listContainer = document.getElementById('song-list');
+        // 渲染迷你歌曲列表
+        function renderMiniList() {
+            const listContainer = document.getElementById('mini-list');
             listContainer.innerHTML = '';
             
             ap.list.audios.forEach((song, index) => {
                 const item = document.createElement('div');
-                item.className = 'song-item';
-                item.innerHTML = `
-                    <img class="song-item-cover" src="${song.cover || 'https://via.placeholder.com/30'}" alt="封面">
-                    <div class="song-item-info">
-                        <p class="song-item-title">${song.name}</p>
-                        <p class="song-item-artist">${song.artist}</p>
-                    </div>
-                `;
+                item.className = 'mini-list-item';
+                item.textContent = `${song.name} - ${song.artist}`;
                 
                 item.addEventListener('click', () => {
                     ap.list.switch(index);
                     ap.play();
-                    document.getElementById('song-list-container').classList.remove('show');
-                    document.getElementById('toggle-list-btn').textContent = '显示歌单 ▼';
+                    listContainer.classList.remove('show');
+                    document.getElementById('mini-toggle-btn').textContent = '歌单 ▼';
                 });
                 
                 listContainer.appendChild(item);
             });
         }
 
-        // 播放器准备好后设置UI
-        ap.on('loadeddata', setupCustomUI);
+        // 页面加载后初始化
+        window.addEventListener('DOMContentLoaded', () => {
+            // 初始化APlayer列表
+            ap.list.init(musicList);
+            
+            // 设置自定义UI
+            setupMiniPlayer();
+            
+            // 初始化运行天数显示
+            const startDate = new Date(2025, 0, 1); // 假设建站日期为2025年1月1日
+            const today = new Date();
+            const diffTime = Math.abs(today - startDate);
+            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+            document.getElementById('running-days').textContent = diffDays;
+        });
     </script>
 </body>
 </html>
