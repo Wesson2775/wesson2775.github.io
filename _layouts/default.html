@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/styles.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script>
     <title>{{ page.title }}</title>
 </head>
 <body>
@@ -31,9 +33,33 @@
             <a href="#">返回顶部 ↑</a>
         </div>
         <div class="footer">
-            © 2025 | @Wesson | <a href="/">主页</a> | 本站已运行：<span id="running-days"></span> 天
+            © 2025 | @Wesson | <a href="/">主页</a> | 本站已运行：<span id="running-days"></span> 天 | <div id="aplayer"></div> 
         </div>
+        
     </div>
     <script src="/scripts.js"></script>
+    <script>
+    // 硬编码音乐列表
+    const ap = new APlayer({
+        container: document.getElementById('aplayer'),
+        audio: [
+            {
+                name: '欢乐旋律',
+                artist: 'FreePD',
+                url: 'https://www.freepd.com/download.php?file=upbeat2.mp3',
+                cover: 'https://via.placeholder.com/150'
+            },
+            {
+                name: '轻松钢琴',
+                artist: 'Musopen',
+                url: 'https://www.musopen.org/music/free-to-use-as-credited/',
+                cover: 'https://via.placeholder.com/150'
+            }
+            // 可以添加更多...
+        ],
+        autoplay: false,
+        loop: 'all'
+    });
+</script>
 </body>
 </html>
