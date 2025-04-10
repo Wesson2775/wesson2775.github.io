@@ -5,8 +5,42 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/styles.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script>
     <title>{{ page.title }}</title>
+    <style>
+        /* 音乐播放器自定义样式 */
+        #footer-player {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            background: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+        #footer-player .aplayer {
+            margin: 0;
+            box-shadow: none;
+            border-radius: 0;
+        }
+        #footer-player .aplayer-info {
+            display: none;
+        }
+        #footer-player .aplayer-controller {
+            padding: 5px 10px;
+        }
+        #footer-player .aplayer-time {
+            display: none;
+        }
+        /* 确保内容不被播放器遮挡 */
+        .main {
+            padding-bottom: 60px;
+        }
+        /* 页脚调整 */
+        .footer {
+            margin-bottom: 60px;
+        }
+    </style>
 </head>
 <body>
     <div class="main">
@@ -33,33 +67,75 @@
             <a href="#">返回顶部 ↑</a>
         </div>
         <div class="footer">
-            © 2025 | @Wesson | <a href="/">主页</a> | 本站已运行：<span id="running-days"></span> 天 | <div id="aplayer"></div> 
-        </div>
-        
+            © 2025 | @Wesson | <a href="/">主页</a> | 本站已运行：<span id="running-days"></span> 天
+        </div>   
     </div>
+
+    <!-- 固定在底部的音乐播放器 -->
+    <div id="footer-player"></div>
+
     <script src="/scripts.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script>
     <script>
-    // 硬编码音乐列表
-    const ap = new APlayer({
-        container: document.getElementById('aplayer'),
-        audio: [
-            {
-                name: '欢乐旋律',
-                artist: 'FreePD',
-                url: 'https://www.freepd.com/download.php?file=upbeat2.mp3',
-                cover: 'https://via.placeholder.com/150'
-            },
-            {
-                name: '轻松钢琴',
-                artist: 'Musopen',
-                url: 'https://www.musopen.org/music/free-to-use-as-credited/',
-                cover: 'https://via.placeholder.com/150'
-            }
-            // 可以添加更多...
-        ],
-        autoplay: false,
-        loop: 'all'
-    });
-</script>
+        // 初始化播放器
+        const ap = new APlayer({
+            container: document.getElementById('footer-player'),
+            audio: [
+                {
+                    name: '宁静时光',
+                    artist: 'Pixabay',
+                    url: 'https://cdn.pixabay.com/audio/2022/03/23/audio_d16713dc14.mp3',
+                    cover: 'https://cdn.pixabay.com/audio/2022/03/15/15-39-31-355_200x200.jpg'
+                },
+                {
+                    name: '雨后清晨',
+                    artist: 'Pixabay',
+                    url: 'https://cdn.pixabay.com/audio/2022/08/23/audio_0d33d5ea0f.mp3',
+                    cover: 'https://cdn.pixabay.com/audio/2022/08/04/audio_0b5d1bc71e.jpg'
+                }
+                // 可以添加更多音乐...
+            ],
+            fixed: true,
+            mini: true,
+            autoplay: false,
+            loop: 'all',
+            order: 'list',
+            volume: 0.7,
+            mutex: true,
+            lrcType: 0,
+            listFolded: true
+        });
+
+        // 自定义播放器控制
+        function setupPlayerControls() {
+            const player = document.querySelector('#footer-player .aplayer');
+            
+            // 简化播放器显示
+            player.querySelector('.aplayer-pic').style.display = 'none';
+            player.querySelector('.aplayer-body').style.marginLeft = '0';
+            
+            // 添加折叠列表按钮
+            const toggleBtn = document.createElement('div');
+            toggleBtn.className = 'aplayer-list-btn';
+            toggleBtn.innerHTML = '歌单';
+            toggleBtn.style.cssText = `
+                position: absolute;
+                right: 10px;
+                top: 50%;
+                transform: translateY(-50%);
+                cursor: pointer;
+                font-size: 12px;
+                color: #666;
+            `;
+            player.querySelector('.aplayer-controller').appendChild(toggleBtn);
+            
+            toggleBtn.addEventListener('click', () => {
+                ap.list.toggle();
+            });
+        }
+
+        // 播放器准备好后设置控件
+        ap.on('loadeddata', setupPlayerControls);
+    </script>
 </body>
 </html>
