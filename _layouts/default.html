@@ -7,59 +7,76 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css">
     <title>{{ page.title }}</title>
     <style>
-        /* 胶囊样式音乐播放器 */
-        #music-player {
-            position: fixed;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 320px;
-            max-width: 90%;
-            z-index: 100;
+        /* 主内容区域调整 */
+        .main {
+            position: relative;
+            min-height: 100vh;
+            padding-bottom: 120px; /* 为播放器和页脚留出空间 */
         }
         
-        /* 胶囊主体 */
-        .player-capsule {
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 30px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-            padding: 10px;
+        /* 页脚样式调整 */
+        .footer {
+            position: absolute;
+            bottom: 60px; /* 播放器高度 */
+            width: 100%;
+            padding: 20px 0;
+            text-align: center;
+            background: #f8f9fa;
+        }
+        
+        /* 音乐播放器样式 */
+        #music-player {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 60px;
+            background: #fff;
+            border-top: 1px solid #eaeaea;
+            z-index: 100;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.05);
+        }
+        
+        /* 胶囊样式播放器容器 */
+        .player-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 20px;
+            height: 100%;
             display: flex;
             align-items: center;
-            border: 1px solid #eee;
         }
         
-        /* 歌曲头像 */
-        .song-avatar {
+        /* 歌曲封面 */
+        .song-cover {
             width: 40px;
             height: 40px;
             border-radius: 50%;
-            object-fit: cover;
-            margin-right: 10px;
-            flex-shrink: 0;
-            background: #f0f0f0;
             overflow: hidden;
+            margin-right: 15px;
+            flex-shrink: 0;
         }
         
-        .song-avatar img {
+        .song-cover img {
             width: 100%;
             height: 100%;
+            object-fit: cover;
         }
         
         /* 控制按钮区域 */
-        .controls {
+        .player-controls {
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 10px;
             flex-grow: 1;
         }
         
         .control-btn {
-            width: 30px;
-            height: 30px;
+            width: 32px;
+            height: 32px;
             border-radius: 50%;
-            background: #f5f5f5;
             border: none;
+            background: #f0f0f0;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -70,7 +87,6 @@
         
         .control-btn:hover {
             background: #e0e0e0;
-            color: #333;
         }
         
         .play-btn {
@@ -99,39 +115,44 @@
         }
         
         /* 歌曲列表 */
-        .song-list {
+        .song-list-container {
+            position: absolute;
+            bottom: 60px;
+            left: 0;
+            right: 0;
             max-height: 0;
             overflow: hidden;
             transition: max-height 0.3s ease;
             background: white;
-            border-radius: 0 0 15px 15px;
-            margin-top: -5px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
         }
         
-        .song-list.show {
+        .song-list-container.show {
             max-height: 300px;
             overflow-y: auto;
         }
         
+        .song-list {
+            padding: 10px 0;
+        }
+        
         .song-item {
-            padding: 10px 15px;
+            padding: 8px 20px;
             display: flex;
             align-items: center;
             cursor: pointer;
-            border-bottom: 1px solid #f0f0f0;
         }
         
         .song-item:hover {
-            background: #f9f9f9;
+            background: #f5f5f5;
         }
         
-        .song-item-avatar {
+        .song-item-cover {
             width: 30px;
             height: 30px;
             border-radius: 50%;
-            object-fit: cover;
             margin-right: 10px;
+            object-fit: cover;
         }
         
         .song-item-info {
@@ -150,31 +171,62 @@
         }
         
         /* 列表切换按钮 */
-        .toggle-list {
-            text-align: center;
-            padding: 5px;
-            color: #666;
+        .toggle-list-btn {
+            position: absolute;
+            bottom: 60px;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 5px 15px;
+            background: white;
+            border: none;
+            border-radius: 15px 15px 0 0;
             cursor: pointer;
             font-size: 12px;
+            color: #666;
+            box-shadow: 0 -2px 5px rgba(0,0,0,0.05);
+            z-index: 101;
         }
     </style>
 </head>
 <body>
-    <!-- 原有页面结构保持不变 -->
     <div class="main">
-        <!-- 原有内容 -->
+        <div class="head">
+            <div class="blog-name">
+                <h1>孤舟听雨</h1>
+                <h1>Wesson</h1>
+            </div>
+            <div class="profile">
+                <h3>——岁月如歌，静听风雨。</h3>
+            </div>
+        </div>
+        <div class="nav">
+            <a href="/">博文</a>
+            <span>/</span>
+            <a href="/fragments">随笔</a>
+            <span>/</span>
+            <a href="/about">关于我</a>
+        </div>
+        <div class="content">
+            {{ content }}
+        </div>
+        <div class="backhome">
+            <a href="#">返回顶部 ↑</a>
+        </div>
+        <div class="footer">
+            © 2025 | @Wesson | <a href="/">主页</a> | 本站已运行：<span id="running-days"></span> 天
+        </div>
     </div>
 
-    <!-- 胶囊样式音乐播放器 -->
+    <!-- 音乐播放器 -->
     <div id="music-player">
-        <div class="player-capsule">
-            <!-- 歌曲头像 -->
-            <div class="song-avatar" id="current-cover">
-                <img src="" alt="封面">
+        <div class="player-container">
+            <!-- 歌曲封面 -->
+            <div class="song-cover">
+                <img id="current-song-cover" src="https://via.placeholder.com/40" alt="封面">
             </div>
             
             <!-- 控制按钮 -->
-            <div class="controls">
+            <div class="player-controls">
                 <button class="control-btn" id="prev-btn">⏮</button>
                 <button class="control-btn play-btn" id="play-btn">▶</button>
                 <button class="control-btn" id="next-btn">⏭</button>
@@ -186,28 +238,32 @@
                 </div>
             </div>
         </div>
-        
-        <!-- 歌曲列表 -->
-        <div class="toggle-list" id="toggle-list-btn">显示歌单 ▼</div>
+    </div>
+    
+    <!-- 歌曲列表切换按钮 -->
+    <button class="toggle-list-btn" id="toggle-list-btn">显示歌单 ▼</button>
+    
+    <!-- 歌曲列表 -->
+    <div class="song-list-container" id="song-list-container">
         <div class="song-list" id="song-list"></div>
     </div>
 
     <script src="/scripts.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script>
     <script>
-        // 音乐列表
+        // 可靠的音乐源列表
         const musicList = [
             {
                 name: "雨后清晨",
                 artist: "Pixabay",
-                url: "https://cdn.pixabay.com/audio/2022/08/23/audio_0d33d5ea0f.mp3",
-                cover: "https://cdn.pixabay.com/audio/2022/08/04/audio_0b5d1bc71e.jpg"
+                url: "https://cdn.pixabay.com/audio/2023/07/06/audio_e6a87e0d98.mp3",
+                cover: "https://cdn.pixabay.com/audio/2023/06/27/15-37-03-143_200x200.jpg"
             },
             {
-                name: "宁静时光",
-                artist: "Pixabay",
-                url: "https://cdn.pixabay.com/audio/2022/03/23/audio_d16713dc14.mp3",
-                cover: "https://cdn.pixabay.com/audio/2022/03/15/15-39-31-355_200x200.jpg"
+                name: "宁静钢琴",
+                artist: "Kevin MacLeod",
+                url: "https://incompetech.com/music/royalty-free/mp3-royaltyfree/Heart%20of%20Nowhere.mp3",
+                cover: "https://incompetech.com/music/royalty-free/albumart/Heart%20of%20Nowhere.jpg"
             },
             {
                 name: "夏日微风",
@@ -221,7 +277,7 @@
         const ap = new APlayer({
             container: document.getElementById('music-player'),
             audio: musicList,
-            fixed: true,
+            fixed: false, // 我们自定义固定位置
             mini: false,
             autoplay: false,
             loop: 'all',
@@ -234,10 +290,8 @@
 
         // 自定义UI控制
         function setupCustomUI() {
-            const player = document.getElementById('music-player');
-            
             // 隐藏默认APlayer UI
-            player.querySelector('.aplayer-body').style.display = 'none';
+            document.querySelector('.aplayer-body').style.display = 'none';
             
             // 初始化当前歌曲封面
             updateCurrentCover();
@@ -252,20 +306,22 @@
             
             // 音量控制
             document.getElementById('vol-down-btn').addEventListener('click', () => {
-                ap.volume(ap.audio.volume - 0.1);
+                ap.volume(Math.max(0, ap.audio.volume - 0.1));
             });
             
             document.getElementById('vol-up-btn').addEventListener('click', () => {
-                ap.volume(ap.audio.volume + 0.1);
+                ap.volume(Math.min(1, ap.audio.volume + 0.1));
             });
             
             // 歌单切换
             const toggleBtn = document.getElementById('toggle-list-btn');
-            const songList = document.getElementById('song-list');
+            const songListContainer = document.getElementById('song-list-container');
             
             toggleBtn.addEventListener('click', () => {
-                songList.classList.toggle('show');
-                toggleBtn.textContent = songList.classList.contains('show') ? '隐藏歌单 ▲' : '显示歌单 ▼';
+                songListContainer.classList.toggle('show');
+                toggleBtn.textContent = songListContainer.classList.contains('show') 
+                    ? '隐藏歌单 ▲' 
+                    : '显示歌单 ▼';
             });
             
             // 填充歌曲列表
@@ -290,8 +346,9 @@
         
         // 更新当前歌曲封面
         function updateCurrentCover() {
-            const coverImg = document.querySelector('#current-cover img');
-            coverImg.src = ap.list.audios[ap.list.index].cover || 'https://via.placeholder.com/40';
+            const currentSong = ap.list.audios[ap.list.index];
+            document.getElementById('current-song-cover').src = 
+                currentSong.cover || 'https://via.placeholder.com/40';
         }
         
         // 更新播放按钮状态
@@ -309,7 +366,7 @@
                 const item = document.createElement('div');
                 item.className = 'song-item';
                 item.innerHTML = `
-                    <img class="song-item-avatar" src="${song.cover || 'https://via.placeholder.com/30'}" alt="封面">
+                    <img class="song-item-cover" src="${song.cover || 'https://via.placeholder.com/30'}" alt="封面">
                     <div class="song-item-info">
                         <p class="song-item-title">${song.name}</p>
                         <p class="song-item-artist">${song.artist}</p>
@@ -319,7 +376,7 @@
                 item.addEventListener('click', () => {
                     ap.list.switch(index);
                     ap.play();
-                    document.getElementById('song-list').classList.remove('show');
+                    document.getElementById('song-list-container').classList.remove('show');
                     document.getElementById('toggle-list-btn').textContent = '显示歌单 ▼';
                 });
                 
