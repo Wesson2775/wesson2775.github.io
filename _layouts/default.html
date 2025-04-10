@@ -16,21 +16,30 @@
             z-index: 100;
             background: rgba(255, 255, 255, 0.9);
             box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s ease;
+            border-top: 1px solid #eee;
         }
         #footer-player .aplayer {
             margin: 0;
             box-shadow: none;
             border-radius: 0;
+            font-family: inherit;
         }
         #footer-player .aplayer-info {
             display: none;
         }
         #footer-player .aplayer-controller {
-            padding: 5px 10px;
+            padding: 8px 15px;
+            height: auto;
         }
         #footer-player .aplayer-time {
-            display: none;
+            display: none !important;
+        }
+        #footer-player .aplayer-bar-wrap {
+            margin: 0 10px !important;
+        }
+        #footer-player .aplayer-volume-wrap {
+            margin-left: auto;
+            margin-right: 10px;
         }
         /* 确保内容不被播放器遮挡 */
         .main {
@@ -39,6 +48,23 @@
         /* 页脚调整 */
         .footer {
             margin-bottom: 60px;
+        }
+        /* 自定义按钮样式 */
+        .custom-controls {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .custom-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            color: #666;
+            padding: 5px;
+        }
+        .custom-btn:hover {
+            color: #333;
         }
     </style>
 </head>
@@ -77,24 +103,32 @@
     <script src="/scripts.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script>
     <script>
+        // 可靠的音乐源列表
+        const reliableMusicSources = [
+            {
+                name: '宁静钢琴曲',
+                artist: 'Kevin MacLeod',
+                url: 'https://incompetech.com/music/royalty-free/mp3-royaltyfree/Heartwarming.mp3',
+                cover: 'https://incompetech.com/music/royalty-free/albumart/Heartwarming.jpg'
+            },
+            {
+                name: '轻快旋律',
+                artist: 'Bensound',
+                url: 'https://www.bensound.com/bensound-music/bensound-summer.mp3',
+                cover: 'https://www.bensound.com/bensound-img/summer.jpg'
+            },
+            {
+                name: '自然之声',
+                artist: 'Pixabay',
+                url: 'https://cdn.pixabay.com/audio/2022/03/23/audio_d16713dc14.mp3',
+                cover: 'https://cdn.pixabay.com/audio/2022/03/15/15-39-31-355_200x200.jpg'
+            }
+        ];
+
         // 初始化播放器
         const ap = new APlayer({
             container: document.getElementById('footer-player'),
-            audio: [
-                {
-                    name: '宁静时光',
-                    artist: 'Pixabay',
-                    url: 'https://cdn.pixabay.com/audio/2022/03/23/audio_d16713dc14.mp3',
-                    cover: 'https://cdn.pixabay.com/audio/2022/03/15/15-39-31-355_200x200.jpg'
-                },
-                {
-                    name: '雨后清晨',
-                    artist: 'Pixabay',
-                    url: 'https://cdn.pixabay.com/audio/2022/08/23/audio_0d33d5ea0f.mp3',
-                    cover: 'https://cdn.pixabay.com/audio/2022/08/04/audio_0b5d1bc71e.jpg'
-                }
-                // 可以添加更多音乐...
-            ],
+            audio: reliableMusicSources,
             fixed: true,
             mini: true,
             autoplay: false,
@@ -108,29 +142,75 @@
 
         // 自定义播放器控制
         function setupPlayerControls() {
-            const player = document.querySelector('#footer-player .aplayer');
+            const controller = document.querySelector('#footer-player .aplayer-controller');
             
-            // 简化播放器显示
-            player.querySelector('.aplayer-pic').style.display = 'none';
-            player.querySelector('.aplayer-body').style.marginLeft = '0';
+            // 移除默认进度条和时间显示
+            const progressBar = controller.querySelector('.aplayer-bar-wrap');
+            if (progressBar) progressBar.remove();
             
-            // 添加折叠列表按钮
-            const toggleBtn = document.createElement('div');
-            toggleBtn.className = 'aplayer-list-btn';
-            toggleBtn.innerHTML = '歌单';
-            toggleBtn.style.cssText = `
-                position: absolute;
-                right: 10px;
-                top: 50%;
-                transform: translateY(-50%);
-                cursor: pointer;
-                font-size: 12px;
-                color: #666;
+            // 创建自定义控制栏
+            const controlsContainer = document.createElement('div');
+            controlsContainer.className = 'custom-controls';
+            controlsContainer.innerHTML = `
+                <button class="custom-btn" title="上一曲" id="prev-btn">⏮</button>
+                <button class="custom-btn" title="播放/暂停" id="play-btn">▶</button>
+                <button class="custom-btn" title="下一曲" id="next-btn">⏭</button>
+                <div style="display: flex; align-items: center; margin-left: auto;">
+                    <button class="custom-btn" title="减小音量" id="vol-down-btn">🔉</button>
+                    <div style="width: 60px; margin: 0 5px;">
+                        <div style="height: 4px; background: #eee; border-radius: 2px;">
+                            <div id="vol-bar" style="height: 100%; width: ${ap.audio.volume * 100}%; background: #666; border-radius: 2px;"></div>
+                        </div>
+                    </div>
+                    <button class="custom-btn" title="增大音量" id="vol-up-btn">🔊</button>
+                </div>
+                <button class="custom-btn" title="歌单" id="list-btn">≡</button>
             `;
-            player.querySelector('.aplayer-controller').appendChild(toggleBtn);
             
-            toggleBtn.addEventListener('click', () => {
-                ap.list.toggle();
+            // 插入自定义控制栏
+            controller.prepend(controlsContainer);
+            
+            // 绑定事件
+            document.getElementById('prev-btn').addEventListener('click', () => ap.skipBack());
+            document.getElementById('next-btn').addEventListener('click', () => ap.skipForward());
+            document.getElementById('play-btn').addEventListener('click', () => {
+                ap.toggle();
+                updatePlayButton();
+            });
+            document.getElementById('list-btn').addEventListener('click', () => ap.list.toggle());
+            document.getElementById('vol-down-btn').addEventListener('click', () => {
+                ap.volume(ap.audio.volume - 0.1);
+                updateVolumeBar();
+            });
+            document.getElementById('vol-up-btn').addEventListener('click', () => {
+                ap.volume(ap.audio.volume + 0.1);
+                updateVolumeBar();
+            });
+            
+            // 更新播放按钮状态
+            function updatePlayButton() {
+                const btn = document.getElementById('play-btn');
+                btn.textContent = ap.audio.paused ? '▶' : '⏸';
+            }
+            
+            // 更新音量条
+            function updateVolumeBar() {
+                document.getElementById('vol-bar').style.width = `${ap.audio.volume * 100}%`;
+            }
+            
+            // 初始化状态
+            updatePlayButton();
+            updateVolumeBar();
+            
+            // 监听播放状态变化
+            ap.on('play', updatePlayButton);
+            ap.on('pause', updatePlayButton);
+            ap.on('volumechange', updateVolumeBar);
+            
+            // 错误处理
+            ap.on('error', () => {
+                console.log('播放错误，自动跳过');
+                setTimeout(() => ap.skipForward(), 2000);
             });
         }
 
