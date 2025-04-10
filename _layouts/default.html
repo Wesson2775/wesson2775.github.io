@@ -7,30 +7,46 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css">
     <title>{{ page.title }}</title>
     <style>
-        /* 主内容区域调整 */
-        .main {
-            position: relative;
+        /* 主布局调整 */
+        body {
+            display: flex;
+            flex-direction: column;
             min-height: 100vh;
-            padding-bottom: 100px; /* 为页脚和播放器留出空间 */
+            margin: 0;
+            padding: 0;
+        }
+        
+        .main {
+            flex: 1;
+            padding-bottom: 70px; /* 为页脚和播放器留出空间 */
         }
         
         /* 页脚样式调整 */
         .footer {
-            position: absolute;
-            bottom: 35px; /* 播放器高度 */
+            position: relative;
             width: 100%;
             padding: 15px 0;
             text-align: center;
             background: #f8f9fa;
             font-size: 12px;
+            order: 2; /* 确保页脚在主要内容之后 */
         }
         
         /* 音乐播放器容器 */
-        #mini-player {
-            position: absolute;
+        #mini-player-container {
+            position: fixed;
             bottom: 0;
-            left: 50%;
-            transform: translateX(-50%);
+            left: 0;
+            right: 0;
+            height: 70px; /* 播放器+列表切换按钮高度 */
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+            z-index: 100;
+            pointer-events: none; /* 允许点击穿透到下方内容 */
+        }
+        
+        #mini-player {
             width: 200px;
             height: 35px;
             background: #fff;
@@ -39,8 +55,9 @@
             display: flex;
             align-items: center;
             padding: 0 10px;
-            z-index: 100;
             border: 1px solid #eaeaea;
+            pointer-events: auto; /* 恢复播放器区域的点击事件 */
+            margin-bottom: 5px;
         }
         
         /* 播放器控制按钮 */
@@ -128,6 +145,7 @@
             box-shadow: 0 -2px 5px rgba(0,0,0,0.05);
             z-index: 101;
             text-align: center;
+            pointer-events: auto;
         }
     </style>
 </head>
@@ -160,24 +178,27 @@
         </div>
     </div>
 
-    <!-- 迷你音乐播放器 -->
-    <div id="mini-player">
-        <div class="mini-controls">
-            <button class="mini-btn" id="mini-prev-btn">⏮</button>
-            <button class="mini-btn mini-play-btn" id="mini-play-btn">▶</button>
-            <button class="mini-btn" id="mini-next-btn">⏭</button>
-            <div style="flex-grow: 1;"></div>
-            <button class="mini-btn" id="mini-vol-down">🔉</button>
-            <button class="mini-btn" id="mini-vol-up">🔊</button>
+    <!-- 迷你音乐播放器容器 -->
+    <div id="mini-player-container">
+        <!-- 歌曲列表切换按钮 -->
+        <button class="mini-toggle-btn" id="mini-toggle-btn">歌单 ▼</button>
+        
+        <!-- 迷你音乐播放器 -->
+        <div id="mini-player">
+            <div class="mini-controls">
+                <button class="mini-btn" id="mini-prev-btn">⏮</button>
+                <button class="mini-btn mini-play-btn" id="mini-play-btn">▶</button>
+                <button class="mini-btn" id="mini-next-btn">⏭</button>
+                <div style="flex-grow: 1;"></div>
+                <button class="mini-btn" id="mini-vol-down">🔉</button>
+                <button class="mini-btn" id="mini-vol-up">🔊</button>
+            </div>
         </div>
-    </div>
-    
-    <!-- 歌曲列表切换按钮 -->
-    <button class="mini-toggle-btn" id="mini-toggle-btn">歌单 ▼</button>
-    
-    <!-- 迷你歌曲列表 -->
-    <div class="mini-list" id="mini-list">
-        <!-- 动态生成 -->
+        
+        <!-- 迷你歌曲列表 -->
+        <div class="mini-list" id="mini-list">
+            <!-- 动态生成 -->
+        </div>
     </div>
 
     <script src="/scripts.js"></script>
@@ -207,7 +228,7 @@
 
         // 初始化播放器
         const ap = new APlayer({
-            audio: musicList, // 不绑定到DOM，完全自定义UI
+            audio: musicList,
             autoplay: false,
             loop: 'all',
             order: 'list',
