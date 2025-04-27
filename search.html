@@ -1,0 +1,8 @@
+---
+layout: default
+---
+{% assign lang = page.lang | default: 'zh' %}
+<div class="article">
+    <h3 id="search-query">{% if lang == 'en' %}Search Results for Keywords{% else %}关键词的搜索结果{% endif %}</h3>
+    <div id="search-results" class="search-results"></div>
+</div>

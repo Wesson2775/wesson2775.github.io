@@ -1,0 +1,63 @@
+# 网站基本信息
+title: 孤舟听雨
+title_en: Lone Boat Listening to Rain
+description: 岁月如歌，静听风雨。
+description_en: Years like a song, quietly listening to the wind and rain.
+description2: 孤舟行将江月冷，独酌无心夜风寒。
+description2_en: A lone boat sails under a cold moon, drinking alone in the chilly night wind.
+
+# Jekyll 基础配置
+baseurl: ""
+url: "https://zor666.me"
+markdown: kramdown
+theme: minima
+lang: zh
+plugins:
+  - jekyll-feed
+  - jekyll-paginate
+search:
+  enabled: true
+collections:
+  fragments:
+    output: true
+    permalink: /fragments/:path/
+defaults:
+  - scope:
+      path: ""
+    values:
+      lang: zh
+  - scope:
+      path: "posts.json"
+    values:
+      layout: null
+  - scope:
+      path: "fragments.json"
+    values:
+      layout: null
+  - scope:
+      path: "_posts/zh"
+    values:
+      lang: zh
+      permalink: /zh/:year/:month/:day/:title:output_ext
+  - scope:
+      path: "_posts/en"
+    values:
+      lang: en
+      permalink: /en/:year/:month/:day/:title:output_ext
+  - scope:
+      path: "_fragments/zh"
+    values:
+      lang: zh
+      permalink: /fragments/zh/:title:output_ext
+  - scope:
+      path: "_fragments/en"
+    values:
+      lang: en
+      permalink: /fragments/en/:title:output_ext
+paginate: 5
+paginate_path: "/page/:num/"
+posts:
+  filename_date: false
+
+include:
+  - "favicon.ico"
