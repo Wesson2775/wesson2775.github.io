@@ -1,15 +1,19 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>{{ page.title | default: site.title }}</title>
     <link rel="stylesheet" href="{{ '/assets/css/styles.css?v=1.4' | relative_url }}">
     <link rel="icon" href="{{ '/favicon.ico' | relative_url }}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+        integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer">
     <script src="{{ '/assets/js/search.js' | relative_url }}" defer></script>
     <script src="{{ '/assets/js/utils.js' | relative_url }}" defer></script>
 </head>
+
 <body>
     <div class="main-container">
         <header class="header">
@@ -35,11 +39,16 @@
             <div class="header-bottom">
                 <nav class="header-bottom-nav nav-menu">
                     <ul>
-                        <li><a href="{{ '/' | relative_url }}" data-lang-key="home"><i class="fas fa-home"></i><span class="nav-text">首页</span></a></li>
-                        <li><a href="{{ '/fragments' | relative_url }}" data-lang-key="fragments"><i class="fas fa-book"></i><span class="nav-text">随笔</span></a></li>
-                        <li><a href="{{ '/friends' | relative_url }}" data-lang-key="friends"><i class="fas fa-users"></i><span class="nav-text">友邻</span></a></li>
-                        <li><a href="{{ '/tags' | relative_url }}" data-lang-key="tags"><i class="fas fa-tags"></i><span class="nav-text">标签</span></a></li>
-                        <li><a href="{{ '/about' | relative_url }}" data-lang-key="about"><i class="fas fa-info-circle"></i><span class="nav-text">关于</span></a></li>
+                        <li><a href="{{ '/' | relative_url }}" data-lang-key="home"><i class="fas fa-home"></i><span
+                                    class="nav-text">首页</span></a></li>
+                        <li><a href="{{ '/fragments' | relative_url }}" data-lang-key="fragments"><i
+                                    class="fas fa-book"></i><span class="nav-text">随笔</span></a></li>
+                        <li><a href="{{ '/friends' | relative_url }}" data-lang-key="friends"><i
+                                    class="fas fa-users"></i><span class="nav-text">友邻</span></a></li>
+                        <li><a href="{{ '/tags' | relative_url }}" data-lang-key="tags"><i class="fas fa-tags"></i><span
+                                    class="nav-text">标签</span></a></li>
+                        <li><a href="{{ '/about' | relative_url }}" data-lang-key="about"><i
+                                    class="fas fa-info-circle"></i><span class="nav-text">关于</span></a></li>
                     </ul>
                 </nav>
                 <div class="search-container">
@@ -68,78 +77,81 @@
         <i class="fas fa-arrow-up"></i>
     </button>
     <script>
-    document.addEventListener('DOMContentLoaded', () => {
-        // 获取语言：优先从 URL 参数获取，若无则从 localStorage 获取，默认为 zh
-        const urlParams = new URLSearchParams(window.location.search);
-        let currentLang = urlParams.get('lang') || localStorage.getItem('lang') || 'zh';
-        currentLang = ['zh', 'en'].includes(currentLang) ? currentLang : 'zh';
-        localStorage.setItem('lang', currentLang);
+        document.addEventListener('DOMContentLoaded', () => {
+            // 获取语言：优先从 URL 参数获取，若无则从 localStorage 获取，默认为 zh
+            const urlParams = new URLSearchParams(window.location.search);
+            let currentLang = urlParams.get('lang') || localStorage.getItem('lang') || 'zh';
+            currentLang = ['zh', 'en'].includes(currentLang) ? currentLang : 'zh';
+            localStorage.setItem('lang', currentLang);
 
-        // 确保 page.lang 与 currentLang 一致
-        document.querySelectorAll('html').forEach(html => {
-            html.lang = currentLang === 'en' ? 'en' : 'zh-CN';
-        });
-
-        // 判断是否为移动端
-        const isMobile = () => window.matchMedia('(max-width: 991px)').matches;
-
-        // 更新导航显示
-        const updateNavDisplay = () => {
-            document.querySelectorAll('.nav-menu a').forEach(link => {
-                const key = link.getAttribute('data-lang-key');
-                link.innerHTML = isMobile() 
-                    ? `<i class="${Utils.iconClasses[key]}"></i>`
-                    : `<span class="nav-text">${Utils.translations[currentLang][key]}</span>`;
-                link.setAttribute('title', Utils.translations[currentLang][key]);
+            // 确保 page.lang 与 currentLang 一致
+            document.querySelectorAll('html').forEach(html => {
+                html.lang = currentLang === 'en' ? 'en' : 'zh-CN';
             });
-        };
 
-        // 防抖函数
-        const debounce = (func, wait) => {
-            let timeout;
-            return (...args) => {
-                clearTimeout(timeout);
-                timeout = setTimeout(() => func.apply(this, args), wait);
+            // 判断是否为移动端
+            const isMobile = () => window.matchMedia('(max-width: 991px)').matches;
+
+            // 更新导航显示
+            const updateNavDisplay = () => {
+                document.querySelectorAll('.nav-menu a').forEach(link => {
+                    const key = link.getAttribute('data-lang-key');
+                    link.innerHTML = isMobile()
+                        ? `<i class="${Utils.iconClasses[key]}"></i>`
+                        : `<span class="nav-text">${Utils.translations[currentLang][key]}</span>`;
+                    link.setAttribute('title', Utils.translations[currentLang][key]);
+                });
             };
-        };
 
-        // 初始化导航
-        setTimeout(updateNavDisplay, 100);
-        window.matchMedia('(max-width: 991px)').addEventListener('change', debounce(updateNavDisplay, 200));
+            // 防抖函数
+            const debounce = (func, wait) => {
+                let timeout;
+                return (...args) => {
+                    clearTimeout(timeout);
+                    timeout = setTimeout(() => func.apply(this, args), wait);
+                };
+            };
 
-        // 更新语言内容
-        document.querySelectorAll('[data-lang-key]').forEach(element => {
-            const key = element.getAttribute('data-lang-key');
-            if (key === 'title') {
-                element.textContent = currentLang === 'en' ? '{{ site.title_en }}' : '{{ site.title }}';
-            } else if (key === 'description') {
-                element.textContent = currentLang === 'en' ? '{{ site.description_en }}' : '{{ site.description }}';
-            } else if (key === 'author') {
-                element.textContent = currentLang === 'en' ? '{{ site.data.site_data.footer.author_en }}' : '{{ site.data.site_data.footer.author }}';
-            } else if (key === 'footer') {
-                element.textContent = `© {{ site.data.site_data.footer.start_year }} - {{ "now" | date: "%Y" }} ${currentLang === 'en' ? '{{ site.data.site_data.footer.author_en }}' : '{{ site.data.site_data.footer.author }}'} · {{ site.data.site_data.footer.license }}`;
-            } else if (key.startsWith('friend_name_')) {
-                const index = parseInt(key.split('_')[2]) - 1;
-                const friends = {{ site.data.site_data.friends | jsonify }};
-                if (friends && friends[index]) {
-                    element.textContent = currentLang === 'en' ? friends[index].name_en : friends[index].name;
+            // 初始化导航
+            setTimeout(updateNavDisplay, 100);
+            window.matchMedia('(max-width: 991px)').addEventListener('change', debounce(updateNavDisplay, 200));
+
+            // 更新语言内容
+            document.querySelectorAll('[data-lang-key]').forEach(element => {
+                const key = element.getAttribute('data-lang-key');
+                if (key === 'title') {
+                    element.textContent = currentLang === 'en' ? '{{ site.title_en }}' : '{{ site.title }}';
+                } else if (key === 'description') {
+                    element.textContent = currentLang === 'en' ? '{{ site.description_en }}' : '{{ site.description }}';
+                } else if (key === 'author') {
+                    element.textContent = currentLang === 'en' ? '{{ site.data.site_data.footer.author_en }}' : '{{ site.data.site_data.footer.author }}';
+                } else if (key === 'footer') {
+                    element.textContent = `© {{ site.data.site_data.footer.start_year }} - {{ "now" | date: "%Y" }} ${currentLang === 'en' ? '{{ site.data.site_data.footer.author_en }}' : '{{ site.data.site_data.footer.author }}'} · {{ site.data.site_data.footer.license }}`;
+                } else if (key.startsWith('friend_name_')) {
+                    const index = parseInt(key.split('_')[2]) - 1;
+                    const friends = {{ site.data.site_data.friends | jsonify
                 }
-            } else if (key.startsWith('friend_desc_')) {
-                const index = parseInt(key.split('_')[2]) - 1;
-                const friends = {{ site.data.site_data.friends | jsonify }};
-                if (friends && friends[index]) {
-                    element.textContent = currentLang === 'en' ? friends[index].description_en : friends[index].description;
-                }
-            } else if (Utils.translations[currentLang][key] && !element.classList.contains('nav-text')) {
-                if (element.tagName === 'INPUT') {
-                    element.placeholder = Utils.translations[currentLang][key];
-                    element.setAttribute('aria-label', Utils.translations[currentLang][key]);
-                } else if (element.tagName === 'BUTTON') {
-                    element.setAttribute('aria-label', Utils.translations[currentLang][key]);
-                } else {
-                    element.textContent = Utils.translations[currentLang][key];
-                }
+            };
+            if (friends && friends[index]) {
+                element.textContent = currentLang === 'en' ? friends[index].name_en : friends[index].name;
             }
+        } else if (key.startsWith('friend_desc_')) {
+            const index = parseInt(key.split('_')[2]) - 1;
+            const friends = {{ site.data.site_data.friends | jsonify
+        }};
+        if (friends && friends[index]) {
+            element.textContent = currentLang === 'en' ? friends[index].description_en : friends[index].description;
+        }
+            } else if (Utils.translations[currentLang][key] && !element.classList.contains('nav-text')) {
+            if (element.tagName === 'INPUT') {
+                element.placeholder = Utils.translations[currentLang][key];
+                element.setAttribute('aria-label', Utils.translations[currentLang][key]);
+            } else if (element.tagName === 'BUTTON') {
+                element.setAttribute('aria-label', Utils.translations[currentLang][key]);
+            } else {
+                element.textContent = Utils.translations[currentLang][key];
+            }
+        }
         });
 
         // 更新链接语言参数
@@ -215,13 +227,135 @@
                 debug: true
             }, [
                 {
-                    title: "Sample Song",
-                    artist: "Sample Artist",
-                    cover: "https://via.placeholder.com/30",
-                    src: "path/to/song.mp3"
+                    title: "it's 6pm but I miss u already",
+                    artist: "BlueLee,Furyl,Siren",
+                    cover: "http://p1.music.126.net/vfArwmf4yUKmZhi-ZCwOXA==/109951166569406479.jpg?param=130y130",
+                    src: "http://music.163.com/song/media/outer/url?id=1890756154.mp3"
+                },
+                    const musicList = [
+                {
+                    title: "剑心",
+                    artist: "张杰",
+                    cover: "http://p1.music.126.net/lRZ9Jnhb1VaD9v_5YrJB0g==/109951165625474238.jpg",
+                    src: ""  // 原数据中未包含音频链接，这里留空，你可根据实际补充
+                },
+                {
+                    title: "野风",
+                    artist: "林忆莲",
+                    cover: "http://p1.music.126.net/_HGfJRNerJD4aPiNN_8wGQ==/109951170216165810.jpg",
+                    src: ""
+                },
+                {
+                    title: "江湖笑",
+                    artist: "小虫/周华健/黄晓明/胡军/张纪中",
+                    cover: "http://p1.music.126.net/NeHoyoPAUceh7A-ME2jQvA==/109951165774497359.jpg",
+                    src: ""
+                },
+                {
+                    title: "天下无双",
+                    artist: "张芯",
+                    cover: "http://p1.music.126.net/Wv73TTw5-qOBr7FSU6rr_Q==/97856534886236.jpg",
+                    src: ""
+                },
+                {
+                    title: "剑魂",
+                    artist: "李炜",
+                    cover: "http://p1.music.126.net/qSxyXrnXiPNVQ8YJD2XejA==/18720284976235092.jpg",
+                    src: ""
+                },
+                {
+                    title: "问情诗",
+                    artist: "张智尧/许慧欣",
+                    cover: "http://p1.music.126.net/CeCVM7oxMWbRGJNwENffKQ==/5758142394718583.jpg",
+                    src: ""
+                },
+                {
+                    title: "相思曲",
+                    artist: "汪妤凌",
+                    cover: "http://p1.music.126.net/ADT2M-AAXelJZ4AjJtVrSQ==/8940129045555308.jpg",
+                    src: ""
+                },
+                {
+                    title: "浓情淡如你",
+                    artist: "周深",
+                    cover: "http://p1.music.126.net/cFbvrumJ6C4W5BNRvQJPuw==/18957779486268492.jpg",
+                    src: ""
+                },
+                {
+                    title: "诀别诗",
+                    artist: "胡彦斌",
+                    cover: "http://p1.music.126.net/npzhsfVJFsNz6IJo3a7-Fg==/45079976754696.jpg",
+                    src: ""
+                },
+                {
+                    title: "乱世桃花",
+                    artist: "林子祥/叶蒨文",
+                    cover: "http://p1.music.126.net/Qmg7uI7_Bkuiyyaq4v0ikw==/111050674423375.jpg",
+                    src: ""
+                },
+                {
+                    title: "男儿当自强",
+                    artist: "林子祥",
+                    cover: "http://p1.music.126.net/_xTCslrcm845vMHpMCikeg==/109951165628215417.jpg",
+                    src: ""
+                },
+                {
+                    title: "男儿当自强 (主题音乐)",
+                    artist: "黄霑",
+                    cover: "http://p1.music.126.net/N7e6KyglC8zlyA877aer-g==/61572651167692.jpg",
+                    src: ""
+                },
+                {
+                    title: "黄种人",
+                    artist: "谢霆锋",
+                    cover: "http://p1.music.126.net/yHzOCmOV18YtG8bn2hCs3Q==/109951164811421327.jpg",
+                    src: ""
+                },
+                {
+                    title: "天下第一",
+                    artist: "麦振鸿/罗坚",
+                    cover: "http://p1.music.126.net/k318_HbBXJEYcNN6o86J0g==/7733964789776935.jpg",
+                    src: ""
+                },
+                {
+                    title: "你的第一",
+                    artist: "霍建华",
+                    cover: "http://p1.music.126.net/riDGcEVoAN7lYgBGs6pc3w==/118747255817041.jpg",
+                    src: ""
+                },
+                {
+                    title: "十面埋伏 (Ambush From All Sides)",
+                    artist: "黄英华/香港中乐团",
+                    cover: "http://p1.music.126.net/5MY9gveV4jubroSZlwpkVA==/47279000006629.jpg",
+                    src: ""
+                },
+                {
+                    title: "佳人曲",
+                    artist: "章子怡",
+                    cover: "http://p1.music.126.net/X9XOuqVyRp27Wsz7DATfsQ==/109951165961570077.jpg",
+                    src: ""
+                },
+                {
+                    title: "十面埋伏 (琵琶独奏)",
+                    artist: "华夏民族乐团",
+                    cover: "http://p1.music.126.net/OHc8accTxELDlLYq9oTSCg==/109951163815940485.jpg",
+                    src: ""
+                },
+                {
+                    title: "怪侠一枝梅",
+                    artist: "武聆音雄",
+                    cover: "http://p1.music.126.net/Dol5dVN2WI3u_iWpGKA3-Q==/2543170398067202.jpg",
+                    src: ""
+                },
+                {
+                    title: "赤子心",
+                    artist: "李琦",
+                    cover: "http://p1.music.126.net/IcWhMUWpJfILs-BROjeADQ==/109951163928996927.jpg",
+                    src: ""
                 }
             ]);
         });
     </script>
 </body>
+
 </html>
