@@ -10,6 +10,7 @@
     <script src="{{ '/assets/js/search.js' | relative_url }}" defer></script>
     <script src="{{ '/assets/js/utils.js' | relative_url }}" defer></script>
 </head>
+
 <body>
     <div class="main-container">
         <header class="header">
@@ -204,5 +205,298 @@
         }
     });
     </script>
+        <!-- 音乐播放器 -->
+        <div class="record-player">
+            <div class="recorderbackground">
+                <div class="record" id="record-toggle">
+                    <img class="record-cover" id="record-cover" src="https://via.placeholder.com/30" alt="Cover">
+                    <div class="record-grooves"></div>
+                </div>
+                <div class="tonearm" id="tonearm">
+                    <div class="tonearm-needle"></div>
+                </div>
+            </div>
+            <div class="control-panel" id="control-panel">
+                <div class="song-info">
+                    <div class="song-details">
+                        <span class="song-title">未知歌曲</span>
+                        <span class="song-artist">未知艺术家</span>
+                    </div>
+                </div>
+                <div class="controls">
+                    <button class="control-btn" title="上一曲">⏮</button>
+                    <button class="control-btn play-btn" title="播放/暂停">⏵</button>
+                    <button class="control-btn" title="下一曲">⏭</button>
+                    <div class="volume-container">
+                        <span class="volume-icon">🔊</span>
+                        <input type="range" class="volume-slider" min="0" max="100" value="80">
+                    </div>
+                    <button class="control-btn playlist-btn" title="播放列表" id="playlist-toggle">≡</button>
+                </div>
+                <div class="playlist" id="playlist">
+                    <!-- Playlist items will be dynamically added -->
+                </div>
+            </div>
+        </div>
+        <audio id="audio-player" style="display: none;"></audio>
+    
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const recordToggle = document.getElementById('record-toggle');
+                const controlPanel = document.getElementById('control-panel');
+                const playBtn = document.querySelector('.play-btn');
+                const volumeSlider = document.querySelector('.volume-slider');
+                const playlistToggle = document.getElementById('playlist-toggle');
+                const playlist = document.getElementById('playlist');
+                const recordCover = document.getElementById('record-cover');
+                const tonearm = document.getElementById('tonearm');
+                const recordPlayer = document.querySelector('.record-player');
+                const audioPlayer = document.getElementById('audio-player');
+                
+                let isPlaying = false;
+                let isCollapsed = false;
+                let isPlaylistOpen = false;
+    
+                const songs = [
+                    { 
+                        title: "it's 6pm but I miss u already", 
+                        artist: "BlueLee,Furyl,Siren", 
+                        cover: "http://p1.music.126.net/vfArwmf4yUKmZhi-ZCwOXA==/109951166569406479.jpg?param=130y130", 
+                        src: "http://music.163.com/song/media/outer/url?id=1890756154.mp3"
+                    },
+                    { 
+                        title: "Gentle Breeze", 
+                        artist: "Podington Bear", 
+                        cover: "https://via.placeholder.com/30/333?text=Gentle+Breeze", 
+                        src: "https://files.freemusicarchive.org/storage-freemusicarchive-org/music/no_curator/Podington_Bear/Solo_Instruments/Podington_Bear_-_Gentle_Breeze.mp3"
+                    },
+                    { 
+                        title: "Soft Echoes", 
+                        artist: "Podington Bear", 
+                        cover: "https://via.placeholder.com/30/333?text=Soft+Echoes", 
+                        src: "https://files.freemusicarchive.org/storage-freemusicarchive-org/music/no_curator/Podington_Bear/Solo_Instruments/Podington_Bear_-_Soft_Echoes.mp3"
+                    },
+                    { 
+                        title: "Morning Dew", 
+                        artist: "Podington Bear", 
+                        cover: "https://via.placeholder.com/30/333?text=Morning+Dew", 
+                        src: "https://files.freemusicarchive.org/storage-freemusicarchive-org/music/no_curator/Podington_Bear/Solo_Instruments/Podington_Bear_-_Morning_Dew.mp3"
+                    },
+                    { 
+                        title: "Quiet Waves", 
+                        artist: "Podington Bear", 
+                        cover: "https://via.placeholder.com/30/333?text=Quiet+Waves", 
+                        src: "https://files.freemusicarchive.org/storage-freemusicarchive-org/music/no_curator/Podington_Bear/Solo_Instruments/Podington_Bear_-_Quiet_Waves.mp3"
+                    }
+                ];
+                
+                let currentSongIndex = 0;
+    
+                // Initialize audio player
+                audioPlayer.src = songs[currentSongIndex].src;
+                audioPlayer.volume = volumeSlider.value / 100;
+    
+                // Initialize playlist
+                function initializePlaylist() {
+                    playlist.innerHTML = '';
+                    songs.forEach((song, index) => {
+                        const item = document.createElement('div');
+                        item.className = 'playlist-item';
+                        item.innerHTML = `
+                            <div class="song-details">
+                                <span class="playlist-title">${song.title}</span>
+                                <span class="playlist-artist">${song.artist}</span>
+                            </div>
+                        `;
+                        item.addEventListener('click', () => {
+                            currentSongIndex = index;
+                            updateSongInfo();
+                            isPlaying = true;
+                            playBtn.textContent = '⏸';
+                            recordToggle.classList.add('playing');
+                            tonearm.classList.add('playing');
+                            audioPlayer.src = songs[currentSongIndex].src;
+                            audioPlayer.play();
+                            togglePlaylist();
+                        });
+                        playlist.appendChild(item);
+                    });
+                }
+    
+                // Update song information
+                function updateSongInfo() {
+                    const song = songs[currentSongIndex];
+                    document.querySelector('.song-details').innerHTML = `
+                        <span class="song-title">${song.title}</span>
+                        <span class="song-artist">${song.artist}</span>
+                    `;
+                    recordCover.src = song.cover;
+                }
+    
+                // Update playlist view
+                function updatePlaylistView() {
+                    if (isPlaylistOpen) {
+                        controlPanel.classList.add('playlist-mode');
+                        const topSongIndex = currentSongIndex;
+                        const bottomSongIndex = (currentSongIndex + 1) % songs.length;
+                        
+                        // Update top half (song-info)
+                        document.querySelector('.song-details').innerHTML = `
+                            <span class="song-title">${songs[topSongIndex].title}</span>
+                            <span class="song-artist">${songs[topSongIndex].artist}</span>
+                        `;
+    
+                        // Update bottom half (controls)
+                        const controls = document.querySelector('.controls');
+                        controls.innerHTML = `
+                            <div class="song-details" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                                <span class="playlist-title" style="font-size: 10px;">${songs[bottomSongIndex].title}</span>
+                                <span class="playlist-artist" style="font-size: 10px;">${songs[bottomSongIndex].artist}</span>
+                            </div>
+                        `;
+                    } else {
+                        controlPanel.classList.remove('playlist-mode');
+                        // Restore controls
+                        document.querySelector('.controls').innerHTML = `
+                            <button class="control-btn" title="上一曲">⏮</button>
+                            <button class="control-btn play-btn" title="播放/暂停">${isPlaying ? '⏸' : '⏵'}</button>
+                            <button class="control-btn" title="下一曲">⏭</button>
+                            <div class="volume-container">
+                                <span class="volume-icon">🔊</span>
+                                <input type="range" class="volume-slider" min="0" max="100" value="${volumeSlider.value}">
+                            </div>
+                            <button class="control-btn playlist-btn" title="播放列表" id="playlist-toggle">≡</button>
+                        `;
+                        // Reattach event listeners
+                        document.querySelector('.play-btn').addEventListener('click', togglePlay);
+                        document.querySelectorAll('.control-btn').forEach(btn => {
+                            if (btn.textContent === '⏮') {
+                                btn.addEventListener('click', previousSong);
+                            } else if (btn.textContent === '⏭') {
+                                btn.addEventListener('click', nextSong);
+                            }
+                        });
+                        document.getElementById('playlist-toggle').addEventListener('click', togglePlaylist);
+                        document.querySelector('.volume-slider').addEventListener('input', handleVolume);
+                        updateSongInfo();
+                    }
+                }
+    
+                // Toggle playlist visibility
+                function togglePlaylist() {
+                    isPlaylistOpen = !isPlaylistOpen;
+                    playlist.classList.toggle('open', isPlaylistOpen);
+                    updatePlaylistView();
+                }
+    
+                // Play/pause toggle
+                function togglePlay() {
+                    isPlaying = !isPlaying;
+                    playBtn.textContent = isPlaying ? '⏸' : '⏵';
+                    if (isPlaying) {
+                        recordToggle.classList.add('playing');
+                        tonearm.classList.add('playing');
+                        audioPlayer.play();
+                    } else {
+                        recordToggle.classList.remove('playing');
+                        tonearm.classList.remove('playing');
+                        audioPlayer.pause();
+                    }
+                }
+    
+                // Previous song
+                function previousSong() {
+                    currentSongIndex = (currentSongIndex - 1 + songs.length) % songs.length;
+                    updateSongInfo();
+                    isPlaying = true;
+                    playBtn.textContent = '⏸';
+                    recordToggle.classList.add('playing');
+                    tonearm.classList.add('playing');
+                    audioPlayer.src = songs[currentSongIndex].src;
+                    audioPlayer.play();
+                }
+    
+                // Next song
+                function nextSong() {
+                    currentSongIndex = (currentSongIndex + 1) % songs.length;
+                    updateSongInfo();
+                    isPlaying = true;
+                    playBtn.textContent = '⏸';
+                    recordToggle.classList.add('playing');
+                    tonearm.classList.add('playing');
+                    audioPlayer.src = songs[currentSongIndex].src;
+                    audioPlayer.play();
+                }
+    
+                // Volume control
+                function handleVolume() {
+                    audioPlayer.volume = this.value / 100;
+                }
+    
+                // Auto-play next song when current song ends
+                audioPlayer.addEventListener('ended', function() {
+                    nextSong();
+                });
+    
+                // Toggle record player expand/collapse
+                recordToggle.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    toggleCollapse();
+                });
+    
+                function toggleCollapse() {
+                    const player = document.querySelector('.record-player');
+                    player.classList.toggle('collapsed');
+                    isCollapsed = !isCollapsed;
+                    
+                    if (isCollapsed) {
+                        if (isPlaylistOpen) togglePlaylist();
+                        if (isPlaying) {
+                            recordToggle.classList.add('playing');
+                            tonearm.classList.add('playing');
+                        }
+                    } else {
+                        if (isPlaying) {
+                            recordToggle.classList.add('playing');
+                            tonearm.classList.add('playing');
+                        }
+                    }
+                }
+    
+                // Click outside to collapse
+                document.addEventListener('click', function(e) {
+                    if (!recordPlayer.contains(e.target) && !isCollapsed) {
+                        toggleCollapse();
+                    }
+                });
+    
+                // Prevent clicks inside record player from collapsing
+                recordPlayer.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                });
+    
+                // Play/pause button
+                playBtn.addEventListener('click', togglePlay);
+    
+                // Volume control
+                volumeSlider.addEventListener('input', handleVolume);
+    
+                // Previous/next buttons
+                document.querySelectorAll('.control-btn').forEach(btn => {
+                    if (btn.textContent === '⏮') {
+                        btn.addEventListener('click', previousSong);
+                    } else if (btn.textContent === '⏭') {
+                        btn.addEventListener('click', nextSong);
+                    }
+                });
+    
+                // Playlist toggle
+                playlistToggle.addEventListener('click', togglePlaylist);
+    
+                // Initialize
+                initializePlaylist();
+                updateSongInfo();
+            });
+        </script>
 </body>
 </html>
