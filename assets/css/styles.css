@@ -739,8 +739,8 @@ html {
 /* 移动端响应式布局 */
 @media (max-width: 991px) {
   #mini-record-player {
-    bottom: 20px !important;
-    right: 20px !important;
+    bottom: 100px !important;
+    left: 10px !important;
     left: auto !important;
     transform: scale(1); /* 移动端恢复原始大小 */
   }
