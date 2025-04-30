@@ -1,3 +1,0 @@
-gitpython
-deep-translator
-pyyaml
