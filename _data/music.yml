@@ -1,0 +1,9 @@
+songs:
+    - title: 示例歌曲1
+      artist: 艺术家1
+      cover: https://via.placeholder.com/300
+      src: https://cdn.pixabay.com/download/audio/2025/03/01/audio_e71914a9bb.mp3?filename=the-helpless-slow-soothing-piano-music-307612.mp3
+    - title: 示例歌曲2
+      artist: 艺术家2
+      cover: https://via.placeholder.com/300
+      src: https://example.com/song2.mp3
