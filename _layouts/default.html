@@ -270,7 +270,7 @@
             }
 
             // 拦截所有内部链接
-            document.querySelectorAll('.nav-menu a, .header-title-link, .lang-link, a[href]:not([href^="http"]):not([href^="#"]):not([href^="mailto"])').forEach(link => {
+            document.querySelectorAll('.nav-menu a, .header-title-link, .lang-link, a[href]:not([href^="http"]):not([href^="#"]):not([href^="mailto"]):not([href$="feed.xml"])').forEach(link => {
                 link.addEventListener('click', async (e) => {
                     e.preventDefault();
                     const href = link.getAttribute('href');
