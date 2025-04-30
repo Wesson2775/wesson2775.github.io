@@ -126,182 +126,177 @@
                         element.textContent = `© {{ site.data.site_data.footer.start_year }} - ${new Date().getFullYear()} ${lang === 'en' ? '{{ site.data.site_data.footer.author_en }}' : '{{ site.data.site_data.footer.author }}'} · {{ site.data.site_data.footer.license }}`;
                     } else if (key.startsWith('friend_name_')) {
                         const index = parseInt(key.split('_')[2]) - 1;
-                        const friends = {{ site.data.site_data.friends | jsonify
+                        const friends = {{ site.data.site_data.friends | jsonify }};
+                        if (friends && friends[index]) {
+                            element.textContent = lang === 'en' ? friends[index].name_en : friends[index].name;
+                        }
+                    } else if (key.startsWith('friend_desc_')) {
+                        const index = parseInt(key.split('_')[2]) - 1;
+                        const friends = {{ site.data.site_data.friends | jsonify }};
+                        if (friends && friends[index]) {
+                            element.textContent = lang === 'en' ? friends[index].description_en : friends[index].description;
+                        }
+                    } else if (Utils.translations[lang][key] && !element.classList.contains('nav-text')) {
+                        if (element.tagName === 'INPUT') {
+                            element.placeholder = Utils.translations[lang][key];
+                            element.setAttribute('aria-label', Utils.translations[lang][key]);
+                        } else if (element.tagName === 'BUTTON') {
+                            element.setAttribute('aria-label', Utils.translations[lang][key]);
+                        } else {
+                            element.textContent = Utils.translations[lang][key];
+                        }
                     }
-                };
-                if (friends && friends[index]) {
-                    element.textContent = lang === 'en' ? friends[index].name_en : friends[index].name;
-                }
-            } else if (key.startsWith('friend_desc_')) {
-                const index = parseInt(key.split('_')[2]) - 1;
-                const friends = {{ site.data.site_data.friends | jsonify
+                });
             }
-        };
-        if (friends && friends[index]) {
-            element.textContent = lang === 'en' ? friends[index].description_en : friends[index].description;
-        }
-                } else if (Utils.translations[lang][key] && !element.classList.contains('nav-text')) {
-            if (element.tagName === 'INPUT') {
-                element.placeholder = Utils.translations[lang][key];
-                element.setAttribute('aria-label', Utils.translations[lang][key]);
-            } else if (element.tagName === 'BUTTON') {
-                element.setAttribute('aria-label', Utils.translations[lang][key]);
-            } else {
-                element.textContent = Utils.translations[lang][key];
-            }
-        }
-            });
-        }
-        updateLanguageContent(currentLang);
+            updateLanguageContent(currentLang);
 
-        // 页面加载函数
-        async function loadPageContent(url, pushState = true) {
-            let lang = localStorage.getItem('lang') || 'zh';
-            try {
-                document.querySelector('main.content').classList.add('loading');
-                const urlObj = new URL(url, window.location.origin);
-                lang = urlObj.searchParams.get('lang') || localStorage.getItem('lang') || 'zh';
-                urlObj.searchParams.set('lang', lang);
-                localStorage.setItem('lang', lang);
+            // 页面加载函数
+            async function loadPageContent(url, pushState = true) {
+                let lang = localStorage.getItem('lang') || 'zh';
+                try {
+                    document.querySelector('main.content').classList.add('loading');
+                    const urlObj = new URL(url, window.location.origin);
+                    lang = urlObj.searchParams.get('lang') || localStorage.getItem('lang') || 'zh';
+                    urlObj.searchParams.set('lang', lang);
+                    localStorage.setItem('lang', lang);
 
+                    // 清除旧内容
+                    const currentContent = document.querySelector('main.content');
+                    currentContent.innerHTML = '';
 
-                // 清除旧内容
-                const currentContent = document.querySelector('main.content');
-                currentContent.innerHTML = '';
+                    const response = await fetch(urlObj.toString());
+                    if (!response.ok) throw new Error(`Failed to load page, status: ${response.status}`);
+                    const html = await response.text();
+                    const parser = new DOMParser();
+                    const doc = parser.parseFromString(html, 'text/html');
+                    const newContent = doc.querySelector('main.content');
+                    if (!newContent) throw new Error('Main content not found');
 
-                const response = await fetch(urlObj.toString());
-                if (!response.ok) throw new Error(`Failed to load page, status: ${response.status}`);
-                const html = await response.text();
-                const parser = new DOMParser();
-                const doc = parser.parseFromString(html, 'text/html');
-                const newContent = doc.querySelector('main.content');
-                if (!newContent) throw new Error('Main content not found');
+                    currentContent.innerHTML = newContent.innerHTML;
+                    document.querySelector('main.content').classList.remove('loading');
 
-                currentContent.innerHTML = newContent.innerHTML;
-                document.querySelector('main.content').classList.remove('loading');
-
-                // 传递 urlObj 给 executePageScripts
-                await executePageScripts(urlObj);
-                if (pushState) {
-                    window.history.pushState({ url: urlObj.toString() }, '', urlObj.toString());
-                }
-                updateLanguageContent(lang);
-                rebindLinks();
-            } catch (error) {
-                console.error('Error loading page:', error);
-                const currentContent = document.querySelector('main.content');
-                if (currentContent) {
-                    currentContent.classList.remove('loading');
-                    currentContent.innerHTML = `<p class="no-results">${lang === 'en' ? 'Failed to load content. Please try again.' : '加载内容失败，请重试。'}</p>`;
+                    // 传递 urlObj 给 executePageScripts
+                    await executePageScripts(urlObj);
+                    if (pushState) {
+                        window.history.pushState({ url: urlObj.toString() }, '', urlObj.toString());
+                    }
+                    updateLanguageContent(lang);
+                    rebindLinks();
+                } catch (error) {
+                    console.error('Error loading page:', error);
+                    const currentContent = document.querySelector('main.content');
+                    if (currentContent) {
+                        currentContent.classList.remove('loading');
+                        currentContent.innerHTML = `<p class="no-results">${lang === 'en' ? 'Failed to load content. Please try again.' : '加载内容失败，请重试。'}</p>`;
+                    }
                 }
             }
-        }
 
-        // 执行页面特定脚本
-        async function executePageScripts(urlObj) {
-            const path = urlObj.pathname;
-            const lang = localStorage.getItem('lang') || 'zh';
-            if (path === '/' || path.includes('/index.html')) {
-                await Utils.executeIndexScripts(urlObj);
-            } else if (path.includes('/fragments')) {
-                await Utils.executeFragmentsScripts(urlObj);
-            } else if (path.includes('/tags/')) {
-                await Utils.executeTagScripts(urlObj);
-            } else if (path === '/tags' || path === '/tags/') {
-                await Utils.executeTagsIndexScripts(urlObj);
-            } else if (path.includes('/search.html')) {
-                await Utils.executeSearchScripts(urlObj); // 传递 urlObj
+            // 执行页面特定脚本
+            async function executePageScripts(urlObj) {
+                const path = urlObj.pathname;
+                const lang = localStorage.getItem('lang') || 'zh';
+                if (path === '/' || path.includes('/index.html')) {
+                    await Utils.executeIndexScripts(urlObj);
+                } else if (path.includes('/fragments')) {
+                    await Utils.executeFragmentsScripts(urlObj);
+                } else if (path.includes('/tags/')) {
+                    await Utils.executeTagScripts(urlObj);
+                } else if (path === '/tags' || path === '/tags/') {
+                    await Utils.executeTagsIndexScripts(urlObj);
+                } else if (path.includes('/search.html')) {
+                    await Utils.executeSearchScripts(urlObj); // 传递 urlObj
+                }
             }
-        }
 
-        // 重新绑定动态链接
-        function rebindLinks() {
-            document.querySelectorAll('main.content a[href]:not([href^="http"]):not([href^="#"]):not([href^="mailto"])').forEach(link => {
-                link.removeEventListener('click', handleLinkClick);
-                link.addEventListener('click', handleLinkClick);
-            });
-        }
+            // 重新绑定动态链接
+            function rebindLinks() {
+                document.querySelectorAll('main.content a[href]:not([href^="http"]):not([href^="#"]):not([href^="mailto"])').forEach(link => {
+                    link.removeEventListener('click', handleLinkClick);
+                    link.addEventListener('click', handleLinkClick);
+                });
+            }
 
-        function handleLinkClick(e) {
-            e.preventDefault();
-            const href = e.currentTarget.getAttribute('href');
-            const lang = localStorage.getItem('lang') || 'zh';
-            const url = href.includes('?') ? `${href}&lang=${lang}` : `${href}?lang=${lang}`;
-            loadPageContent(url);
-        }
-
-        // 拦截所有内部链接
-        document.querySelectorAll('.nav-menu a, .header-title-link, .lang-link, a[href]:not([href^="http"]):not([href^="#"]):not([href^="mailto"])').forEach(link => {
-            link.addEventListener('click', async (e) => {
+            function handleLinkClick(e) {
                 e.preventDefault();
-                const href = link.getAttribute('href');
+                const href = e.currentTarget.getAttribute('href');
                 const lang = localStorage.getItem('lang') || 'zh';
                 const url = href.includes('?') ? `${href}&lang=${lang}` : `${href}?lang=${lang}`;
-                await loadPageContent(url);
-            });
-        });
+                loadPageContent(url);
+            }
 
-        // 处理浏览器前进/后退
-        window.addEventListener('popstate', (e) => {
-            const url = e.state?.url || window.location.href;
-            loadPageContent(url, false);
-        });
-
-        // 暴露 loadPageContent 给 search.js
-        window.loadPageContent = loadPageContent;
-
-        // 语言切换
-        document.querySelectorAll('.lang-link').forEach(link => {
-            link.classList.toggle('active', link.dataset.lang === currentLang);
-            link.addEventListener('click', (e) => {
-                e.preventDefault();
-                const newLang = link.dataset.lang;
-                if (newLang !== currentLang) {
-                    localStorage.setItem('lang', newLang);
-                    const currentUrl = new URL(window.location.href);
-                    currentUrl.searchParams.set('lang', newLang);
-                    loadPageContent(currentUrl.toString());
-                }
-            });
-        });
-
-        // 返回顶部
-        const backToTop = document.querySelector('.back-to-top');
-        window.addEventListener('scroll', () => {
-            backToTop.classList.toggle('visible', window.scrollY > 300);
-        });
-        backToTop.addEventListener('click', () => {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        });
-
-        // 浮动导航按钮
-        const floatingNavBtn = document.querySelector('.floating-nav-btn');
-        const navMenu = document.querySelector('.nav-menu');
-        const floatingNavIcon = document.querySelector('.floating-nav-icon');
-        if (floatingNavBtn && navMenu && floatingNavIcon) {
-            floatingNavBtn.addEventListener('click', () => {
-                navMenu.classList.toggle('active');
-                floatingNavBtn.classList.toggle('open');
-                floatingNavIcon.textContent = navMenu.classList.contains('active') ? '<' : '>';
-            });
-
-            navMenu.querySelectorAll('a').forEach(link => {
-                link.addEventListener('click', () => {
-                    navMenu.classList.remove('active');
-                    floatingNavBtn.classList.remove('open');
-                    floatingNavIcon.textContent = '>';
+            // 拦截所有内部链接
+            document.querySelectorAll('.nav-menu a, .header-title-link, .lang-link, a[href]:not([href^="http"]):not([href^="#"]):not([href^="mailto"])').forEach(link => {
+                link.addEventListener('click', async (e) => {
+                    e.preventDefault();
+                    const href = link.getAttribute('href');
+                    const lang = localStorage.getItem('lang') || 'zh';
+                    const url = href.includes('?') ? `${href}&lang=${lang}` : `${href}?lang=${lang}`;
+                    await loadPageContent(url);
                 });
             });
 
-            document.addEventListener('click', (e) => {
-                if (!navMenu.contains(e.target) && !floatingNavBtn.contains(e.target)) {
-                    navMenu.classList.remove('active');
-                    floatingNavBtn.classList.remove('open');
-                    floatingNavIcon.textContent = '>';
-                }
+            // 处理浏览器前进/后退
+            window.addEventListener('popstate', (e) => {
+                const url = e.state?.url || window.location.href;
+                loadPageContent(url, false);
             });
-        }
-    });
+
+            // 暴露 loadPageContent 给 search.js
+            window.loadPageContent = loadPageContent;
+
+            // 语言切换
+            document.querySelectorAll('.lang-link').forEach(link => {
+                link.classList.toggle('active', link.dataset.lang === currentLang);
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const newLang = link.dataset.lang;
+                    if (newLang !== currentLang) {
+                        localStorage.setItem('lang', newLang);
+                        const currentUrl = new URL(window.location.href);
+                        currentUrl.searchParams.set('lang', newLang);
+                        loadPageContent(currentUrl.toString());
+                    }
+                });
+            });
+
+            // 返回顶部
+            const backToTop = document.querySelector('.back-to-top');
+            window.addEventListener('scroll', () => {
+                backToTop.classList.toggle('visible', window.scrollY > 300);
+            });
+            backToTop.addEventListener('click', () => {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+
+            // 浮动导航按钮
+            const floatingNavBtn = document.querySelector('.floating-nav-btn');
+            const navMenu = document.querySelector('.nav-menu');
+            const floatingNavIcon = document.querySelector('.floating-nav-icon');
+            if (floatingNavBtn && navMenu && floatingNavIcon) {
+                floatingNavBtn.addEventListener('click', () => {
+                    navMenu.classList.toggle('active');
+                    floatingNavBtn.classList.toggle('open');
+                    floatingNavIcon.textContent = navMenu.classList.contains('active') ? '<' : '>';
+                });
+
+                navMenu.querySelectorAll('a').forEach(link => {
+                    link.addEventListener('click', () => {
+                        navMenu.classList.remove('active');
+                        floatingNavBtn.classList.remove('open');
+                        floatingNavIcon.textContent = '>';
+                    });
+                });
+
+                document.addEventListener('click', (e) => {
+                    if (!navMenu.contains(e.target) && !floatingNavBtn.contains(e.target)) {
+                        navMenu.classList.remove('active');
+                        floatingNavBtn.classList.remove('open');
+                        floatingNavIcon.textContent = '>';
+                    }
+                });
+            }
+        });
     </script>
 </body>
 

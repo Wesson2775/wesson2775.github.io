@@ -70,11 +70,11 @@ const Utils = {
         }
     },
     iconClasses: {
-        home: '🏠',
-        fragments: '📖',
-        friends: '👥',
-        tags: '🏷️',
-        about: 'ℹ️'
+        home: 'fas fa-home',
+        fragments: 'fas fa-book',
+        friends: 'fas fa-users',
+        tags: 'fas fa-tags',
+        about: 'fas fa-info-circle'
     },
     generatePagination: (totalPages, currentPage, lang, query = '') => {
         const cleanLang = String(lang).trim().toLowerCase();
