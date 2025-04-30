@@ -1,0 +1,58 @@
+---
+layout: default
+lang: zh
+---
+<div class="article">
+    <ul id="posts-list">
+        <!-- Content will be loaded dynamically by JavaScript -->
+    </ul>
+</div>
+<div class="page-nav">
+    <ul id="pagination"></ul>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const currentPage = parseInt(urlParams.get('page')) || 1;
+    const perPage = 5;
+    const lang = localStorage.getItem('lang') || 'zh';
+
+    fetch('{{ "/fragments.json" | relative_url }}')
+        .then(response => {
+            if (!response.ok) throw new Error(`Failed to load fragments data, status: ${response.status}`);
+            return response.json();
+        })
+        .then(posts => {
+            const filteredPosts = posts.filter(post => {
+                const postLang = post.lang || (post.url.includes('/en/') ? 'en' : 'zh');
+                const postCategory = post.category || 'fragments';
+                return postLang === lang && postCategory.toLowerCase().includes('fragment');
+            });
+            const totalPages = Math.ceil(filteredPosts.length / perPage);
+            const paginatedPosts = filteredPosts.slice((currentPage - 1) * perPage, currentPage * perPage);
+
+            const postsList = document.getElementById('posts-list');
+            postsList.innerHTML = paginatedPosts.length > 0
+                ? paginatedPosts.map(post => `
+                    <li>
+                        <div class="article-data">
+                            <div class="article-data-date">
+                                <p>${post.date}</p>
+                            </div>
+                        </div>
+                        <div class="article-content">
+                            <p>${post.content?.substring(0, 150) || ''}...</p>
+                        </div>
+                    </li>
+                `).join('')
+                : `<li><p class="no-results">${lang === 'en' ? 'No fragments found.' : '未找到随笔。'}</p></li>`;
+
+            const pagination = document.getElementById('pagination');
+            pagination.innerHTML = Utils.generatePagination(totalPages, currentPage, lang, urlParams.get('q') || '');
+        })
+        .catch(() => {
+            document.getElementById('posts-list').innerHTML = `<li><p class="no-results">${lang === 'en' ? 'Failed to load fragments.' : '加载随笔失败。'}</p></li>`;
+        });
+});
+</script>
