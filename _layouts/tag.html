@@ -1,12 +1,21 @@
 ---
 layout: default
 ---
-<div class="article">
-    <h3 data-lang-key="tag_title">标签：{{ page.tag }}</h3>
-    <ul id="posts-list">
-        <!-- Content will be loaded dynamically by JavaScript -->
-    </ul>
-</div>
-<div class="page-nav">
-    <ul id="pagination"></ul>
-</div>
+<main class="content"> 
+    <section class="tag-content">
+        <h1>{{ page.title }}</h1>
+        <ul class="post-list">
+            {% for post in site.tags[page.tag] %}
+            <li>
+                <a href="{{ post.url | relative_url }}?lang={{ post.lang }}">{{ post.title }}</a>
+                <span>{{ post.date | date: "%Y-%m-%d" }}</span>
+            </li>
+            {% endfor %}
+        </ul>
+    </section>
+    <div class="back-button-container">
+        <button class="back-button" aria-label="返回上一页" data-lang-key="back">
+            <i class="fas fa-arrow-left"></i> <span>返回</span>
+        </button>
+    </div>
+</main>

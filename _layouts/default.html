@@ -82,13 +82,13 @@
             let currentLang = urlParams.get('lang') || localStorage.getItem('lang') || 'zh';
             currentLang = ['zh', 'en'].includes(currentLang) ? currentLang : 'zh';
             localStorage.setItem('lang', currentLang);
-        
+      
             // 设置 HTML 语言
             document.documentElement.lang = currentLang === 'en' ? 'en' : 'zh-CN';
-        
+      
             // 判断是否为移动端
             const isMobile = () => window.matchMedia('(max-width: 991px)').matches;
-        
+      
             // 更新导航显示
             const updateNavDisplay = () => {
                 document.querySelectorAll('.nav-menu a').forEach(link => {
@@ -100,7 +100,7 @@
                     link.setAttribute('title', text);
                 });
             };
-        
+      
             // 防抖函数
             const debounce = (func, wait) => {
                 let timeout;
@@ -109,27 +109,27 @@
                     timeout = setTimeout(() => func.apply(this, args), wait);
                 };
             };
-        
+      
             // 初始化导航
             setTimeout(updateNavDisplay, 100);
             window.matchMedia('(max-width: 991px)').addEventListener('change', debounce(updateNavDisplay, 200));
-        
+      
             // 初始化播放器
             const songs = [
                 {
                     title: "示例歌曲1",
                     artist: "艺术家1",
-                    cover: "https://via.placeholder.com/30",
+                    cover: "https://via.placeholder.com/300",
                     src: "https://cdn.pixabay.com/download/audio/2025/03/01/audio_e71914a9bb.mp3?filename=the-helpless-slow-soothing-piano-music-307612.mp3"
                 },
                 {
                     title: "示例歌曲2",
                     artist: "艺术家2",
-                    cover: "https://via.placeholder.com/30",
+                    cover: "https://via.placeholder.com/300",
                     src: "https://example.com/song2.mp3"
                 }
             ];
-        
+      
             let playerInitialized = false;
             function initPlayer() {
                 if (!playerInitialized && window.MiniRecordPlayer) {
@@ -143,7 +143,7 @@
                 }
             }
             initPlayer();
-        
+      
             // 更新语言内容
             function updateLanguageContent(lang) {
                 document.querySelectorAll('[data-lang-key]').forEach(element => {
@@ -174,16 +174,18 @@
                             element.setAttribute('aria-label', Utils.translations[lang][key]);
                         } else if (element.tagName === 'BUTTON') {
                             element.setAttribute('aria-label', Utils.translations[lang][key]);
+                            if (key === 'back') {
+                                element.querySelector('span').textContent = Utils.translations[lang][key];
+                            }
                         } else {
                             element.textContent = Utils.translations[lang][key];
                         }
                     }
                 });
-                // 每次语言切换时更新导航
                 updateNavDisplay();
             }
             updateLanguageContent(currentLang);
-        
+      
             // 页面加载函数
             async function loadPageContent(url, pushState = true) {
                 let lang = localStorage.getItem('lang') || 'zh';
@@ -193,11 +195,10 @@
                     lang = urlObj.searchParams.get('lang') || localStorage.getItem('lang') || 'zh';
                     urlObj.searchParams.set('lang', lang);
                     localStorage.setItem('lang', lang);
-        
-                    // 清除旧内容
+      
                     const currentContent = document.querySelector('main.content');
                     currentContent.innerHTML = '';
-        
+      
                     const response = await fetch(urlObj.toString());
                     if (!response.ok) throw new Error(`Failed to load page, status: ${response.status}`);
                     const html = await response.text();
@@ -205,32 +206,30 @@
                     const doc = parser.parseFromString(html, 'text/html');
                     const newContent = doc.querySelector('main.content');
                     if (!newContent) throw new Error('Main content not found');
-        
-                    // 保护播放器DOM
+      
                     const recordPlayer = document.getElementById('mini-record-player');
                     const audioPlayer = document.getElementById('audio-player');
                     if (recordPlayer && audioPlayer) {
                         recordPlayer.remove();
                         audioPlayer.remove();
                     }
-        
+      
                     currentContent.innerHTML = newContent.innerHTML;
                     document.querySelector('main.content').classList.remove('loading');
-        
-                    // 重新添加播放器
+      
                     if (recordPlayer && audioPlayer) {
                         document.body.appendChild(recordPlayer);
                         document.body.appendChild(audioPlayer);
                     }
-        
+      
                     await executePageScripts(urlObj);
                     if (pushState) {
                         window.history.pushState({ url: urlObj.toString() }, '', urlObj.toString());
                     }
                     updateLanguageContent(lang);
                     rebindLinks();
-                    // 页面加载后更新导航
                     updateNavDisplay();
+                    bindBackButtonWithRetry();
                 } catch (error) {
                     console.error('Error loading page:', error);
                     const currentContent = document.querySelector('main.content');
@@ -240,8 +239,7 @@
                     }
                 }
             }
-        
-            // 执行页面特定脚本
+      
             async function executePageScripts(urlObj) {
                 const path = urlObj.pathname;
                 const lang = localStorage.getItem('lang') || 'zh';
@@ -257,15 +255,14 @@
                     await Utils.executeSearchScripts(urlObj);
                 }
             }
-        
-            // 重新绑定动态链接
+      
             function rebindLinks() {
                 document.querySelectorAll('main.content a[href]:not([href^="http"]):not([href^="#"]):not([href^="mailto"]):not([href$="feed.xml"])').forEach(link => {
                     link.removeEventListener('click', handleLinkClick);
                     link.addEventListener('click', handleLinkClick);
                 });
             }
-        
+      
             function handleLinkClick(e) {
                 e.preventDefault();
                 const href = e.currentTarget.getAttribute('href');
@@ -273,8 +270,7 @@
                 const url = href.includes('?') ? `${href}&lang=${lang}` : `${href}?lang=${lang}`;
                 loadPageContent(url);
             }
-        
-            // 拦截所有内部链接
+      
             document.querySelectorAll('.nav-menu a, .header-title-link, .lang-link, a[href]:not([href^="http"]):not([href^="#"]):not([href^="mailto"]):not([href$="feed.xml"])').forEach(link => {
                 link.addEventListener('click', async (e) => {
                     e.preventDefault();
@@ -284,17 +280,14 @@
                     await loadPageContent(url);
                 });
             });
-        
-            // 处理浏览器前进/后退
+      
             window.addEventListener('popstate', (e) => {
                 const url = e.state?.url || window.location.href;
                 loadPageContent(url, false);
             });
-        
-            // 暴露 loadPageContent 给 search.js
+      
             window.loadPageContent = loadPageContent;
-        
-            // 语言切换
+      
             document.querySelectorAll('.lang-link').forEach(link => {
                 link.classList.toggle('active', link.dataset.lang === currentLang);
                 link.addEventListener('click', (e) => {
@@ -308,8 +301,7 @@
                     }
                 });
             });
-        
-            // 返回顶部
+      
             const backToTop = document.querySelector('.back-to-top');
             window.addEventListener('scroll', () => {
                 backToTop.classList.toggle('visible', window.scrollY > 300);
@@ -317,8 +309,7 @@
             backToTop.addEventListener('click', () => {
                 window.scrollTo({ top: 0, behavior: 'smooth' });
             });
-        
-            // 浮动导航按钮
+      
             const floatingNavBtn = document.querySelector('.floating-nav-btn');
             const navMenu = document.querySelector('.nav-menu');
             const floatingNavIcon = document.querySelector('.floating-nav-icon');
@@ -328,7 +319,7 @@
                     floatingNavBtn.classList.toggle('open');
                     floatingNavIcon.textContent = navMenu.classList.contains('active') ? '<' : '>';
                 });
-        
+      
                 navMenu.querySelectorAll('a').forEach(link => {
                     link.addEventListener('click', () => {
                         navMenu.classList.remove('active');
@@ -336,7 +327,7 @@
                         floatingNavIcon.textContent = '>';
                     });
                 });
-        
+      
                 document.addEventListener('click', (e) => {
                     if (!navMenu.contains(e.target) && !floatingNavBtn.contains(e.target)) {
                         navMenu.classList.remove('active');
@@ -345,6 +336,47 @@
                     }
                 });
             }
+      
+            function bindBackButton() {
+                try {
+                    const backButton = document.querySelector('.back-button');
+                    if (backButton) {
+                        backButton.removeEventListener('click', handleBackButtonClick);
+                        backButton.addEventListener('click', handleBackButtonClick);
+                        return true;
+                    }
+                    return false;
+                } catch (error) {
+                    console.error('Error binding back button:', error);
+                    return false;
+                }
+            }
+      
+            function bindBackButtonWithRetry(attempts = 3, delay = 100) {
+                let attempt = 0;
+                function tryBind() {
+                    if (bindBackButton() || attempt >= attempts) return;
+                    attempt++;
+                    setTimeout(tryBind, delay);
+                }
+                tryBind();
+            }
+      
+            function handleBackButtonClick() {
+                try {
+                    if (window.history.length > 1) {
+                        window.history.back();
+                    } else {
+                        console.warn('No history to go back to, redirecting to home');
+                        window.location.href = `/?lang=${localStorage.getItem('lang') || 'zh'}`;
+                    }
+                } catch (error) {
+                    console.error('Error in handleBackButtonClick:', error);
+                    window.location.href = `/?lang=${localStorage.getItem('lang') || 'zh'}`;
+                }
+            }
+      
+            setTimeout(() => bindBackButtonWithRetry(), 100);
         });
         </script>
 </body>

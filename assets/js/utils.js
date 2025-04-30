@@ -14,7 +14,8 @@ const Utils = {
             nav_menu: '打开导航菜单',
             back_to_top: '返回顶部',
             tag_title: '标签',
-            all_tags: '所有标签'
+            all_tags: '所有标签',
+            back: '返回'
         },
         en: {
             title: '{{ site.title_en }}',
@@ -30,12 +31,13 @@ const Utils = {
             nav_menu: 'Open navigation menu',
             back_to_top: 'Back to top',
             tag_title: 'Tag',
-            all_tags: 'All Tags'
+            all_tags: 'All Tags',
+            back: 'Back'
         }
     },
     tagTranslations: {
         zh: {
-            '生活随笔': '生活随笔',
+            '生活随笔': '生活 фотограф',
             '技术笔记': '技术笔记',
             '旅行日志': '旅行日志',
             '人工智能': '人工智能',

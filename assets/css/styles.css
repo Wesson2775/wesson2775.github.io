@@ -716,6 +716,39 @@ html {
     color: var(--text-secondary);
 }
 
+/* 返回按钮 */
+.back-button-container {
+    margin-top: 20px;
+    display: flex;
+    justify-content: flex-start;
+}
+
+.back-button {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 8px 12px;
+    background-color: var(--accent-main);
+    color: var(--text-main);
+    border: none;
+    border-radius: 5px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.back-button:hover {
+    background-color: var(--accent-hover);
+    color: var(--text-accent-hover);
+}
+
+.back-button i {
+    font-size: 14px;
+}
+
+
+
 .content {
     margin-top: 15px;
 }
@@ -996,6 +1029,20 @@ html {
     /* 返回顶部 */
     .back-to-top {
         bottom: 20px;
+    }
+    
+    /* 移动端样式 */
+    .back-button-container {
+        margin-top: 15px;
+    }
+
+    .back-button {
+        padding: 6px 10px;
+        font-size: 12px;
+    }
+
+    .back-button i {
+        font-size: 12px;
     }
 }
 
