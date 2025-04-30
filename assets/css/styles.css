@@ -41,7 +41,7 @@ body {
     background-repeat: no-repeat;
     background-position: center;
     min-height: 100vh;
-    font-family: 'LXGW WenKai TC', sans-serif; /* 添加字体 */
+    font-family: 'LXGW WenKai TC', sans-serif;
 }
 
 /* 确保 html 不覆盖字体 */
@@ -94,7 +94,7 @@ html {
 .header-middle-content {
     display: flex;
     align-items: center;
-    gap: 20px; /* 头像和文字之间的间距 */
+    gap: 20px;
 }
 
 /* 圆形头像 */
@@ -102,11 +102,11 @@ html {
     width: 55px;
     height: 55px;
     border-radius: 50%;
-    background-image: url('/assets/images/avatar.jpg'); /* 替换成你的头像路径 */
+    background-image: url('/assets/images/avatar.jpg');
     background-size: cover;
     background-position: center;
-    border: 2px solid var(--accent-main); /* 可选：头像边框 */
-    transition: transform 0.5s ease; /* 旋转动画 */
+    border: 2px solid var(--accent-main);
+    transition: transform 0.5s ease;
 }
 
 /* 鼠标悬停时头像旋转 */
@@ -118,18 +118,6 @@ html {
 .header-text {
     display: flex;
     flex-direction: column;
-}
-
-
-/* 响应式调整（移动端） */
-@media (max-width: 991px) {
-    .blog-avatar {
-        width: 50px;
-        height: 50px;
-    }
-    .header-middle-content {
-        gap: 15px;
-    }
 }
 
 .header-middle h1 {
@@ -168,14 +156,14 @@ html {
     white-space: nowrap;
 }
 
+.header-bottom-nav ul {
+    display: flex;
+    gap: 30px;
+}
+
 .header-bottom-nav li {
     margin-top: 20px;
     display: inline-block;
-    margin-right: 30px;
-}
-
-.header-bottom-nav li:last-child {
-    margin-right: 0;
 }
 
 .header-bottom-nav li a {
@@ -184,6 +172,9 @@ html {
     font-weight: 600;
     position: relative;
     transition: color 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 5px;
 }
 
 .header-bottom-nav li a:hover {
@@ -239,8 +230,11 @@ html {
     color: var(--text-tag);
 }
 
+#search-input:focus {
+    border-color: var(--border-search-focus);
+}
+
 .search-icon {
-    color: var(--text-disabled);
     position: absolute;
     right: 5px;
     top: 50%;
@@ -254,10 +248,6 @@ html {
 
 .search-icon:hover {
     color: var(--accent-main);
-}
-
-.search-input:focus {
-    border-color: var(--border-search-focus);
 }
 
 /* 文章 */
@@ -364,6 +354,10 @@ html {
     font-size: 12px;
 }
 
+.tags-page h3{
+    color: var(--text-main);
+}
+
 /* 标签 */
 .tag-list,
 .search-result-tags {
@@ -393,37 +387,59 @@ html {
     color: var(--text-accent-hover);
 }
 
+/* 标签页面（添加 .tag-button 样式） */
+.tags-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.tag-button {
+    color: var(--text-tag);
+    display: inline-block;
+    padding: 5px 10px;
+    background-color: var(--accent-main);
+    border-radius: 5px;
+    font-size: 12px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.tag-button:hover {
+    background-color: var(--accent-hover);
+    color: var(--text-accent-hover);
+}
+
 /* 文章头部 */
 .post-header {
-    text-align: center; /* 整体居中 */
-    margin-bottom: 20px; /* 与文章内容保持间距 */
+    text-align: center;
+    margin-bottom: 20px;
 }
 
 .post-header h3 {
     color: var(--text-main);
-    font-size: 24px; /* 调整标题大小 */
-    margin: 0 0 10px 0; /* 标题与下方元素间距 */
+    font-size: 24px;
+    margin: 0 0 10px 0;
 }
 
 .post-meta {
     display: flex;
-    justify-content: center; /* 水平居中 */
-    align-items: center; /* 垂直居中 */
-    gap: 15px; /* 日期和标签之间的间距 */
-    flex-wrap: wrap; /* 防止标签溢出 */
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    flex-wrap: wrap;
 }
 
 .post-meta time {
-    margin-right: 0; /* 重置默认样式 */
+    margin-right: 0;
     color: var(--accent-main);
     font-size: 12px;
 }
 
 .post-tags {
     display: flex;
-    gap: 10px; /* 标签之间的间距 */
-    justify-content: center; /* 标签居中 */
-    flex-wrap: wrap; /* 标签过多时换行 */
+    gap: 10px;
+    justify-content: center;
+    flex-wrap: wrap;
 }
 
 .post-tags a.tag {
@@ -750,6 +766,15 @@ html {
         padding: 15px 0;
     }
 
+    .blog-avatar {
+        width: 50px;
+        height: 50px;
+    }
+
+    .header-middle-content {
+        gap: 15px;
+    }
+
     .header-middle a h1 {
         font-size: 1.5em;
         transition: color 0.3s ease;
@@ -853,12 +878,12 @@ html {
 
     /* 导航图标旋转效果 */
     .header-bottom-nav li a i {
-        display: inline-block; /* 确保图标可以旋转 */
-        transition: transform 0.5s ease; /* 旋转动画 */
+        display: inline-block;
+        transition: transform 0.5s ease;
     }
 
     .header-bottom-nav li a:hover i {
-        transform: rotate(360deg); /* 鼠标悬停时旋转 360 度 */
+        transform: rotate(360deg);
     }
 
     /* 浮动导航按钮 */
@@ -875,7 +900,7 @@ html {
         color: var(--text-accent-hover);
         font-size: 24px;
         cursor: pointer;
-        z-index: 1000;
+        z-index: 100 cupped;
         align-items: center;
         justify-content: center;
         box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);

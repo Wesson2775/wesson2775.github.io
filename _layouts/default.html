@@ -1,15 +1,19 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>{{ page.title | default: site.title }}</title>
-    <link rel="stylesheet" href="{{ '/assets/css/styles.css?v=1.4' | relative_url }}">
+    <link rel="stylesheet" href="{{ '/assets/css/styles.css?v=1.5' | relative_url }}">
     <link rel="icon" href="{{ '/favicon.ico' | relative_url }}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+        integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer">
     <script src="{{ '/assets/js/search.js' | relative_url }}" defer></script>
     <script src="{{ '/assets/js/utils.js' | relative_url }}" defer></script>
 </head>
+
 <body>
     <div class="main-container">
         <header class="header">
@@ -21,9 +25,7 @@
             </div>
             <div class="header-middle">
                 <div class="header-middle-content">
-                    <!-- 头像放在左侧 -->
                     <div class="blog-avatar"></div>
-                    <!-- 标题和描述 -->
                     <div class="header-text">
                         <a href="{{ '/' | relative_url }}" class="header-title-link">
                             <h1 data-lang-key="title"></h1>
@@ -35,16 +37,21 @@
             <div class="header-bottom">
                 <nav class="header-bottom-nav nav-menu">
                     <ul>
-                        <li><a href="{{ '/' | relative_url }}" data-lang-key="home"><i class="fas fa-home"></i><span class="nav-text">首页</span></a></li>
-                        <li><a href="{{ '/fragments' | relative_url }}" data-lang-key="fragments"><i class="fas fa-book"></i><span class="nav-text">随笔</span></a></li>
-                        <li><a href="{{ '/friends' | relative_url }}" data-lang-key="friends"><i class="fas fa-users"></i><span class="nav-text">友邻</span></a></li>
-                        <li><a href="{{ '/tags' | relative_url }}" data-lang-key="tags"><i class="fas fa-tags"></i><span class="nav-text">标签</span></a></li>
-                        <li><a href="{{ '/about' | relative_url }}" data-lang-key="about"><i class="fas fa-info-circle"></i><span class="nav-text">关于</span></a></li>
+                        <li><a href="{{ '/' | relative_url }}" data-lang-key="home"><i class="fas fa-home"></i><span
+                                    class="nav-text">首页</span></a></li>
+                        <li><a href="{{ '/fragments' | relative_url }}" data-lang-key="fragments"><i
+                                    class="fas fa-book"></i><span class="nav-text">随笔</span></a></li>
+                        <li><a href="{{ '/friends' | relative_url }}" data-lang-key="friends"><i
+                                    class="fas fa-users"></i><span class="nav-text">友邻</span></a></li>
+                        <li><a href="{{ '/tags' | relative_url }}" data-lang-key="tags"><i class="fas fa-tags"></i><span
+                                    class="nav-text">标签</span></a></li>
+                        <li><a href="{{ '/about' | relative_url }}" data-lang-key="about"><i
+                                    class="fas fa-info-circle"></i><span class="nav-text">关于</span></a></li>
                     </ul>
                 </nav>
                 <div class="search-container">
                     <input type="text" id="search-input" placeholder="搜索" aria-label="搜索" data-lang-key="search">
-                    <i class="fas fa-search search-icon"></i>
+                    <span class="search-icon">🔍</span>
                 </div>
             </div>
         </header>
@@ -68,88 +75,180 @@
         <i class="fas fa-arrow-up"></i>
     </button>
     <script>
-    document.addEventListener('DOMContentLoaded', () => {
-        // 获取语言：优先从 URL 参数获取，若无则从 localStorage 获取，默认为 zh
-        const urlParams = new URLSearchParams(window.location.search);
-        let currentLang = urlParams.get('lang') || localStorage.getItem('lang') || 'zh';
-        currentLang = ['zh', 'en'].includes(currentLang) ? currentLang : 'zh';
-        localStorage.setItem('lang', currentLang);
+        document.addEventListener('DOMContentLoaded', () => {
+            // 获取语言
+            const urlParams = new URLSearchParams(window.location.search);
+            let currentLang = urlParams.get('lang') || localStorage.getItem('lang') || 'zh';
+            currentLang = ['zh', 'en'].includes(currentLang) ? currentLang : 'zh';
+            localStorage.setItem('lang', currentLang);
 
-        // 确保 page.lang 与 currentLang 一致
-        document.querySelectorAll('html').forEach(html => {
-            html.lang = currentLang === 'en' ? 'en' : 'zh-CN';
-        });
+            // 设置 HTML 语言
+            document.documentElement.lang = currentLang === 'en' ? 'en' : 'zh-CN';
 
-        // 判断是否为移动端
-        const isMobile = () => window.matchMedia('(max-width: 991px)').matches;
+            // 判断是否为移动端
+            const isMobile = () => window.matchMedia('(max-width: 991px)').matches;
 
-        // 更新导航显示
-        const updateNavDisplay = () => {
-            document.querySelectorAll('.nav-menu a').forEach(link => {
-                const key = link.getAttribute('data-lang-key');
-                link.innerHTML = isMobile() 
-                    ? `<i class="${Utils.iconClasses[key]}"></i>`
-                    : `<span class="nav-text">${Utils.translations[currentLang][key]}</span>`;
-                link.setAttribute('title', Utils.translations[currentLang][key]);
-            });
-        };
-
-        // 防抖函数
-        const debounce = (func, wait) => {
-            let timeout;
-            return (...args) => {
-                clearTimeout(timeout);
-                timeout = setTimeout(() => func.apply(this, args), wait);
+            // 更新导航显示
+            const updateNavDisplay = () => {
+                document.querySelectorAll('.nav-menu a').forEach(link => {
+                    const key = link.getAttribute('data-lang-key');
+                    link.innerHTML = isMobile()
+                        ? `<i class="${Utils.iconClasses[key]}"></i>`
+                        : `<i class="${Utils.iconClasses[key]}"></i><span class="nav-text">${Utils.translations[currentLang][key]}</span>`;
+                    link.setAttribute('title', Utils.translations[currentLang][key]);
+                });
             };
-        };
 
-        // 初始化导航
-        setTimeout(updateNavDisplay, 100);
-        window.matchMedia('(max-width: 991px)').addEventListener('change', debounce(updateNavDisplay, 200));
+            // 防抖函数
+            const debounce = (func, wait) => {
+                let timeout;
+                return (...args) => {
+                    clearTimeout(timeout);
+                    timeout = setTimeout(() => func.apply(this, args), wait);
+                };
+            };
 
-        // 更新语言内容
-        document.querySelectorAll('[data-lang-key]').forEach(element => {
-            const key = element.getAttribute('data-lang-key');
-            if (key === 'title') {
-                element.textContent = currentLang === 'en' ? '{{ site.title_en }}' : '{{ site.title }}';
-            } else if (key === 'description') {
-                element.textContent = currentLang === 'en' ? '{{ site.description_en }}' : '{{ site.description }}';
-            } else if (key === 'author') {
-                element.textContent = currentLang === 'en' ? '{{ site.data.site_data.footer.author_en }}' : '{{ site.data.site_data.footer.author }}';
-            } else if (key === 'footer') {
-                element.textContent = `© {{ site.data.site_data.footer.start_year }} - {{ "now" | date: "%Y" }} ${currentLang === 'en' ? '{{ site.data.site_data.footer.author_en }}' : '{{ site.data.site_data.footer.author }}'} · {{ site.data.site_data.footer.license }}`;
-            } else if (key.startsWith('friend_name_')) {
-                const index = parseInt(key.split('_')[2]) - 1;
-                const friends = {{ site.data.site_data.friends | jsonify }};
+            // 初始化导航
+            setTimeout(updateNavDisplay, 100);
+            window.matchMedia('(max-width: 991px)').addEventListener('change', debounce(updateNavDisplay, 200));
+
+            // 更新语言内容
+            function updateLanguageContent(lang) {
+                document.querySelectorAll('[data-lang-key]').forEach(element => {
+                    const key = element.getAttribute('data-lang-key');
+                    if (key === 'title') {
+                        element.textContent = lang === 'en' ? '{{ site.title_en }}' : '{{ site.title }}';
+                    } else if (key === 'description') {
+                        element.textContent = lang === 'en' ? '{{ site.description_en }}' : '{{ site.description }}';
+                    } else if (key === 'author') {
+                        element.textContent = lang === 'en' ? '{{ site.data.site_data.footer.author_en }}' : '{{ site.data.site_data.footer.author }}';
+                    } else if (key === 'footer') {
+                        element.textContent = `© {{ site.data.site_data.footer.start_year }} - ${new Date().getFullYear()} ${lang === 'en' ? '{{ site.data.site_data.footer.author_en }}' : '{{ site.data.site_data.footer.author }}'} · {{ site.data.site_data.footer.license }}`;
+                    } else if (key.startsWith('friend_name_')) {
+                        const index = parseInt(key.split('_')[2]) - 1;
+                        const friends = {{ site.data.site_data.friends | jsonify
+                    }
+                };
                 if (friends && friends[index]) {
-                    element.textContent = currentLang === 'en' ? friends[index].name_en : friends[index].name;
+                    element.textContent = lang === 'en' ? friends[index].name_en : friends[index].name;
                 }
             } else if (key.startsWith('friend_desc_')) {
                 const index = parseInt(key.split('_')[2]) - 1;
-                const friends = {{ site.data.site_data.friends | jsonify }};
-                if (friends && friends[index]) {
-                    element.textContent = currentLang === 'en' ? friends[index].description_en : friends[index].description;
+                const friends = {{ site.data.site_data.friends | jsonify
+            }
+        };
+        if (friends && friends[index]) {
+            element.textContent = lang === 'en' ? friends[index].description_en : friends[index].description;
+        }
+                } else if (Utils.translations[lang][key] && !element.classList.contains('nav-text')) {
+            if (element.tagName === 'INPUT') {
+                element.placeholder = Utils.translations[lang][key];
+                element.setAttribute('aria-label', Utils.translations[lang][key]);
+            } else if (element.tagName === 'BUTTON') {
+                element.setAttribute('aria-label', Utils.translations[lang][key]);
+            } else {
+                element.textContent = Utils.translations[lang][key];
+            }
+        }
+            });
+        }
+        updateLanguageContent(currentLang);
+
+        // 页面加载函数
+        async function loadPageContent(url, pushState = true) {
+            let lang = localStorage.getItem('lang') || 'zh';
+            try {
+                document.querySelector('main.content').classList.add('loading');
+                const urlObj = new URL(url, window.location.origin);
+                lang = urlObj.searchParams.get('lang') || localStorage.getItem('lang') || 'zh';
+                urlObj.searchParams.set('lang', lang);
+                localStorage.setItem('lang', lang);
+
+
+                // 清除旧内容
+                const currentContent = document.querySelector('main.content');
+                currentContent.innerHTML = '';
+
+                const response = await fetch(urlObj.toString());
+                if (!response.ok) throw new Error(`Failed to load page, status: ${response.status}`);
+                const html = await response.text();
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(html, 'text/html');
+                const newContent = doc.querySelector('main.content');
+                if (!newContent) throw new Error('Main content not found');
+
+                currentContent.innerHTML = newContent.innerHTML;
+                document.querySelector('main.content').classList.remove('loading');
+
+                // 传递 urlObj 给 executePageScripts
+                await executePageScripts(urlObj);
+                if (pushState) {
+                    window.history.pushState({ url: urlObj.toString() }, '', urlObj.toString());
                 }
-            } else if (Utils.translations[currentLang][key] && !element.classList.contains('nav-text')) {
-                if (element.tagName === 'INPUT') {
-                    element.placeholder = Utils.translations[currentLang][key];
-                    element.setAttribute('aria-label', Utils.translations[currentLang][key]);
-                } else if (element.tagName === 'BUTTON') {
-                    element.setAttribute('aria-label', Utils.translations[currentLang][key]);
-                } else {
-                    element.textContent = Utils.translations[currentLang][key];
+                updateLanguageContent(lang);
+                rebindLinks();
+            } catch (error) {
+                console.error('Error loading page:', error);
+                const currentContent = document.querySelector('main.content');
+                if (currentContent) {
+                    currentContent.classList.remove('loading');
+                    currentContent.innerHTML = `<p class="no-results">${lang === 'en' ? 'Failed to load content. Please try again.' : '加载内容失败，请重试。'}</p>`;
                 }
             }
+        }
+
+        // 执行页面特定脚本
+        async function executePageScripts(urlObj) {
+            const path = urlObj.pathname;
+            const lang = localStorage.getItem('lang') || 'zh';
+            if (path === '/' || path.includes('/index.html')) {
+                await Utils.executeIndexScripts(urlObj);
+            } else if (path.includes('/fragments')) {
+                await Utils.executeFragmentsScripts(urlObj);
+            } else if (path.includes('/tags/')) {
+                await Utils.executeTagScripts(urlObj);
+            } else if (path === '/tags' || path === '/tags/') {
+                await Utils.executeTagsIndexScripts(urlObj);
+            } else if (path.includes('/search.html')) {
+                await Utils.executeSearchScripts(urlObj); // 传递 urlObj
+            }
+        }
+
+        // 重新绑定动态链接
+        function rebindLinks() {
+            document.querySelectorAll('main.content a[href]:not([href^="http"]):not([href^="#"]):not([href^="mailto"])').forEach(link => {
+                link.removeEventListener('click', handleLinkClick);
+                link.addEventListener('click', handleLinkClick);
+            });
+        }
+
+        function handleLinkClick(e) {
+            e.preventDefault();
+            const href = e.currentTarget.getAttribute('href');
+            const lang = localStorage.getItem('lang') || 'zh';
+            const url = href.includes('?') ? `${href}&lang=${lang}` : `${href}?lang=${lang}`;
+            loadPageContent(url);
+        }
+
+        // 拦截所有内部链接
+        document.querySelectorAll('.nav-menu a, .header-title-link, .lang-link, a[href]:not([href^="http"]):not([href^="#"]):not([href^="mailto"])').forEach(link => {
+            link.addEventListener('click', async (e) => {
+                e.preventDefault();
+                const href = link.getAttribute('href');
+                const lang = localStorage.getItem('lang') || 'zh';
+                const url = href.includes('?') ? `${href}&lang=${lang}` : `${href}?lang=${lang}`;
+                await loadPageContent(url);
+            });
         });
 
-        // 更新链接语言参数
-        document.querySelectorAll('.nav-menu a, .header-title-link, .lang-link, a[href]:not([href^="http"]):not([href^="#"]):not([href^="mailto"])').forEach(link => {
-            const href = link.getAttribute('href');
-            if (href && !href.includes('?lang=')) {
-                const baseHref = href.split('?')[0];
-                link.setAttribute('href', `${baseHref}?lang=${currentLang}`);
-            }
+        // 处理浏览器前进/后退
+        window.addEventListener('popstate', (e) => {
+            const url = e.state?.url || window.location.href;
+            loadPageContent(url, false);
         });
+
+        // 暴露 loadPageContent 给 search.js
+        window.loadPageContent = loadPageContent;
 
         // 语言切换
         document.querySelectorAll('.lang-link').forEach(link => {
@@ -161,7 +260,7 @@
                     localStorage.setItem('lang', newLang);
                     const currentUrl = new URL(window.location.href);
                     currentUrl.searchParams.set('lang', newLang);
-                    window.location.href = currentUrl.toString();
+                    loadPageContent(currentUrl.toString());
                 }
             });
         });
@@ -205,4 +304,5 @@
     });
     </script>
 </body>
+
 </html>

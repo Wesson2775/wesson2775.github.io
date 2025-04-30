@@ -1,47 +1,12 @@
 ---
 layout: default
+lang: zh
 ---
-<div class="article">
-    <h3 data-lang-key="tags">标签</h3>
-    <ul class="tag-list" id="tag-list">
-        <!-- Tags will be loaded dynamically by JavaScript -->
-    </ul>
+
+<div class="tags-page">
+    <h3 data-lang-key="tag_title">标签</h3>
+    <div id="posts-list" class="tags-list">
+        <!-- 标签列表将在这里动态加载 -->
+    </div>
+    <div id="pagination"></div>
 </div>
-
-<script>
-document.addEventListener('DOMContentLoaded', () => {
-    const urlParams = new URLSearchParams(window.location.search);
-    const lang = localStorage.getItem('lang') || 'zh';
-
-    fetch('{{ "/posts.json" | relative_url }}')
-        .then(response => {
-            if (!response.ok) throw new Error(`Failed to load posts data, status: ${response.status}`);
-            return response.json();
-        })
-        .then(posts => {
-            const allTags = [...new Set(
-                posts
-                    .filter(post => post.lang === lang)
-                    .flatMap(post => post.tags || [])
-            )].sort();
-            const displayTags = allTags.map(tag => ({
-                original: tag,
-                display: Utils.tagTranslations[lang][tag] || tag
-            }));
-
-            const tagList = document.getElementById('tag-list');
-            tagList.innerHTML = displayTags.length > 0
-                ? displayTags.map(tag => `
-                    <li>
-                        <a href="{{ '/tags/' | relative_url }}${encodeURIComponent(tag.original)}?lang=${lang}">
-                            ${tag.display}
-                        </a>
-                    </li>
-                `).join('')
-                : `<li><p class="no-results">${lang === 'en' ? 'No tags found.' : '未找到标签。'}</p></li>`;
-        })
-        .catch(() => {
-            document.getElementById('tag-list').innerHTML = `<li><p class="no-results">${lang === 'en' ? 'Failed to load tags.' : '加载标签失败。'}</p></li>`;
-        });
-});
-</script>
