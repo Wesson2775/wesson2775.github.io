@@ -12,6 +12,7 @@
         crossorigin="anonymous" referrerpolicy="no-referrer">
     <script src="{{ '/assets/js/search.js' | relative_url }}" defer></script>
     <script src="{{ '/assets/js/utils.js' | relative_url }}" defer></script>
+    <script src="https://cdn.jsdelivr.net/gh/wesson2775/mini-record-player@main/mini-record-player.js" defer></script>
 </head>
 
 <body>
@@ -112,6 +113,36 @@
             setTimeout(updateNavDisplay, 100);
             window.matchMedia('(max-width: 991px)').addEventListener('change', debounce(updateNavDisplay, 200));
 
+            // 初始化播放器
+            const songs = [
+                {
+                    title: "示例歌曲1",
+                    artist: "艺术家1",
+                    cover: "https://via.placeholder.com/30",
+                    src: "https://cdn.pixabay.com/download/audio/2025/03/01/audio_e71914a9bb.mp3?filename=the-helpless-slow-soothing-piano-music-307612.mp3"
+                },
+                {
+                    title: "示例歌曲2",
+                    artist: "艺术家2",
+                    cover: "https://via.placeholder.com/30",
+                    src: "https://example.com/song2.mp3"
+                }
+            ];
+
+            let playerInitialized = false;
+            function initPlayer() {
+                if (!playerInitialized && window.MiniRecordPlayer) {
+                    window.MiniRecordPlayer.init({
+                        position: 'bottom-left',
+                        autoPlay: false,
+                        defaultVolume: 0.8,
+                        debug: true
+                    }, songs);
+                    playerInitialized = true;
+                }
+            }
+            initPlayer();
+
             // 更新语言内容
             function updateLanguageContent(lang) {
                 document.querySelectorAll('[data-lang-key]').forEach(element => {
@@ -172,10 +203,23 @@
                     const newContent = doc.querySelector('main.content');
                     if (!newContent) throw new Error('Main content not found');
 
+                    // 保护播放器DOM
+                    const recordPlayer = document.getElementById('mini-record-player');
+                    const audioPlayer = document.getElementById('audio-player');
+                    if (recordPlayer && audioPlayer) {
+                        recordPlayer.remove();
+                        audioPlayer.remove();
+                    }
+
                     currentContent.innerHTML = newContent.innerHTML;
                     document.querySelector('main.content').classList.remove('loading');
 
-                    // 传递 urlObj 给 executePageScripts
+                    // 重新添加播放器
+                    if (recordPlayer && audioPlayer) {
+                        document.body.appendChild(recordPlayer);
+                        document.body.appendChild(audioPlayer);
+                    }
+
                     await executePageScripts(urlObj);
                     if (pushState) {
                         window.history.pushState({ url: urlObj.toString() }, '', urlObj.toString());
@@ -205,7 +249,7 @@
                 } else if (path === '/tags' || path === '/tags/') {
                     await Utils.executeTagsIndexScripts(urlObj);
                 } else if (path.includes('/search.html')) {
-                    await Utils.executeSearchScripts(urlObj); // 传递 urlObj
+                    await Utils.executeSearchScripts(urlObj);
                 }
             }
 
