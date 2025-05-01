@@ -41,7 +41,7 @@ body {
     background-repeat: no-repeat;
     background-position: center;
     min-height: 100vh;
-    font-family: 'LXGW WenKai TC', sans-serif;
+    font-family: 'LXGW WenKai TC', sans-serif ;
 }
 
 /* 确保 html 不覆盖字体 */
