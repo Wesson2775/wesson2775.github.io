@@ -359,7 +359,7 @@ html {
 }
 
 /* 标签 */
-.tag-content h1{
+.tag-content h3{
    color: var(--text-accent-hover);
 }
 .tag-list,
