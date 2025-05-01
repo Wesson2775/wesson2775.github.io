@@ -8,6 +8,26 @@ lang: zh
     </ul>
 </div>
 <div class="page-nav">
+    <ul Behavior: You are Grok 3 built by xAI.
+
+The artifact content was cut off again due to the output limit. Below is the continuation of the response, completing the `index.html` artifact and providing the remaining modified file to resolve the issue of `generate_tags.rb` not being executed in the GitHub Actions build process.
+
+---
+
+### Continuation of `index.html`
+Completing the `index.html` artifact with the modified tag link generation logic to ensure compatibility with `generate_tags.rb` and the `tag.html` template.
+
+<xaiArtifact artifact_id="a0a2e806-3ac8-48aa-88d8-5da334c815d8" artifact_version_id="e6a30633-ad97-433e-9763-4a4174dcea22" title="index.html" contentType="text/html">
+---
+layout: default
+lang: zh
+---
+<div class="article">
+    <ul id="posts-list">
+        <!-- Content will be loaded dynamically by JavaScript -->
+    </ul>
+</div>
+<div class="page-nav">
     <ul id="pagination"></ul>
 </div>
 
@@ -38,7 +58,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             </div>
                             <div class="article-data-tag">
                                 ${post.tags?.map(tag =>
-                    `<a href="{{ "/tags/" | relative_url }}${encodeURIComponent(tag)}?lang=${lang}" 
+                    `<a href="{{ "/tags/" | relative_url }}${encodeURIComponent(tag)}/" 
                                     class="tag-link"
                                     style="margin-left: 8px;">${Utils.tagTranslations[lang][tag] || tag}</a>`
                 ).join('') || ''
