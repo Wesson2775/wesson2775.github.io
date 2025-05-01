@@ -12,7 +12,6 @@ on:
       - 'zh/**'
       - 'en/**'
       - '.github/scripts/sync_md_files.py'
-      - '_plugins/**'
   workflow_dispatch:
 
 permissions:
@@ -116,15 +115,9 @@ jobs:
           ruby-version: '3.2'
           bundler-cache: true
       - name: Install Dependencies
-        run: |
-          bundle install
-          bundle list
+        run: bundle install
       - name: Build Jekyll
         run: bundle exec jekyll build
-      - name: Debug Generated Tag Pages
-        run: |
-          echo "Listing generated tag pages:"
-          ls -R _site/tags/ || echo "No tag pages found"
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
