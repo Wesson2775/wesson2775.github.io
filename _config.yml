@@ -15,6 +15,7 @@ lang: zh
 plugins:
   - jekyll-feed
   - jekyll-paginate
+  - _plugins
 search:
   enabled: true
 collections:

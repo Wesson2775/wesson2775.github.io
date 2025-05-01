@@ -116,7 +116,14 @@ jobs:
           bundler-cache: true
       - name: Install Dependencies
         run: bundle install
-      - name: Build Jekyll
+      - name: Load Custom Plugins
+        run: |
+          mkdir -p _plugins  # 创建插件目录
+          cp .github/scripts/generate_tags.rb _plugins/  # 复制插件
+          echo "插件已加载:"
+          ls -l _plugins/  # 验证插件是否复制成功
+
+      - name: Build Jekyll with Plugins
         run: bundle exec jekyll build
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
