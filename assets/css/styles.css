@@ -682,6 +682,11 @@ html {
     color: var(--text-main);
 }
 
+.post-list span {
+    margin-left: 20px;
+    color: var(--text-main);
+}
+
 .post-list a:hover {
     color: var(--accent-hover);
 }
