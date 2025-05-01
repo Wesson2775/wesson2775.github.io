@@ -116,8 +116,24 @@ jobs:
           bundler-cache: true
       - name: Install Dependencies
         run: bundle install
+      - name: Verify Plugins
+        run: |
+          echo "Verifying plugins..."
+          ls -la _plugins/
+          if [ ! -f "_plugins/generate_tags.rb" ]; then
+            echo "Error: generate_tags.rb plugin not found!"
+            exit 1
+          fi
       - name: Build Jekyll with Plugins
-        run: bundle exec jekyll build
+        run: bundle exec jekyll build --trace
+      - name: Verify Tag Pages Generated
+        run: |
+          echo "Checking if tag pages were generated..."
+          if [ ! -d "_site/tags" ]; then
+            echo "Error: Tag pages directory not found!"
+            exit 1
+          fi
+          ls -la _site/tags/
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
