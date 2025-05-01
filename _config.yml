@@ -16,6 +16,7 @@ plugins_dir: _plugins  # 明确指定插件目录
 plugins:
   - jekyll-feed
   - jekyll-paginate
+  - generate_tags.rb 
  
 search:
   enabled: true
