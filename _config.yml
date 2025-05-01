@@ -12,10 +12,11 @@ url: "https://zor666.me"
 markdown: kramdown
 theme: minima
 lang: zh
+plugins_dir: _plugins  # 明确指定插件目录
 plugins:
   - jekyll-feed
   - jekyll-paginate
-  - _plugins
+ 
 search:
   enabled: true
 collections:
