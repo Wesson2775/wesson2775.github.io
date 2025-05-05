@@ -251,6 +251,9 @@ html {
 }
 
 /* 文章 */
+#posts-list li{
+    margin-bottom: 20px;
+}
 .article {
     margin-top: 35px;
 }
@@ -276,7 +279,6 @@ html {
     display: flex;
     justify-content: flex-start;
     align-items: center;
-    margin-bottom: 5px;
 }
 
 .article-data-date {
@@ -305,7 +307,7 @@ html {
     margin: 0;
 }
 
-.article-data-tag a.tag-link {
+.article-data-tag a .tag-link {
     color: var(--accent-main);
     text-decoration: none;
     transition: color 0.3s ease;
@@ -316,6 +318,7 @@ html {
 }
 
 .article-content h3 {
+    margin: 3px 0;
     color: var(--text-main);
     transition: color 0.3s ease;
 }
@@ -325,6 +328,7 @@ html {
 }
 
 .article .article-content p {
+    margin: 0;
     color: var(--text-secondary);
     font-size: 14px;
 }
@@ -670,7 +674,6 @@ html {
     font-size: 12px;
     font-weight: 600;
     text-decoration: none;
-    padding: 2px 8px;
     transition: all 0.3s ease;
 }
 
@@ -995,6 +998,7 @@ html {
     }
 
     .article .article-content p {
+        margin: 0;
         font-size: 14px;
     }
 

@@ -49,7 +49,7 @@
 
         .record-player {
             position: fixed;
-            bottom: 20px;
+            bottom: 70px;
             left: ${config.position.includes('left') ? '20px' : 'auto'};
             right: ${config.position.includes('right') ? '20px' : 'auto'};
             display: flex;
