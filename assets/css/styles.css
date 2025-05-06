@@ -168,7 +168,7 @@ html {
 
 .header-bottom-nav li a {
     color: var(--text-main);
-    font-size: 13px;
+    font-size: 16px;
     font-weight: 600;
     position: relative;
     transition: color 0.3s ease;
@@ -690,6 +690,10 @@ html {
     color: var(--text-main);
 }
 
+.nav-text span{
+    font-size: 14px;
+}
+
 .post-list a:hover {
     color: var(--accent-hover);
 }
@@ -738,7 +742,7 @@ html {
     display: flex;
     align-items: center;
     gap: 5px;
-    padding: 8px 12px;
+    padding: 6px 10px;
     background-color: var(--accent-main);
     color: var(--text-main);
     border: none;
@@ -754,8 +758,8 @@ html {
     color: var(--text-accent-hover);
 }
 
-.back-button i {
-    font-size: 14px;
+.back-button i,span{
+    line-height: 12px;
 }
 
 
@@ -904,7 +908,7 @@ html {
     }
 
     .header-bottom-nav li a {
-        font-size: 14px;
+        font-size: 16px;
         padding: 4px;
         display: block;
         color: var(--text-main);

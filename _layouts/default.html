@@ -265,7 +265,7 @@
             loadPageContent(url);
         }
 
-        document.querySelectorAll('.nav-menu a, .header-title-link, .lang-link, a[href]:not([href^="http"]):not([href^="#"]):not([href^="mailto"]):not([href$="feed.xml"])').forEach(link => {
+        document.querySelectorAll('.nav-menu a, .header-title-link, a[href]:not([href^="http"]):not([href^="#"]):not([href^="mailto"]):not([href$="feed.xml"])').forEach(link => {
             link.addEventListener('click', async (e) => {
                 e.preventDefault();
                 const href = link.getAttribute('href');
@@ -288,10 +288,11 @@
                 e.preventDefault();
                 const newLang = link.dataset.lang;
                 if (newLang !== currentLang) {
+                    currentLang = newLang;
                     localStorage.setItem('lang', newLang);
                     const currentUrl = new URL(window.location.href);
                     currentUrl.searchParams.set('lang', newLang);
-                    await loadPageContent(currentUrl.toString());
+                    await loadPageContent(currentUrl.pathname + currentUrl.search);
                 }
             });
         });
