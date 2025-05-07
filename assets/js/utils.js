@@ -252,8 +252,8 @@ const Utils = {
         const perPage = 5;
         const lang = localStorage.getItem('lang') || 'zh';
         let currentTag = decodeURIComponent(urlObj.pathname.split('/tags/')[1].replace('/index.html', '')).trim();
-
-        // 显示标签名称，使用翻译或原始标签
+        
+        // 显示翻译后的标签名称
         const displayTag = Utils.tagTranslations[lang][currentTag] || currentTag;
 
         const tagTitleElement = document.querySelector('[data-lang-key="tag_title"]');
@@ -269,7 +269,7 @@ const Utils = {
             const filteredPosts = posts.filter(post => {
                 if (post.lang !== lang) return false;
                 if (!post.tags) return false;
-                return post.tags.includes(currentTag); // 匹配原始标签
+                return post.tags.includes(currentTag); // 精确匹配标签
             });
 
             const totalPages = Math.ceil(filteredPosts.length / perPage);
@@ -290,10 +290,10 @@ const Utils = {
                             </div>
                             <div class="article-data-tag">
                                 ${post.tags?.map(tag =>
-                    `<a href="/tags/${encodeURIComponent(tag)}?lang=${lang}" 
+                                    `<a href="/tags/${encodeURIComponent(tag)}?lang=${lang}" 
                                        class="tag-link"
                                        style="margin-left: 8px;">${Utils.tagTranslations[lang][tag] || tag}</a>`
-                ).join('') || ''}
+                                ).join('') || ''}
                             </div>
                         </div>
                         <div class="article-content">
