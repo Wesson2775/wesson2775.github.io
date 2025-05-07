@@ -1,5 +1,3 @@
-```yaml
-# 工作流程名称
 name: Sync MD Files and Deploy Jekyll
 
 # 触发条件：推送特定文件或手动触发
@@ -12,8 +10,6 @@ on:
       - '.github/workflows/sync_and_deploy.yml'
       - 'requirements.txt'
       - '_config.yml'
-      - 'zh/**'
-      - 'en/**'
       - '.github/scripts/sync_md_files.py'
   workflow_dispatch:
 
@@ -162,9 +158,11 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     needs: build
+    permissions:
+      pages: write
+      id-token: write
     steps:
       # 部署 _site 目录到 GitHub Pages
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
-```
