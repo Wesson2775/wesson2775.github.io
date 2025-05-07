@@ -68,6 +68,7 @@ html {
 .header-top {
     display: flex;
     justify-content: flex-end;
+    margin-bottom: 25px;
 }
 
 .header-top .lang a {
@@ -88,6 +89,7 @@ html {
     display: flex;
     justify-content: center;
     flex-direction: column;
+    margin-bottom: 20px;
 }
 
 /* 头像 + 标题 + 描述的整体布局 */
@@ -118,8 +120,8 @@ html {
 .header-text {
     display: flex;
     flex-direction: column;
+    gap: 5px;
 }
-
 .header-middle h1 {
     color: var(--text-main);
     margin: 0;
@@ -162,13 +164,12 @@ html {
 }
 
 .header-bottom-nav li {
-    margin-top: 20px;
     display: inline-block;
 }
 
 .header-bottom-nav li a {
     color: var(--text-main);
-    font-size: 16px;
+    font-size: 14px;
     font-weight: 600;
     position: relative;
     transition: color 0.3s ease;
@@ -235,9 +236,10 @@ html {
 }
 
 .search-icon {
+    color: var(--text-disabled);
     position: absolute;
     right: 5px;
-    top: 50%;
+    top: 55%;
     transform: translateY(-50%);
     font-size: 10px;
     cursor: pointer;
@@ -247,7 +249,7 @@ html {
 }
 
 .search-icon:hover {
-    color: var(--accent-main);
+    color: var(--border-search);
 }
 
 /* 文章 */
@@ -255,7 +257,7 @@ html {
     margin-bottom: 20px;
 }
 .article {
-    margin-top: 35px;
+    margin-top: 30px;
 }
 
 .article ul {
@@ -293,7 +295,6 @@ html {
 .article .article-data .article-data-date p {
     color: var(--accent-main);
     font-weight: 600;
-    margin: 0;
     line-height: 1;
 }
 
@@ -302,35 +303,37 @@ html {
     flex-wrap: wrap;
     gap: 8px;
     align-items: center;
-    padding-right: 20px;
     line-height: 1;
-    margin: 0;
 }
 
 .article-data-tag a .tag-link {
     color: var(--accent-main);
     text-decoration: none;
     transition: color 0.3s ease;
-    font-size: 12px;
+    font-size: 10px;
     line-height: 1;
     display: inline-flex;
     align-items: center;
 }
 
 .article-content h3 {
-    margin: 3px 0;
+    margin-top: 0;
+    margin-bottom: 5px;
     color: var(--text-main);
+    font-size: 14px;
     transition: color 0.3s ease;
 }
 
 .article-content h3:hover {
     color: var(--accent-hover);
+   
 }
 
 .article .article-content p {
     margin: 0;
     color: var(--text-secondary);
-    font-size: 14px;
+    font-size: 12px;
+    line-height: 1.6;
 }
 
 .article li a {
@@ -691,7 +694,7 @@ html {
 }
 
 .nav-text span{
-    font-size: 14px;
+    font-size: 12px;
 }
 
 .post-list a:hover {
@@ -765,7 +768,7 @@ html {
 
 
 .content {
-    margin-top: 15px;
+    margin-top: 20px;
 }
 
 /* 悬浮导航按钮 */
@@ -908,7 +911,7 @@ html {
     }
 
     .header-bottom-nav li a {
-        font-size: 16px;
+        font-size: 14px;
         padding: 4px;
         display: block;
         color: var(--text-main);
@@ -987,8 +990,6 @@ html {
         min-width: auto;
         display: flex;
         align-items: center;
-        line-height: 1;
-        margin: 0;
     }
 
     .article-data-tag {
