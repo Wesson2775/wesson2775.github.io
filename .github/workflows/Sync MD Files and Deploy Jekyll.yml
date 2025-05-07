@@ -116,6 +116,11 @@ jobs:
           bundler-cache: true
       - name: Install Dependencies
         run: bundle install
+      - name: Generate tags manually
+        run: |
+          mkdir -p _site/tags
+          ruby generate_tags.rb
+          ls -R _site/tags  # 验证是否生成
       - name: Build Jekyll
         run: bundle exec jekyll build
       - name: Upload artifact
