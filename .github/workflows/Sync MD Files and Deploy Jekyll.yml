@@ -58,9 +58,9 @@ jobs:
           elif [ -f "generate_tags.rb" ]; then
             echo "Found generate_tags.rb in root directory"
           else
-            echo "Error: generate_tags.rb not found in any expected location!"
-            echo "Creating a basic tag generator as fallback..."
-            cat > _plugins/generate_tags.rb << 'EOL'
+            echo "Warning: generate_tags.rb not found, creating basic version in _plugins"
+            mkdir -p _plugins
+            cat << 'EOF' > _plugins/generate_tags.rb
             module Jekyll
               class TagPageGenerator < Generator
                 safe true
@@ -84,7 +84,7 @@ jobs:
                 end
               end
             end
-            EOL
+            EOF
           fi
 
       - name: Generate tags
@@ -97,18 +97,16 @@ jobs:
             echo "Running generator from root directory"
             ruby generate_tags.rb
           else
-            echo "Warning: Using built-in fallback generator"
+            echo "Running fallback generator from _plugins"
             ruby _plugins/generate_tags.rb
           fi
           
-          # 验证生成结果
           echo "Generated tag pages:"
           find _site/tags -type f || echo "No tag pages generated"
 
       - name: Build Jekyll
         run: |
           bundle exec jekyll build --trace
-          # 再次验证标签页
           echo "Final tag pages:"
           find _site/tags -type f | head -n 5 || echo "No tag pages found"
 
