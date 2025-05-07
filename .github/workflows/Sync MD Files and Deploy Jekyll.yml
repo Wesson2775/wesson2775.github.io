@@ -163,6 +163,7 @@ jobs:
             done
           else
             echo "No tags directory found in _site"
+            exit 1
           fi
           echo "Listing all generated files:"
           ls -la _site
