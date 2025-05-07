@@ -3,13 +3,16 @@ layout: default
 ---
 <main class="content"> 
     <section class="tag-content">
-        <h3>{{ page.title }}</h3>
-        <ul class="post-list">
+        <h3 data-lang-key="tag_title">标签: {{ page.tag }}</h3>
+        <ul class="post-list" id="posts-list">
+            {% assign lang = page.lang | default: 'zh' %}
             {% for post in site.tags[page.tag] %}
+            {% if post.lang == lang %}
             <li>
-                <a href="{{ post.url | relative_url }}?lang={{ post.lang }}">{{ post.title }}</a>
+                <a href="{{ post.url | relative_url }}?lang={{ lang }}">{{ post.title }}</a>
                 <span>{{ post.date | date: "%Y-%m-%d" }}</span>
             </li>
+            {% endif %}
             {% endfor %}
         </ul>
     </section>
