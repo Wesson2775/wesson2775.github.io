@@ -127,10 +127,10 @@ const Utils = {
                                 </div>
                                 <div class="article-data-tag">
                                     ${post.tags?.map(tag =>
-                        `<a href="/tags/${encodeURIComponent(tag)}?lang=${lang}" 
+                                        `<a href="/tags/${encodeURIComponent(tag)}?lang=${lang}" 
                                            class="tag-link"
                                            style="margin-left: 8px;">${Utils.tagTranslations[lang][tag] || tag}</a>`
-                    ).join('') || ''}
+                                    ).join('') || ''}
                                 </div>
                             </div>
                             <div class="article-content">
@@ -253,7 +253,7 @@ const Utils = {
         const lang = localStorage.getItem('lang') || 'zh';
         let currentTag = decodeURIComponent(urlObj.pathname.split('/tags/')[1].replace('/index.html', '')).trim();
         
-        // 显示翻译后的标签名称
+        currentTag = currentTag.toLowerCase();
         const displayTag = Utils.tagTranslations[lang][currentTag] || currentTag;
 
         const tagTitleElement = document.querySelector('[data-lang-key="tag_title"]');
@@ -269,7 +269,7 @@ const Utils = {
             const filteredPosts = posts.filter(post => {
                 if (post.lang !== lang) return false;
                 if (!post.tags) return false;
-                return post.tags.includes(currentTag); // 精确匹配标签
+                return post.tags.some(tag => tag.toLowerCase() === currentTag);
             });
 
             const totalPages = Math.ceil(filteredPosts.length / perPage);
@@ -326,7 +326,7 @@ const Utils = {
         const lang = localStorage.getItem('lang') || 'zh';
         const searchQueryElement = document.querySelector('#search-query');
         if (searchQueryElement) {
-            searchQueryElement.textContent = query
+            searchQueryElement.textContent = query 
                 ? lang === 'en' ? `Search Results for "${query}"` : `"${query}" 的搜索结果`
                 : lang === 'en' ? 'Search Results' : '搜索结果';
         }
@@ -336,7 +336,7 @@ const Utils = {
             if (!response.ok) throw new Error(`Failed to load posts data, status: ${response.status}`);
             const posts = await response.json();
 
-            const filteredPosts = posts.filter(post =>
+            const filteredPosts = posts.filter(post => 
                 post.lang === lang &&
                 (
                     post.title?.toLowerCase().includes(query) ||

@@ -12,7 +12,6 @@ url: "https://zor666.me"
 markdown: kramdown
 theme: minima
 lang: zh
-plugins_dir: _plugins
 plugins:
   - jekyll-feed
   - jekyll-paginate

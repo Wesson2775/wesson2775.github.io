@@ -109,65 +109,15 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: '3.2'
           bundler-cache: true
-
-      - name: Verify Plugin and Layout Files
-        run: |
-          if [ -f "_plugins/generate_tags.rb" ]; then
-            echo "Found generate_tags.rb plugin"
-          else
-            echo "Error: _plugins/generate_tags.rb not found"
-            exit 1
-          fi
-          if [ -f "_layouts/tag.html" ]; then
-            echo "Found tag.html layout"
-          else
-            echo "Error: _layouts/tag.html not found"
-            exit 1
-          fi
-
       - name: Install Dependencies
-        run: |
-          bundle install
-          bundle list
-          echo "Jekyll version:"
-          bundle exec jekyll --version
-
-      - name: Build Jekyll with Custom Plugins
-        run: |
-          bundle exec jekyll build --verbose
-        env:
-          JEKYLL_ENV: production
-          JEKYLL_PLUGINS: _plugins
-
-      - name: Debug Generated Tag Pages
-        run: |
-          echo "Listing all tags in posts:"
-          grep -h "tags:" _posts/*/*.md | sort -u
-          echo "Listing generated tag pages:"
-          find _site/tags -type f || echo "No tag pages found"
-          echo "Checking tag page content:"
-          if [ -d "_site/tags" ]; then
-            for page in _site/tags/*/index.html; do
-              if [ -f "$page" ]; then
-                echo "Content of $page:"
-                cat "$page" | grep -A 10 "<ul class=\"post-list\"" || echo "No post list found"
-              fi
-            done
-          else
-            echo "No tags directory found in _site"
-            exit 1
-          fi
-          echo "Listing all generated files:"
-          ls -la _site
-
+        run: bundle install
+      - name: Build Jekyll
+        run: bundle exec jekyll build
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
@@ -179,12 +129,7 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     needs: build
-    timeout-minutes: 10
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
-      - name: Debug Deployment Status
-        run: |
-          echo "Deployment status: ${{ steps.deployment.outputs.status }}"
-          echo "Deployed URL: ${{ steps.deployment.outputs.page_url }}"
