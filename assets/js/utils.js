@@ -37,37 +37,9 @@ const Utils = {
     },
     tagTranslations: {
         zh: {
-            '生活随笔': '生活 фотограф',
-            '技术笔记': '技术笔记',
-            '旅行日志': '旅行日志',
-            '人工智能': '人工智能',
-            '云技术': '云技术',
-            '信息安全': '信息安全',
-            '前端开发': '前端开发',
-            '数据分析': '数据分析',
-            '智能硬件': '智能硬件',
-            '系统设计': '系统设计',
-            '编程学习': '编程学习',
-            '软件开发': '软件开发',
-            '金融科技': '金融科技',
-            '随便': '随便',
             '祝福大家': '祝福大家'
         },
         en: {
-            '生活随笔': 'Life Essay',
-            '技术笔记': 'Tech Notes',
-            '旅行日志': 'Travel Log',
-            '人工智能': 'Artificial Intelligence',
-            '云技术': 'Cloud Technology',
-            '信息安全': 'Information Security',
-            '前端开发': 'Frontend Development',
-            '数据分析': 'Data Analysis',
-            '智能硬件': 'Smart Hardware',
-            '系统设计': 'System Design',
-            '编程学习': 'Programming',
-            '软件开发': 'Software Development',
-            '金融科技': 'FinTech',
-            '随便': 'Casual',
             '祝福大家': 'Wishing Everyone'
         }
     },
@@ -161,41 +133,99 @@ const Utils = {
         const currentPage = parseInt(urlParams.get('page')) || 1;
         const perPage = 5;
         const lang = localStorage.getItem('lang') || 'zh';
-
+    
         try {
             const response = await fetch('/fragments.json');
             if (!response.ok) throw new Error(`Failed to load fragments data, status: ${response.status}`);
             const posts = await response.json();
-
+    
+            // 过滤语言和分类
             const filteredPosts = posts.filter(post => {
                 const postLang = post.lang || (post.url.includes('/en/') ? 'en' : 'zh');
                 const postCategory = post.category || 'fragments';
                 return postLang === lang && postCategory.toLowerCase().includes('fragment');
             });
-            const totalPages = Math.ceil(filteredPosts.length / perPage);
-            const paginatedPosts = filteredPosts.slice((currentPage - 1) * perPage, currentPage * perPage);
-
+    
+            // 按日期降序排序
+            filteredPosts.sort((a, b) => new Date(b.date) - new Date(a.date));
+    
+            // 分组：中文和英文
+            const zhFragments = filteredPosts.filter(post => post.lang === 'zh');
+            const enFragments = filteredPosts.filter(post => post.lang === 'en');
+    
             const postsList = document.getElementById('posts-list');
-            if (postsList) {
-                postsList.innerHTML = paginatedPosts.length > 0
-                    ? paginatedPosts.map(post => `
-                        <li>
-                            <div class="article-data">
-                                <div class="article-data-date">
-                                    <p>${post.date}</p>
-                                </div>
-                            </div>
-                            <div class="article-content">
-                                <p>${post.content?.substring(0, 150) || ''}...</p>
-                            </div>
-                        </li>
-                    `).join('')
-                    : `<li><p class="no-results">${lang === 'en' ? 'No fragments found.' : '未找到随笔。'}</p></li>`;
+            if (!postsList) {
+                console.error('Posts list element not found');
+                return;
             }
-
-            const pagination = document.getElementById('pagination');
-            if (pagination) {
-                pagination.innerHTML = Utils.generatePagination(totalPages, currentPage, lang, urlParams.get('q') || '');
+    
+            postsList.innerHTML = '';
+    
+            // 显示中文随笔
+            if (zhFragments.length > 0 && lang === 'zh') {
+                const paginatedZhPosts = zhFragments.slice((currentPage - 1) * perPage, currentPage * perPage);
+                paginatedZhPosts.forEach(post => {
+                    const li = document.createElement('li');
+                    // 解码 JSON 转义的 HTML
+                    const decodedContent = post.content
+                        .replace(/\\u003c/g, '<')
+                        .replace(/\\u003e/g, '>')
+                        .replace(/\\u0026/g, '&');
+                    li.innerHTML = `
+                        <div class="article-data">
+                            <div class="article-data-date">
+                                <p>${post.date}</p>
+                            </div>
+                        </div>
+                        <div class="article-content">
+                            <h3>${post.title}</h3>
+                            <div class="fragment-content">${decodedContent}</div>
+                        </div>
+                    `;
+                    postsList.appendChild(li);
+                });
+    
+                const pagination = document.getElementById('pagination');
+                if (pagination) {
+                    const totalPages = Math.ceil(zhFragments.length / perPage);
+                    pagination.innerHTML = Utils.generatePagination(totalPages, currentPage, lang, urlParams.get('q') || '');
+                }
+            }
+    
+            // 显示英文随笔
+            if (enFragments.length > 0 && lang === 'en') {
+                const paginatedEnPosts = enFragments.slice((currentPage - 1) * perPage, currentPage * perPage);
+                paginatedEnPosts.forEach(post => {
+                    const li = document.createElement('li');
+                    // 解码 JSON 转义的 HTML
+                    const decodedContent = post.content
+                        .replace(/\\u003c/g, '<')
+                        .replace(/\\u003e/g, '>')
+                        .replace(/\\u0026/g, '&');
+                    li.innerHTML = `
+                        <div class="article-data">
+                            <div class="article-data-date">
+                                <p>${post.date}</p>
+                            </div>
+                        </div>
+                        <div class="article-content">
+                            <h3>${post.title}</h3>
+                            <div class="fragment-content">${decodedContent}</div>
+                        </div>
+                    `;
+                    postsList.appendChild(li);
+                });
+    
+                const pagination = document.getElementById('pagination');
+                if (pagination) {
+                    const totalPages = Math.ceil(enFragments.length / perPage);
+                    pagination.innerHTML = Utils.generatePagination(totalPages, currentPage, lang, urlParams.get('q') || '');
+                }
+            }
+    
+            // 无随笔时显示提示
+            if (filteredPosts.length === 0) {
+                postsList.innerHTML = `<li><p class="no-results">${lang === 'en' ? 'No fragments found.' : '未找到随笔。'}</p></li>`;
             }
         } catch (error) {
             console.error('Error in executeFragmentsScripts:', error);
