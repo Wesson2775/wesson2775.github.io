@@ -109,20 +109,45 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+      
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: '3.2'
           bundler-cache: true
+
       - name: Install Dependencies
         run: bundle install
+
+      # 新增步骤：显式生成标签页
       - name: Generate tags manually
         run: |
-          mkdir -p _site/tags
+          # 确保 _site 目录存在
+          mkdir -p _site
+          # 运行自定义标签生成器
           ruby generate_tags.rb
-          ls -R _site/tags  # 验证是否生成
+          # 验证生成的标签页
+          echo "Generated tag pages:"
+          find _site/tags -type f || echo "No tag pages generated"
+          # 确保所有标签路径是小写（避免GitHub Pages大小写问题）
+          find _site/tags -depth -exec rename 's/(.*)\/([^\/]*)/$1\/\L$2/' {} \;
+
       - name: Build Jekyll
-        run: bundle exec jekyll build
+        run: bundle exec jekyll build --trace
+
+      # 新增步骤：验证最终生成的_site内容
+      - name: Verify built site
+        run: |
+          echo "Final _site structure:"
+          find _site -type f | grep -i tags || echo "No tag pages found in _site"
+          # 确保标签页有内容
+          for tag_file in _site/tags/*/index.html; do
+            if [ -f "$tag_file" ]; then
+              echo "Checking $tag_file"
+              grep -q '<h3' "$tag_file" || echo "Warning: $tag_file appears empty"
+            fi
+          done
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
