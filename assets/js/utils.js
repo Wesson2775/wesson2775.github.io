@@ -127,10 +127,10 @@ const Utils = {
                                 </div>
                                 <div class="article-data-tag">
                                     ${post.tags?.map(tag =>
-                                        `<a href="/tags/${encodeURIComponent(tag)}?lang=${lang}" 
+                        `<a href="/tags/${encodeURIComponent(tag)}?lang=${lang}" 
                                            class="tag-link"
                                            style="margin-left: 8px;">${Utils.tagTranslations[lang][tag] || tag}</a>`
-                                    ).join('') || ''}
+                    ).join('') || ''}
                                 </div>
                             </div>
                             <div class="article-content">
@@ -246,19 +246,41 @@ const Utils = {
             }
         }
     },
+    loadPageContent: async (url) => {
+        try {
+            const response = await fetch(url);
+            if (!response.ok) throw new Error(`Failed to load page, status: ${response.status}`);
+            const content = await response.text();
+            // 更新页面内容（根据你的实际 DOM 结构）
+            const contentArea = document.getElementById('content-area') || document.querySelector('.content');
+            if (contentArea) {
+                contentArea.innerHTML = content;
+            }
+            // 触发标签页面逻辑
+            Utils.executeTagScripts(new URL(url));
+        } catch (error) {
+            console.error('Error loading page:', error);
+            const postsList = document.getElementById('posts-list');
+            if (postsList) {
+                const lang = localStorage.getItem('lang') || 'zh';
+                postsList.innerHTML = `<li><p class="no-results">${lang === 'en' ? 'Failed to load tag posts.' : '加载标签文章失败。'}</p></li>`;
+            }
+        }
+    },
+
     executeTagScripts: async (urlObj) => {
         const urlParams = new URLSearchParams(urlObj.search);
         const currentPage = parseInt(urlParams.get('page')) || 1;
         const perPage = 5;
         const lang = localStorage.getItem('lang') || 'zh';
         let currentTag = decodeURIComponent(urlObj.pathname.split('/tags/')[1].replace('/index.html', '')).trim();
-        
-        currentTag = currentTag.toLowerCase();
-        const displayTag = Utils.tagTranslations[lang][currentTag] || currentTag;
+
+        // 显示翻译后的标签名称
+        const displayTag = Utils.tagTranslations?.[lang]?.[currentTag] || currentTag;
 
         const tagTitleElement = document.querySelector('[data-lang-key="tag_title"]');
         if (tagTitleElement) {
-            tagTitleElement.textContent = `${Utils.translations[lang].tag_title}: ${displayTag}`;
+            tagTitleElement.textContent = `${Utils.translations?.[lang]?.tag_title || 'Tag'}: ${displayTag}`;
         }
 
         try {
@@ -269,7 +291,7 @@ const Utils = {
             const filteredPosts = posts.filter(post => {
                 if (post.lang !== lang) return false;
                 if (!post.tags) return false;
-                return post.tags.some(tag => tag.toLowerCase() === currentTag);
+                return post.tags.includes(currentTag); // 精确匹配标签
             });
 
             const totalPages = Math.ceil(filteredPosts.length / perPage);
@@ -290,10 +312,10 @@ const Utils = {
                             </div>
                             <div class="article-data-tag">
                                 ${post.tags?.map(tag =>
-                                    `<a href="/tags/${encodeURIComponent(tag)}?lang=${lang}" 
+                    `<a href="/tags/${encodeURIComponent(tag)}?lang=${lang}" 
                                        class="tag-link"
-                                       style="margin-left: 8px;">${Utils.tagTranslations[lang][tag] || tag}</a>`
-                                ).join('') || ''}
+                                       style="margin-left: 8px;">${Utils.tagTranslations?.[lang]?.[tag] || tag}</a>`
+                ).join('') || ''}
                             </div>
                         </div>
                         <div class="article-content">
@@ -308,7 +330,7 @@ const Utils = {
 
             const pagination = document.getElementById('pagination');
             if (pagination) {
-                pagination.innerHTML = Utils.generatePagination(totalPages, currentPage, lang);
+                pagination.innerHTML = Utils.generatePagination?.(totalPages, currentPage, lang) || '';
             }
         } catch (error) {
             console.error('Error loading tag posts:', error);
@@ -326,7 +348,7 @@ const Utils = {
         const lang = localStorage.getItem('lang') || 'zh';
         const searchQueryElement = document.querySelector('#search-query');
         if (searchQueryElement) {
-            searchQueryElement.textContent = query 
+            searchQueryElement.textContent = query
                 ? lang === 'en' ? `Search Results for "${query}"` : `"${query}" 的搜索结果`
                 : lang === 'en' ? 'Search Results' : '搜索结果';
         }
@@ -336,7 +358,7 @@ const Utils = {
             if (!response.ok) throw new Error(`Failed to load posts data, status: ${response.status}`);
             const posts = await response.json();
 
-            const filteredPosts = posts.filter(post => 
+            const filteredPosts = posts.filter(post =>
                 post.lang === lang &&
                 (
                     post.title?.toLowerCase().includes(query) ||
