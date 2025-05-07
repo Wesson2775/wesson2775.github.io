@@ -32,84 +32,92 @@ jobs:
         with:
           fetch-depth: 0
 
-      # ... (保持其他sync-files步骤不变) ...
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip list
+          python -c "import yaml; print('PyYAML version:', yaml.__version__)"
+          python -c "import git; print('GitPython version:', git.__version__)"
+          python -c "import deep_translator; print('deep-translator version:', deep_translator.__version__)"
+
+      - name: Debug file structure
+        run: |
+          echo "Listing files in _posts/zh and _fragments/zh:"
+          find _posts/zh _fragments/zh -type f || echo "No files found"
+          echo "Listing files in _posts/en and _fragments/en:"
+          find _posts/en _fragments/en -type f || echo "No files found"
+          echo "Git status:"
+          git status
+          echo "Recent commits:"
+          git log -n 2 --oneline
+          echo "Changed files in last commit:"
+          git diff-tree --no-commit-id --name-only -r HEAD^ HEAD
+
+      - name: Sync Markdown files
+        run: |
+          python .github/scripts/sync_md_files.py
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Verify zh and en file correspondence
+        run: |
+          echo "Verifying _posts/zh and _posts/en correspondence:"
+          for zh_file in _posts/zh/*.md; do
+            en_file="${zh_file##*/}"
+            en_file="_posts/en/${en_file%.md}-en.md"
+            if [ -f "$en_file" ]; then
+              echo "Match: $zh_file -> $en_file"
+            else
+              echo "Missing: $en_file for $zh_file"
+            fi
+          done
+          echo "Verifying _fragments/zh and _fragments/en correspondence:"
+          for zh_file in _fragments/zh/*.md; do
+            en_file="${zh_file##*/}"
+            en_file="_fragments/en/${en_file%.md}-en.md"
+            if [ -f "$en_file" ]; then
+              echo "Match: $zh_file -> $en_file"
+            else
+              echo "Missing: $en_file for $zh_file"
+            fi
+          done
+
+      - name: Commit and push changes
+        run: |
+          git config --global user.name 'GitHub Actions'
+          git config --global user.email 'actions@github.com'
+          git add _posts/en _fragments/en .translation_cache.json
+          echo "Staged files:"
+          git diff --staged --name-only
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "Sync translated English Markdown files and update translation cache [skip ci]"
+            git push
+          fi
 
   build:
     needs: sync-files
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
+      - name: Checkout
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: '3.2'
           bundler-cache: true
-
-      - name: Install dependencies
-        run: |
-          bundle install
-          # 检查生成器文件是否存在
-          if [ -f "_plugins/generate_tags.rb" ]; then
-            echo "Found generate_tags.rb in _plugins directory"
-          elif [ -f "generate_tags.rb" ]; then
-            echo "Found generate_tags.rb in root directory"
-          else
-            echo "Warning: generate_tags.rb not found, creating basic version in _plugins"
-            mkdir -p _plugins
-            cat << 'EOF' > _plugins/generate_tags.rb
-            module Jekyll
-              class TagPageGenerator < Generator
-                safe true
-                def generate(site)
-                  all_tags = site.posts.docs.flat_map { |post| post.data['tags'] }.compact.uniq
-                  all_tags.each do |tag|
-                    site.pages << TagPage.new(site, site.source, tag)
-                  end
-                end
-              end
-              class TagPage < Page
-                def initialize(site, base, tag)
-                  @site = site
-                  @base = base
-                  @dir = File.join('tags', tag.downcase)
-                  @name = 'index.html'
-                  self.process(@name)
-                  self.read_yaml(File.join(base, '_layouts'), 'tag.html')
-                  self.data['tag'] = tag
-                  self.data['title'] = "Tag: #{tag}"
-                end
-              end
-            end
-            EOF
-          fi
-
-      - name: Generate tags
-        run: |
-          # 尝试在多个可能的位置运行生成器
-          if [ -f "_plugins/generate_tags.rb" ]; then
-            echo "Running generator from _plugins directory"
-            ruby _plugins/generate_tags.rb
-          elif [ -f "generate_tags.rb" ]; then
-            echo "Running generator from root directory"
-            ruby generate_tags.rb
-          else
-            echo "Running fallback generator from _plugins"
-            ruby _plugins/generate_tags.rb
-          fi
-          
-          echo "Generated tag pages:"
-          find _site/tags -type f || echo "No tag pages generated"
-
+      - name: Install Dependencies
+        run: bundle install
       - name: Build Jekyll
-        run: |
-          bundle exec jekyll build --trace
-          echo "Final tag pages:"
-          find _site/tags -type f | head -n 5 || echo "No tag pages found"
-
+        run: bundle exec jekyll build
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
