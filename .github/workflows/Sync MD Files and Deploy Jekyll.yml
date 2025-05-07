@@ -109,15 +109,54 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # 获取完整历史，便于调试
+
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: '3.2'
-          bundler-cache: true
+          ruby-version: '3.2'  # 确保与本地一致
+          bundler-cache: true  # 缓存 Gem 依赖
+
+      - name: Verify Layout File
+        run: |
+          if [ -f "_layouts/tag.html" ]; then
+            echo "Found tag.html layout"
+          else
+            echo "Error: _layouts/tag.html not found"
+            exit 1
+          fi
+
       - name: Install Dependencies
-        run: bundle install
-      - name: Build Jekyll
-        run: bundle exec jekyll build
+        run: |
+          bundle install
+          bundle list  # 输出已安装的 Gem
+
+      - name: Build Jekyll with Custom Plugins
+        run: |
+          bundle exec jekyll build --verbose  # 详细日志
+        env:
+          JEKYLL_ENV: production  # 生产环境
+          JEKYLL_PLUGINS: _plugins  # 确保加载自定义插件目录
+
+      - name: Debug Generated Tag Pages
+        run: |
+          echo "Listing generated tag pages:"
+          find _site/tags -type f || echo "No tag pages found"
+          echo "Checking tag page content:"
+          if [ -d "_site/tags" ]; then
+            for page in _site/tags/*/index.html; do
+              if [ -f "$page" ]; then
+                echo "Content of $page:"
+                head -n 10 "$page"
+              fi
+            done
+          else
+            echo "No tags directory found in _site"
+          fi
+          echo "Listing all generated files:"
+          ls -la _site
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
