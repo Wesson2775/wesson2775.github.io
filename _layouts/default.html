@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>{{ page.title | default: site.title }}</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+          integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
+          crossorigin="anonymous" referrerpolicy="no-referrer">
+    <link rel="stylesheet" href="{{ '/assets/css/styles.css?v=1.5' | relative_url }}">
+    <link rel="icon" href="{{ '/favicon.ico' | relative_url }}">
+    <script src="{{ '/assets/js/search.js' | relative_url }}" defer></script>
+    <script src="{{ '/assets/js/utils.js' | relative_url }}" defer></script>
+    <script src="{{ '/assets/js/mini-record-player.js' | relative_url }}" defer></script>
+</head>
+<body>
+    <div class="main-container">
+        <header class="header">
+            <div class="header-top">
+                <div class="lang">
+                    <a href="?lang=zh" class="lang-link" data-lang="zh">ZH</a>
+                    <a href="?lang=en" class="lang-link" data-lang="en">EN</a>
+                </div>
+            </div>
+            <div class="header-middle">
+                <div class="header-middle-content">
+                    <div class="blog-avatar"></div>
+                    <div class="header-text">
+                        <a href="{{ '/' | relative_url }}" class="header-title-link">
+                            <h1 data-lang-key="title"></h1>
+                        </a>
+                        <p data-lang-key="description"></p>
+                    </div>
+                </div>
+            </div>
+            <div class="header-bottom">
+                <nav class="header-bottom-nav nav-menu">
+                    <ul>
+                        <li><a href="{{ '/' | relative_url }}" data-lang-key="home"><i class="fas fa-home"></i><span
+                                    class="nav-text">首页</span></a></li>
+                        <li><a href="{{ '/fragments' | relative_url }}" data-lang-key="fragments"><i
+                                    class="fas fa-book"></i><span class="nav-text">随笔</span></a></li>
+                        <li><a href="{{ '/friends' | relative_url }}" data-lang-key="friends"><i
+                                    class="fas fa-users"></i><span class="nav-text">友邻</span></a></li>
+                        <li><a href="{{ '/tags' | relative_url }}" data-lang-key="tags"><i class="fas fa-tags"></i><span
+                                    class="nav-text">标签</span></a></li>
+                        <li><a href="{{ '/about' | relative_url }}" data-lang-key="about"><i
+                                    class="fas fa-info-circle"></i><span class="nav-text">关于</span></a></li>
+                    </ul>
+                </nav>
+                <div class="search-container">
+                    <input type="text" id="search-input" placeholder="搜索" aria-label="搜索" data-lang-key="search">
+                    <span class="search-icon"><i class="fa fa-search" aria-hidden="true"></i></span>
+                </div>
+            </div>
+        </header>
+        <main class="content">
+            {{ content }}
+        </main>
+        <footer class="footer">
+            <p data-lang-key="footer">
+                © {{ site.data.site_data.footer.start_year }} - {{ "now" | date: "%Y" }}
+                <span data-lang-key="author"></span> · {{ site.data.site_data.footer.license }}
+            </p>
+            <p>
+                <a href="{{ '/feed.xml' | relative_url }}">RSS</a>
+            </p>
+        </footer>
+    </div>
+    <button class="floating-nav-btn" aria-label="打开导航菜单" data-lang-key="nav_menu">
+        <span class="floating-nav-icon">></span>
+    </button>
+    <button class="back-to-top" aria-label="返回顶部" data-lang-key="back_to_top">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // 获取语言
+        const urlParams = new URLSearchParams(window.location.search);
+        let currentLang = urlParams.get('lang') || localStorage.getItem('lang') || 'zh';
+        currentLang = ['zh', 'en'].includes(currentLang) ? currentLang : 'zh';
+        localStorage.setItem('lang', currentLang);
+
+        // 设置 HTML 语言
+        document.documentElement.lang = currentLang === 'en' ? 'en' : 'zh-CN';
+
+        // 判断是否为移动端
+        const isMobile = () => window.matchMedia('(max-width: 991px)').matches;
+
+        // 更新导航显示
+        const updateNavDisplay = () => {
+            document.querySelectorAll('.nav-menu a').forEach(link => {
+                const key = link.getAttribute('data-lang-key');
+                const text = Utils.translations[currentLang][key] || key;
+                link.innerHTML = isMobile()
+                    ? `<i class="${Utils.iconClasses[key]}"></i>`
+                    : `<span class="nav-text">${text}</span>`;
+                link.setAttribute('title', text);
+            });
+        };
+
+        // 防抖函数
+        const debounce = (func, wait) => {
+            let timeout;
+            return (...args) => {
+                clearTimeout(timeout);
+                timeout = setTimeout(() => func.apply(this, args), wait);
+            };
+        };
+
+        // 初始化导航
+        setTimeout(updateNavDisplay, 100);
+        window.matchMedia('(max-width: 991px)').addEventListener('change', debounce(updateNavDisplay, 200));
+
+        // 初始化播放器
+        const songs = {{ site.data.music.songs | jsonify }};
+
+        let playerInitialized = false;
+        function initPlayer() {
+            if (!playerInitialized && window.MiniRecordPlayer && songs && songs.length > 0) {
+                window.MiniRecordPlayer.init({
+                    position: 'bottom-left',
+                    autoPlay: false,
+                    defaultVolume: 0.8,
+                    debug: true
+                }, songs);
+                playerInitialized = true;
+            } else if (!songs || songs.length === 0) {
+                console.warn('No songs found in music.yml');
+            }
+        }
+        initPlayer();
+
+        // 更新语言内容
+        function updateLanguageContent(lang) {
+            currentLang = lang; // 同步 currentLang
+            document.querySelectorAll('[data-lang-key]').forEach(element => {
+                const key = element.getAttribute('data-lang-key');
+                if (key === 'title') {
+                    element.textContent = lang === 'en' ? '{{ site.title_en }}' : '{{ site.title }}';
+                } else if (key === 'description') {
+                    element.textContent = lang === 'en' ? '{{ site.description_en }}' : '{{ site.description }}';
+                } else if (key === 'author') {
+                    element.textContent = lang === 'en' ? '{{ site.data.site_data.footer.author_en }}' : '{{ site.data.site_data.footer.author }}';
+                } else if (key === 'footer') {
+                    element.textContent = `© {{ site.data.site_data.footer.start_year }} - ${new Date().getFullYear()} ${lang === 'en' ? '{{ site.data.site_data.footer.author_en }}' : '{{ site.data.site_data.footer.author }}'} · {{ site.data.site_data.footer.license }}`;
+                } else if (key.startsWith('friend_name_')) {
+                    const index = parseInt(key.split('_')[2]) - 1;
+                    const friends = {{ site.data.site_data.friends | jsonify }};
+                    if (friends && friends[index]) {
+                        element.textContent = lang === 'en' ? friends[index].name_en : friends[index].name;
+                    }
+                } else if (key.startsWith('friend_desc_')) {
+                    const index = parseInt(key.split('_')[2]) - 1;
+                    const friends = {{ site.data.site_data.friends | jsonify }};
+                    if (friends && friends[index]) {
+                        element.textContent = lang === 'en' ? friends[index].description_en : friends[index].description;
+                    }
+                } else if (Utils.translations[lang][key] && !element.classList.contains('nav-text')) {
+                    if (element.tagName === 'INPUT') {
+                        element.placeholder = Utils.translations[lang][key];
+                        element.setAttribute('aria-label', Utils.translations[lang][key]);
+                    } else if (element.tagName === 'BUTTON') {
+                        element.setAttribute('aria-label', Utils.translations[lang][key]);
+                        if (key === 'back') {
+                            element.querySelector('span').textContent = Utils.translations[lang][key];
+                        }
+                    } else {
+                        element.textContent = Utils.translations[lang][key];
+                    }
+                }
+            });
+            updateNavDisplay();
+        }
+        updateLanguageContent(currentLang);
+
+        // 页面加载函数
+        async function loadPageContent(url, pushState = true) {
+            let lang = localStorage.getItem('lang') || 'zh';
+            try {
+                document.querySelector('main.content').classList.add('loading');
+                const urlObj = new URL(url, window.location.origin);
+                lang = urlObj.searchParams.get('lang') || localStorage.getItem('lang') || 'zh';
+                urlObj.searchParams.set('lang', lang);
+                localStorage.setItem('lang', lang);
+
+                const currentContent = document.querySelector('main.content');
+                currentContent.innerHTML = '';
+
+                const response = await fetch(urlObj.toString());
+                if (!response.ok) throw new Error(`Failed to load page, status: ${response.status}`);
+                const html = await response.text();
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(html, 'text/html');
+                const newContent = doc.querySelector('main.content');
+                if (!newContent) throw new Error('Main content not found');
+
+                const recordPlayer = document.getElementById('mini-record-player');
+                const audioPlayer = document.getElementById('audio-player');
+                if (recordPlayer && audioPlayer) {
+                    recordPlayer.remove();
+                    audioPlayer.remove();
+                }
+
+                currentContent.innerHTML = newContent.innerHTML;
+                document.querySelector('main.content').classList.remove('loading');
+
+                if (recordPlayer && audioPlayer) {
+                    document.body.appendChild(recordPlayer);
+                    document.body.appendChild(audioPlayer);
+                    initPlayer(); // 重新初始化播放器
+                }
+
+                await executePageScripts(urlObj);
+                if (pushState) {
+                    window.history.pushState({ url: urlObj.toString() }, '', urlObj.toString());
+                }
+                updateLanguageContent(lang);
+                rebindLinks();
+                updateNavDisplay();
+                bindBackButtonWithRetry();
+
+                // 更新语言切换按钮高亮状态
+                document.querySelectorAll('.lang-link').forEach(link => {
+                    link.classList.toggle('active', link.dataset.lang === lang);
+                });
+            } catch (error) {
+                console.error('Error loading page:', error);
+                const currentContent = document.querySelector('main.content');
+                if (currentContent) {
+                    currentContent.classList.remove('loading');
+                    currentContent.innerHTML = `<p class="no-results">${lang === 'en' ? 'Failed to load content. Please try again.' : '加载内容失败，请重试。'}</p>`;
+                }
+            }
+        }
+
+        async function executePageScripts(urlObj) {
+            const path = urlObj.pathname;
+            const lang = localStorage.getItem('lang') || 'zh';
+            if (path === '/' || path.includes('/index.html')) {
+                await Utils.executeIndexScripts(urlObj);
+            } else if (path.includes('/fragments')) {
+                await Utils.executeFragmentsScripts(urlObj);
+            } else if (path.includes('/tags/')) {
+                await Utils.executeTagScripts(urlObj);
+            } else if (path === '/tags' || path === '/tags/') {
+                await Utils.executeTagsIndexScripts(urlObj);
+            } else if (path.includes('/search.html')) {
+                await Utils.executeSearchScripts(urlObj);
+            }
+        }
+
+        function rebindLinks() {
+            document.querySelectorAll('main.content a[href]:not([href^="http"]):not([href^="#"]):not([href^="mailto"]):not([href$="feed.xml"])').forEach(link => {
+                link.removeEventListener('click', handleLinkClick);
+                link.addEventListener('click', handleLinkClick);
+            });
+        }
+
+        function handleLinkClick(e) {
+            e.preventDefault();
+            const href = e.currentTarget.getAttribute('href');
+            const lang = localStorage.getItem('lang') || 'zh';
+            const url = href.includes('?') ? `${href}&lang=${lang}` : `${href}?lang=${lang}`;
+            loadPageContent(url);
+        }
+
+        document.querySelectorAll('.nav-menu a, .header-title-link, a[href]:not([href^="http"]):not([href^="#"]):not([href^="mailto"]):not([href$="feed.xml"])').forEach(link => {
+            link.addEventListener('click', async (e) => {
+                e.preventDefault();
+                const href = link.getAttribute('href');
+                const lang = localStorage.getItem('lang') || 'zh';
+                const url = href.includes('?') ? `${href}&lang=${lang}` : `${href}?lang=${lang}`;
+                await loadPageContent(url);
+            });
+        });
+
+        window.addEventListener('popstate', (e) => {
+            const url = e.state?.url || window.location.href;
+            loadPageContent(url, false);
+        });
+
+        window.loadPageContent = loadPageContent;
+
+        document.querySelectorAll('.lang-link').forEach(link => {
+            link.classList.toggle('active', link.dataset.lang === currentLang);
+            link.addEventListener('click', async (e) => {
+                e.preventDefault();
+                const newLang = link.dataset.lang;
+                if (newLang !== currentLang) {
+                    currentLang = newLang;
+                    localStorage.setItem('lang', newLang);
+                    const currentUrl = new URL(window.location.href);
+                    currentUrl.searchParams.set('lang', newLang);
+                    await loadPageContent(currentUrl.pathname + currentUrl.search);
+                }
+            });
+        });
+
+        const backToTop = document.querySelector('.back-to-top');
+        window.addEventListener('scroll', () => {
+            backToTop.classList.toggle('visible', window.scrollY > 300);
+        });
+        backToTop.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        const floatingNavBtn = document.querySelector('.floating-nav-btn');
+        const navMenu = document.querySelector('.nav-menu');
+        const floatingNavIcon = document.querySelector('.floating-nav-icon');
+        if (floatingNavBtn && navMenu && floatingNavIcon) {
+            floatingNavBtn.addEventListener('click', () => {
+                navMenu.classList.toggle('active');
+                floatingNavBtn.classList.toggle('open');
+                floatingNavIcon.textContent = navMenu.classList.contains('active') ? '<' : '>';
+            });
+
+            navMenu.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', () => {
+                    navMenu.classList.remove('active');
+                    floatingNavBtn.classList.remove('open');
+                    floatingNavIcon.textContent = '>';
+                });
+            });
+
+            document.addEventListener('click', (e) => {
+                if (!navMenu.contains(e.target) && !floatingNavBtn.contains(e.target)) {
+                    navMenu.classList.remove('active');
+                    floatingNavBtn.classList.remove('open');
+                    floatingNavIcon.textContent = '>';
+                }
+            });
+        }
+
+        function bindBackButton() {
+            try {
+                const backButton = document.querySelector('.back-button');
+                if (backButton) {
+                    backButton.removeEventListener('click', handleBackButtonClick);
+                    backButton.addEventListener('click', handleBackButtonClick);
+                    return true;
+                }
+                return false;
+            } catch (error) {
+                console.error('Error binding back button:', error);
+                return false;
+            }
+        }
+
+        function bindBackButtonWithRetry(attempts = 3, delay = 100) {
+            let attempt = 0;
+            function tryBind() {
+                if (bindBackButton() || attempt >= attempts) return;
+                attempt++;
+                setTimeout(tryBind, delay);
+            }
+            tryBind();
+        }
+
+        function handleBackButtonClick() {
+            try {
+                if (window.history.length > 1) {
+                    window.history.back();
+                } else {
+                    console.warn('No history to go back to, redirecting to home');
+                    window.location.href = `/?lang=${localStorage.getItem('lang') || 'zh'}`;
+                }
+            } catch (error) {
+                console.error('Error in handleBackButtonClick:', error);
+                window.location.href = `/?lang=${localStorage.getItem('lang') || 'zh'}`;
+            }
+        }
+
+        setTimeout(() => bindBackButtonWithRetry(), 100);
+    });
+    </script>
+    <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'93b19cd93a43bd02',t:'MTc0NjQ2MjUyNC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
+</body>
+</html>

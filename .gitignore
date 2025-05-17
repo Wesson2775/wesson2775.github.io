@@ -1,0 +1,55 @@
+# Jekyll 生成的构建输出
+_site/
+
+# Jekyll 缓存
+.jekyll-cache/
+
+# Ruby 依赖
+vendor/
+.bundle/
+Gemfile.lock
+
+# Python 虚拟环境和依赖
+venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# 生成的 JSON 文件（由 Liquid 模板生成）
+posts.json
+fragments.json
+
+# 翻译缓存（由 sync_md_files.py 生成）
+.translation_cache.json
+
+# VS Code 配置文件（可选，根据团队需求保留）
+.vscode/
+
+# macOS 系统文件
+.DS_Store
+
+# Windows 系统文件
+Thumbs.db
+Desktop.ini
+
+# Node.js 依赖（如果有前端构建工具）
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# 日志文件
+*.log
+
+# 临时文件
+*.tmp
+*.swp
+*~
+
+# 环境变量文件（如果有）
+.env
+.env.local
+.env.*.local
+
+# GitHub Pages 特定文件（可选）
+.github/workflows/*.yml

@@ -1,0 +1,46 @@
+---
+layout: default
+lang: zh
+---
+<div class="article">
+    <h3 data-lang-key="about">关于我</h3>
+    <section class="about-content">
+        <p data-lang-key="description2">
+            {% assign lang = page.lang %}
+            {% if lang == 'en' %}
+                {{ site.description2_en }}
+            {% else %}
+                {{ site.description2 }}
+            {% endif %}
+        </p>
+        <figure>
+            <img src="{{ site.data.site_data.about.fav }}" width="200" height="150" alt="Wesson的头像" data-lang-key="avatar_alt">
+        </figure>
+        <div class="about-link">
+           
+            <a href="mailto:{{ site.data.site_data.about.email }}" class="about-link-item">Email</a>
+            <span aria-hidden="true"> | </span>
+            
+            <a href="{{ site.data.site_data.about.github }}" class="about-link-item">GitHub</a>
+        </div>
+    </section>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const lang = urlParams.get('lang') || localStorage.getItem('lang') || 'zh';
+    localStorage.setItem('lang', lang);
+
+    document.querySelectorAll('[data-lang-key="description2"]').forEach(element => {
+        element.textContent = lang === 'en' ? '{{ site.description2_en }}' : '{{ site.description2 }}';
+    });
+
+    document.querySelectorAll('a[href]').forEach(link => {
+        const href = link.getAttribute('href');
+        if (!href.includes('http') && !href.includes('?lang=')) {
+            link.setAttribute('href', `${href}?lang=${lang}`);
+        }
+    });
+});
+</script>
