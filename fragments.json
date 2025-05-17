@@ -1,0 +1,17 @@
+---
+layout: null
+permalink: /fragments.json
+---
+[
+  {% for fragment in site.fragments %}
+  {
+    "title": {{ fragment.title | jsonify }},
+    "content": {{ fragment.content | jsonify }},
+    "date": "{{ fragment.date | date: '%Y/%m/%d' }}",
+    "url": "{{ fragment.url | relative_url }}",
+    "lang": {{ fragment.lang | default: 'zh' | jsonify }},
+    "category": {{ fragment.category | default: 'fragments' | jsonify }},
+    "tags": {{ fragment.tags | jsonify }}
+  }{% unless forloop.last %},{% endunless %}
+  {% endfor %}
+]

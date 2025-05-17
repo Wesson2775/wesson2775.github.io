@@ -16,13 +16,6 @@ __pycache__/
 *.pyo
 *.pyd
 
-# 生成的 JSON 文件（由 Liquid 模板生成）
-posts.json
-fragments.json
-
-# 翻译缓存（由 sync_md_files.py 生成）
-.translation_cache.json
-
 # VS Code 配置文件（可选，根据团队需求保留）
 .vscode/
 
