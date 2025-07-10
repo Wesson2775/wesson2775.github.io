@@ -249,11 +249,14 @@ async function showBlogList(page = null) {
     for (const file of files) {
       const md = await fetchMd(file);
       const meta = parseYAML(md);
-      articles.push({
-        ...meta,
-        file,
-        content: parseContent(md),
-      });
+      // 只收录有 date 字段的文章，跳过无效或非文章 md 文件
+      if (meta && meta.date) {
+        articles.push({
+          ...meta,
+          file,
+          content: parseContent(md),
+        });
+      }
     }
     // 按日期降序
     articles.sort((a, b) => b.date.localeCompare(a.date));
