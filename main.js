@@ -130,60 +130,6 @@ window.addEventListener('scroll', function() {
   });
 });
 
-// 鼠标/手指松开后再判断是否需要吸附
-function handlePointerUp() {
-  if (isAutoScrolling || !hasUserInteracted) return;
-  const blogSection = document.querySelector('.website-bg');
-  const blogTop = blogSection.offsetTop;
-  const mainSection = document.querySelector('.main-fullscreen');
-  const mainTop = mainSection.getBoundingClientRect().top;
-  const windowHeight = window.innerHeight;
-  // 只做吸附，不切换内容区
-  if (currentPage === 1) {
-    if (mainTop < -windowHeight / 3) {
-      isAutoScrolling = true;
-      window.scrollTo({ top: blogTop, behavior: 'smooth' });
-      currentPage = 2;
-      setTimeout(() => {
-        isAutoScrolling = false;
-        // 吸附到第二页后，导航高亮与内容区同步
-        updateMenuHighlight();
-      }, 400);
-    } else {
-      isAutoScrolling = true;
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-      setTimeout(() => { isAutoScrolling = false; updateMenuHighlight(); }, 400);
-    }
-  } else {
-    if (scrollY < blogTop - windowHeight / 3) {
-      isAutoScrolling = true;
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-      currentPage = 1;
-      setTimeout(() => { isAutoScrolling = false; updateMenuHighlight(); }, 400);
-    } else {
-      isAutoScrolling = true;
-      window.scrollTo({ top: blogTop, behavior: 'smooth' });
-      setTimeout(() => {
-        isAutoScrolling = false;
-        updateMenuHighlight();
-      }, 400);
-    }
-  }
-}
-window.addEventListener('pointerup', handlePointerUp);
-window.addEventListener('touchend', handlePointerUp);
-window.addEventListener('mouseup', handlePointerUp);
-
-// 滚轮吸附：滚轮停止100ms后吸附
-let wheelTimeout = null;
-window.addEventListener('wheel', function() {
-  hasUserInteracted = true; // 滚轮也算用户主动操作
-  if (wheelTimeout) clearTimeout(wheelTimeout);
-  wheelTimeout = setTimeout(() => {
-    handlePointerUp();
-  }, 100);
-});
-
 // 导航高亮同步函数
 function updateMenuHighlight() {
   menuLinks.forEach(l => l.classList.remove('active'));

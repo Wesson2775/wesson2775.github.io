@@ -4,14 +4,12 @@ body {
   font-family: 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', Arial, sans-serif;
   color: #f5f6fa;
   min-height: 100vh;
-  height: 100vh;
   width: 100vw;
   box-sizing: border-box;
   overflow-x: hidden;
 }
 
 .main-fullscreen {
-  min-height: 100%;
   height: 100vh;
   width: 100vw;
   display: flex;
@@ -20,16 +18,13 @@ body {
 }
 
 .container {
+  max-width: 960px;
   width: 100%;
-  height: 100vh;
-  background: #23262f;
-  border-radius: 24px;
-  box-shadow: 0 4px 24px rgba(0,0,0,0.18);
   padding: 32px 24px 24px 24px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  flex: 1 0 auto;
 }
 
 .flipclock {
@@ -64,9 +59,9 @@ body {
 
 .quote {
   position: relative;
-  background: #23262f;
+ 
   color: #bfc4cc;
-  border-radius: 8px;
+  
   padding: 32px 32px 24px 48px;
   margin: 32px 0 24px 0;
   min-height: 80px;
@@ -157,26 +152,53 @@ footer {
 }
 
 .website-bg {
+  min-height: 100vh;
   position: relative;
-  width: 100vw;
-  height: 100vh;
-  background: #23262f !important;
-  overflow: hidden;
+  padding-bottom: 38px;
+  box-sizing: border-box;
 }
-.website-navbar {
+
+.website-content {
+  flex: 1 0 auto;
+  padding-top: 0;
+}
+
+.website-footer {
+  position: absolute;
+  left: 0;
+  bottom: 0;
   width: 100%;
-  height: 56px;
+  flex-shrink: 0;
+  text-align: center;
+  color: #bfc4cc;
+  font-size: 0.95rem;
+  opacity: 0.7;
+  margin: 0 0 18px 0;
+  padding: 0;
+  letter-spacing: 0.05em;
+}
+
+.website-top {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  width: 100%;
   background: rgba(24,26,32,0.35);
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
   border-bottom: 1px solid rgba(255,255,255,0.06);
+  height:60px;
+}
+
+.website-navbar {
+  max-width: 960px;
+  width: 100%;
+  height:60px;
   box-sizing: border-box;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  position: absolute;
-  top: 0;
-  left: 0;
+  margin: 0 auto;
   padding: 0 60px;
   z-index: 100;
 }
@@ -197,7 +219,7 @@ footer {
 }
 .website-logo {
   color: #fff;
-  font-size: 1.6rem;
+  font-size: 1.2rem;
   font-weight: bold;
   letter-spacing: 0.18em;
   display: inline-block;
@@ -205,12 +227,12 @@ footer {
 .website-menu {
   display: flex;
   align-items: center;
-  gap: 28px;
+  gap: 10px;
 }
 .website-menu a {
   color: #fff;
   text-decoration: none;
-  font-size: 1rem;
+  font-size: 0.8rem;
   font-weight: 500;
   letter-spacing: 0.08em;
   padding: 2px 8px;
@@ -516,17 +538,6 @@ footer {
   text-align: right;
 }
 
-.website-footer {
-  width: 100%;
-  text-align: center;
-  color: #bfc4cc;
-  font-size: 0.95rem;
-  opacity: 0.7;
-  margin: 60px 0 18px 0;
-  padding: 0;
-  letter-spacing: 0.05em;
-}
-
 .tag-collection {
   max-width: 700px;
   margin: 80px auto 0 auto;
@@ -633,7 +644,9 @@ footer {
   flex-direction: column;
   align-items: center;
   gap: 22px;
-  padding: 38px 32px 32px 32px;
+  background: #23262f;
+  border-radius: 18px;
+  box-shadow: 0 4px 24px 0 rgba(0,0,0,0.10);  padding: 38px 32px 32px 32px;
 }
 .about-avatar {
   width: 40px;
@@ -658,8 +671,4 @@ footer {
   text-align: center;
   margin-bottom: 0;
   word-break: break-all;
-}
-
-.website-content {
-  padding-top: 0;
 } 
