@@ -1,0 +1,39 @@
+body {
+  background: #181a20;
+  margin: 0;
+  font-family: 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', Arial, sans-serif;
+  color: #f5f6fa;
+  min-height: 100vh;
+  height: 100vh;
+  width: 100vw;
+  box-sizing: border-box;
+  overflow-x: hidden;
+}
+
+.website-content {
+  padding-top: 0;
+}
+
+.blog-year {
+  font-size: 1.4rem;
+  font-weight: bold;
+  color: #ffd700;
+  margin-bottom: 8px;
+  letter-spacing: 0.08em;
+}
+
+.blog-articles {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.blog-article {
+  font-size: 1rem;
+  padding: 7px 12px;
+  margin-bottom: 0;
+}
+
+.blog-title {
+  font-size: 1rem;
+} 
