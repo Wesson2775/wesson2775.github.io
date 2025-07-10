@@ -228,21 +228,21 @@ async function fetchArticleFiles() {
   // 由于前端JS无法直接读取目录，需在构建时生成文件列表，或在这里手动维护
   // 这里直接返回当前doc目录下所有md文件名
   return [
-    'doc/2023-07-15-sql-tips.md',
-    'doc/2023-08-20-docker.md',
-    'doc/2023-09-05-typescript.md',
-    'doc/2023-10-10-algorithm.md',
-    'doc/2023-11-18-nodejs-intro.md',
-    'doc/2023-12-05-vue3-feature.md',
-    'doc/2023-12-25-react-hooks.md',
-    'doc/2024-01-12-ai-tools.md',
-    'doc/2024-02-05-vue3-vs-vue2.md',
-    'doc/2024-03-10-linux-basic.md',
-    'doc/2024-04-15-git-workflow.md',
-    'doc/2024-05-20-css-tips.md',
-    'doc/2024-06-18-web-performance.md',
-    'doc/2024-07-01-js-tricks.md',
-    'doc/2024-07-02-ai-frontend.md',
+    'docs/2023-07-15-sql-tips.md',
+    'docs/2023-08-20-docker.md',
+    'docs/2023-09-05-typescript.md',
+    'docs/2023-10-10-algorithm.md',
+    'docs/2023-11-18-nodejs-intro.md',
+    'docs/2023-12-05-vue3-feature.md',
+    'docs/2023-12-25-react-hooks.md',
+    'docs/2024-01-12-ai-tools.md',
+    'docs/2024-02-05-vue3-vs-vue2.md',
+    'docs/2024-03-10-linux-basic.md',
+    'docs/2024-04-15-git-workflow.md',
+    'docs/2024-05-20-css-tips.md',
+    'docs/2024-06-18-web-performance.md',
+    'docs/2024-07-01-js-tricks.md',
+    'docs/2024-07-02-ai-frontend.md',
   ];
 }
 // 读取单个md文件
@@ -378,7 +378,7 @@ async function showFriendLinks() {
   updateMenuHighlight();
   const content = document.querySelector('.website-content');
   content.innerHTML = '<div style="color:#aaa;text-align:center;">加载中...</div>';
-  const md = await fetchMd('link.md');
+  const md = await fetchMd('docs/link.md');
   // 解析友链
   const links = [];
   md.split('\n').forEach(line => {
