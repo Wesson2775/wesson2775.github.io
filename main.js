@@ -279,7 +279,7 @@ async function showBlogList(page = null) {
   }
   const articles = blogArticlesCache;
   // 分页
-  const pageSize = 6;
+  const pageSize = 10;
   const total = articles.length;
   const totalPages = Math.ceil(total / pageSize);
   const currentPage = Math.max(1, Math.min(blogCurrentPage, totalPages));
