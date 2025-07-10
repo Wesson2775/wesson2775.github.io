@@ -224,26 +224,8 @@ function parseContent(md) {
 }
 // 获取所有md文件名
 async function fetchArticleFiles() {
-  // 自动获取doc目录下所有md文件（由后端/构建工具注入，或静态生成）
-  // 由于前端JS无法直接读取目录，需在构建时生成文件列表，或在这里手动维护
-  // 这里直接返回当前doc目录下所有md文件名
-  return [
-    'docs/2023-07-15-sql-tips.md',
-    'docs/2023-08-20-docker.md',
-    'docs/2023-09-05-typescript.md',
-    'docs/2023-10-10-algorithm.md',
-    'docs/2023-11-18-nodejs-intro.md',
-    'docs/2023-12-05-vue3-feature.md',
-    'docs/2023-12-25-react-hooks.md',
-    'docs/2024-01-12-ai-tools.md',
-    'docs/2024-02-05-vue3-vs-vue2.md',
-    'docs/2024-03-10-linux-basic.md',
-    'docs/2024-04-15-git-workflow.md',
-    'docs/2024-05-20-css-tips.md',
-    'docs/2024-06-18-web-performance.md',
-    'docs/2024-07-01-js-tricks.md',
-    'docs/2024-07-02-ai-frontend.md',
-  ];
+  const res = await fetch('docs/articles.json');
+  return await res.json();
 }
 // 读取单个md文件
 async function fetchMd(url) {
