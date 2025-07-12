@@ -1,62 +1,1527 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>个人主页</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-  <link rel="stylesheet" href="style.css">
-</head>
-<body>
-  <div class="main-fullscreen">
-    <div class="container">
-    <div class="flipclock" id="flipclock">00:00:00</div>
-    <div class="date" id="date"></div>
-    <div class="icons">
-      <a href="https://github.com/" target="_blank" rel="noopener" title="GitHub"><i class="fab fa-github"></i></a>
-      <a href="https://space.bilibili.com/" target="_blank" rel="noopener" title="哔哩哔哩"><i class="fab fa-bilibili"></i></a>
-      <a href="https://linux.do/" target="_blank" rel="noopener" title="linux.do"><i class="fa fa-linux"></i></a>
-      <a href="mailto:your@email.com" title="邮箱"><i class="fa fa-envelope"></i></a>
-    </div>
-    <div class="quote" id="quote">每日一言加载中...</div>
-    <div class="down-arrow" id="downArrow">
-      <i class="fa fa-angle-down"></i>
-    </div>
-    </div>
-  </div>
-  <div class="website-bg">
-    <div class="website-top">
-      <div class="website-navbar">
-        <div class="website-logo-block">
-          <img class="website-navbar-avatar" src="https://linux.do/user_avatar/linux.do/zor/48/773055_2.png" alt="LOGO" />
-          <div class="website-logo">Inhance</div>
-        </div>
-        <div class="website-menu">
-          <a href="#" class="active">HOME</a>
-          <a href="#">BLOG</a>
-          <a href="#">ARCHIVE</a>
-          <a href="#">LINK</a>
-          <a href="#">ABOUT</a>
-        </div>
-      </div>
-    </div>
-    <div class="website-content">
-      <div class="blog-list">
-      </div>
-      <!-- 分页导航 -->
-      <div class="pagination">
-        <button class="page-btn active">1</button>
-        <button class="page-btn">2</button>
-        <button class="page-btn">3</button>
-        <button class="page-btn">4</button>
-        <span class="page-ellipsis">...</span>
-        <button class="page-btn">30</button>
-        <button class="page-next"><span>&#8594;</span></button>
-      </div>
-      <footer class="website-footer">Copyright ©2024–2015 Musufei</footer>
-    </div>
-  </div>
-  <script src="main.js"></script>
+  <link rel="stylesheet" href="/styles.css">
+  <title>Document</title>
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+</head>
+
+<body>
+  <aside class="drawer" id="drawer">
+    <div class="drawer-content-group">
+      <img src="头像.png" alt="头像" class="drawer-avatar">
+      <div class="drawer-search">
+        <div class="drawer-search-box">
+          <svg class="drawer-search-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="8" />
+            <line x1="21" y1="21" x2="16.65" y2="16.65" />
+          </svg>
+          <input type="text" placeholder="搜索..." />
+        </div>
+      </div>
+      <nav class="drawer-nav">
+        <a href="#">首页</a>
+        <a href="#tags">标签</a>
+        <a href="#links">友链</a>
+        <a href="#about">关于</a>
+      </nav>
+    </div>
+    <div class="drawer-icons">
+      <a href="#" title="GitHub" aria-label="GitHub">
+        <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor" stroke="currentColor">
+          <path d="M12 2C6.48 2 2 6.58 2 12.26c0 4.5 2.87 8.32 6.84 9.67.5.09.68-.22.68-.48 0-.24-.01-.87-.01-1.7-2.78.62-3.37-1.36-3.37-1.36-.45-1.18-1.1-1.5-1.1-1.5-.9-.63.07-.62.07-.62 1 .07 1.53 1.05 1.53 1.05.89 1.56 2.34 1.11 2.91.85.09-.66.35-1.11.63-1.37-2.22-.26-4.56-1.14-4.56-5.07 0-1.12.39-2.03 1.03-2.75-.1-.26-.45-1.3.1-2.7 0 0 .84-.28 2.75 1.05A9.38 9.38 0 0 1 12 6.84c.85.004 1.71.12 2.51.35 1.91-1.33 2.75-1.05 2.75-1.05.55 1.4.2 2.44.1 2.7.64.72 1.03 1.63 1.03 2.75 0 3.94-2.34 4.81-4.57 5.07.36.32.68.94.68 1.9 0 1.37-.01 2.47-.01 2.8 0 .27.18.58.69.48A10.01 10.01 0 0 0 22 12.26C22 6.58 17.52 2 12 2z" />
+        </svg>
+      </a>
+      <a href="mailto:xxx@email.com" title="邮箱" aria-label="邮箱">
+        <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="5" width="18" height="14" rx="2" />
+          <polyline points="3 7 12 13 21 7" />
+        </svg>
+      </a>
+      <a href="#" title="订阅" aria-label="订阅">
+        <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10" />
+          <circle cx="12" cy="12" r="4" />
+          <line x1="12" y1="8" x2="12" y2="12" />
+        </svg>
+      </a>
+    </div>
+  </aside>
+  <div class="site-content">
+    <header class="header">
+      <div class="header-content">
+        <div class="header-left">
+          <img src="头像.png" alt="头像" class="avatar">
+          <nav class="nav">
+            <a href="#">首页</a>
+            <a href="#tags">标签</a>
+            <a href="#links">友链</a>
+            <a href="#about">关于</a>
+          </nav>
+        </div>
+        <div class="header-right">
+          <div class="search-container"
+            style="display: flex; flex-direction: row-reverse; align-items: center; position: relative;">
+            <span class="icon search" id="search-toggle" style="visibility: visible;">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="11" cy="11" r="8" />
+                <line x1="21" y1="21" x2="16.65" y2="16.65" />
+              </svg>
+            </span>
+            <div class="search-box" id="search-box">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="11" cy="11" r="8" />
+                <line x1="21" y1="21" x2="16.65" y2="16.65" />
+              </svg>
+              <input type="text" placeholder="搜索..." />
+            </div>
+          </div>
+          <a href="#" class="icon github">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+              <path
+                d="M12 2C6.48 2 2 6.58 2 12.26c0 4.5 2.87 8.32 6.84 9.67.5.09.68-.22.68-.48 0-.24-.01-.87-.01-1.7-2.78.62-3.37-1.36-3.37-1.36-.45-1.18-1.1-1.5-1.1-1.5-.9-.63.07-.62.07-.62 1 .07 1.53 1.05 1.53 1.05.89 1.56 2.34 1.11 2.91.85.09-.66.35-1.11.63-1.37-2.22-.26-4.56-1.14-4.56-5.07 0-1.12.39-2.03 1.03-2.75-.1-.26-.45-1.3.1-2.7 0 0 .84-.28 2.75 1.05A9.38 9.38 0 0 1 12 6.84c.85.004 1.71.12 2.51.35 1.91-1.33 2.75-1.05 2.75-1.05.55 1.4.2 2.44.1 2.7.64.72 1.03 1.63 1.03 2.75 0 3.94-2.34 4.81-4.57 5.07.36.32.68.94.68 1.9 0 1.37-.01 2.47-.01 2.8 0 .27.18.58.69.48A10.01 10.01 0 0 0 22 12.26C22 6.58 17.52 2 12 2z" />
+            </svg>
+          </a>
+          <a href="mailto:xxx@email.com" class="icon email">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="5" width="18" height="14" rx="2" />
+              <polyline points="3 7 12 13 21 7" />
+            </svg>
+          </a>
+        </div>
+      </div>
+    </header>
+
+    <!-- 汉堡菜单按钮 -->
+    <div class="hamburger-menu" id="hamburger-menu" aria-label="打开菜单">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#ffd700" stroke-width="2.2"
+        stroke-linecap="round" stroke-linejoin="round">
+        <line x1="4" y1="6" x2="20" y2="6" />
+        <line x1="4" y1="12" x2="20" y2="12" />
+        <line x1="4" y1="18" x2="20" y2="18" />
+      </svg>
+    </div>
+
+    <div class="hero-image">
+      <div class="hero-center-text">
+        <h1 class="hero-title">我的网站</h1>
+        <p class="hero-subtitle">副标题描述</p>
+      </div>
+    </div>
+
+    <!-- 标签页界面 -->
+    <div class="tags-page" id="tags-page" style="display: none;">
+      <div class="tags-container">
+        <h2 class="tags-title">标签分类</h2>
+        <div class="tags-grid" id="tags-grid">
+          <!-- 标签将通过JavaScript动态加载 -->
+        </div>
+        <div class="tags-articles" id="tags-articles">
+          <!-- 按标签筛选的文章将通过JavaScript动态加载 -->
+        </div>
+        <div class="tags-pagination" id="tags-pagination" style="display: none;">
+          <div class="page-list">
+            <span class="page-side" id="tags-page-prev-slot"></span>
+            <span class="page-center" id="tags-page-center-slot"></span>
+            <span class="page-side right" id="tags-page-next-slot"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 友链页面界面 -->
+    <div class="links-page" id="links-page" style="display: none;">
+      <div class="links-container">
+        <h2 class="links-title">友情链接</h2>
+        <ul class="links-list" id="links-list">
+          <!-- 友链列表将通过JavaScript动态加载 -->
+        </ul>
+      </div>
+    </div>
+
+    <!-- 关于页面界面 -->
+    <div class="about-page" id="about-page" style="display: none;">
+      <div class="about-container">
+        <div class="about-header">
+          <div class="about-avatar">
+            <img src="头像.png" alt="头像" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+            <div class="avatar-fallback">我</div>
+          </div>
+          <h1 class="about-name">我的博客</h1>
+          <p class="about-bio">热爱技术，分享知识，记录成长</p>
+        </div>
+
+        <div class="about-content">
+          <div id="about-md"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 文章详情页面界面 -->
+    <div class="article-page" id="article-page" style="display: none;">
+      <div class="article-container" style="position:relative;">
+        <div class="spider-container" id="spider-container" style="display:none;">
+          <div class="spider-thread" id="spider-thread" style="background:#fff;"></div>
+          <div class="spider" id="spider">
+            <svg width="32" height="32" viewBox="0 0 32 32">
+              <circle cx="16" cy="20" r="8" fill="#fff"/>
+              <line x1="16" y1="0" x2="16" y2="12" stroke="#fff" stroke-width="2"/>
+              <!-- 可加蜘蛛腿SVG -->
+              <line x1="8" y1="18" x2="0" y2="8" stroke="#fff" stroke-width="2"/>
+              <line x1="24" y1="18" x2="32" y2="8" stroke="#fff" stroke-width="2"/>
+              <line x1="10" y1="24" x2="2" y2="28" stroke="#fff" stroke-width="2"/>
+              <line x1="22" y1="24" x2="30" y2="28" stroke="#fff" stroke-width="2"/>
+            </svg>
+          </div>
+        </div>
+        <div class="article-content">
+          <div id="article-md"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 搜索结果页面界面 -->
+    <div class="search-page" id="search-page" style="display: none;">
+      <div class="search-container-page">
+        <div class="search-header">
+          <h2 class="search-title">搜索结果</h2>
+          <div class="search-info">
+            <span id="search-keyword"></span>
+            <span id="search-count"></span>
+          </div>
+          <div class="search-back">
+            <a href="#" id="back-from-search">← 返回首页</a>
+          </div>
+        </div>
+        
+        <div class="search-results" id="search-results">
+          <!-- 搜索结果将通过JavaScript动态加载 -->
+        </div>
+        
+        <div class="search-pagination" id="search-pagination" style="display: none;">
+          <div class="page-list">
+            <span class="page-side" id="search-page-prev-slot"></span>
+            <span class="page-center" id="search-page-center-slot"></span>
+            <span class="page-side right" id="search-page-next-slot"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="main-content" id="main-content">
+      <!-- 文章内容将通过JavaScript动态加载 -->
+    </div>
+
+    <div class="pagination" id="pagination">
+      <div class="page-list">
+        <span class="page-side" id="page-prev-slot"></span>
+        <span class="page-center" id="page-center-slot"></span>
+        <span class="page-side right" id="page-next-slot"></span>
+      </div>
+    </div>
+
+    <footer class="footer">
+      <div class="footer-content">
+        <span>© 2024 我的博客. 保留所有权利。</span>
+      </div>
+    </footer>
+  </div> <!-- site-content end -->
+
+  <script>
+    // 确保DOM完全加载后执行
+    document.addEventListener('DOMContentLoaded', function () {
+
+
+      // 自动加载文章列表
+      let allArticles = []; // 存储所有文章
+      let currentPage = 1; // 当前页码
+      const articlesPerPage = 2; // 每页显示5篇文章
+      let currentView = 'home'; // 当前视图：'home' 或 'tags' 或 'links' 或 'about'
+      let selectedTag = null; // 当前选中的标签
+      let tagsCurrentPage = 1; // 标签页当前页码
+      let filteredArticles = []; // 筛选后的文章列表
+      let linksData = null; // 友链数据
+      let searchResults = []; // 搜索结果
+      let searchCurrentPage = 1; // 搜索页当前页码
+      let currentSearchKeyword = ''; // 当前搜索关键词
+
+      async function loadArticles() {
+        try {
+          // 1. 获取 md 文件列表
+          const listRes = await fetch('list.json');
+          const files = await listRes.json();
+
+          // 2. 依次读取每个 md 文件
+          allArticles = await Promise.all(files.map(async (file) => {
+            const res = await fetch('docs/' + file);
+            const text = await res.text();
+
+            // 3. 解析 front matter
+            const match = text.match(/^---([\s\S]*?)---/);
+            let meta = {};
+            let content = text;
+            if (match) {
+              const yaml = match[1];
+              content = text.slice(match[0].length).trim();
+              yaml.split('\n').forEach(line => {
+                const [key, ...rest] = line.split(':');
+                if (key && rest.length) {
+                  meta[key.trim()] = rest.join(':').trim().replace(/^\[|\]$/g, '');
+                }
+              });
+            }
+            return {
+              title: meta.title || file.replace('.md', ''),
+              date: meta.date || '',
+              tags: meta.tags || '',
+              summary: content.slice(0, 120) + (content.length > 120 ? '...' : ''),
+              filename: file
+            };
+          }));
+
+          // 4. 按时间排序（最新的在前面）
+          allArticles.sort((a, b) => {
+            const dateA = new Date(a.date);
+            const dateB = new Date(b.date);
+            return dateB - dateA; // 降序排列，最新的在前面
+          });
+
+          // 5. 渲染第一页
+          renderPage(1);
+          renderPagination();
+          renderTagsGrid();
+
+          // 5. 加载友链数据
+          await loadLinks();
+
+          // 6. 更新统计数据
+          updateAboutStats();
+        } catch (error) {
+          console.error('加载文章失败:', error);
+          document.querySelector('.main-content').innerHTML = '<div class="post-card"><div class="post-summary">文章加载失败，请检查网络连接或文件路径。</div></div>';
+        }
+      }
+
+      // 渲染指定页的文章
+      function renderPage(page) {
+        const startIndex = (page - 1) * articlesPerPage;
+        const endIndex = startIndex + articlesPerPage;
+        const pageArticles = allArticles.slice(startIndex, endIndex);
+
+        const container = document.querySelector('.main-content');
+        container.innerHTML = '';
+
+        pageArticles.forEach(article => {
+          // 标签渲染为可点击链接
+          let tagLinks = '';
+          if (article.tags) {
+            tagLinks = article.tags.split(',').map(tag => `<a href=\"#\" class=\"card-tag-link\" data-tag=\"${tag.trim()}\">${tag.trim()}</a>`).join(', ');
+          }
+          container.innerHTML += `
+                    <div class=\"post-card\">
+                        <div class=\"post-meta\">
+                            <span class=\"post-title\">${article.title}</span>
+                            <span class=\"post-date\">${article.date}</span>
+                            <span class=\"post-tag\">${tagLinks}</span>
+                        </div>
+                        <div class=\"post-summary\">
+                            ${article.summary}
+                        </div>
+                        <div class=\"post-action\">
+                            <a href=\"#\" class=\"read-more\" data-filename=\"${article.filename}\">阅读全文</a>
+                        </div>
+                    </div>
+                `;
+        });
+
+        currentPage = page;
+      }
+
+      // 渲染分页导航
+      function renderPagination() {
+        const totalPages = Math.ceil(allArticles.length / articlesPerPage);
+        const pagination = document.querySelector('.pagination');
+        if (totalPages <= 1) {
+          pagination.style.display = 'none';
+          return;
+        }
+        pagination.style.display = 'flex';
+
+        let leftHTML = '';
+        let centerHTML = '';
+        let rightHTML = '';
+
+        // 上一个按钮（第一页时不渲染）
+        if (currentPage > 1) {
+          leftHTML = `<a class="page-item page-nav" href="#" data-page="${currentPage - 1}">上一个</a>`;
+        } else {
+          leftHTML = '';
+        }
+
+        // 页码渲染逻辑
+        const maxVisiblePages = 5;
+        if (totalPages <= maxVisiblePages) {
+          for (let i = 1; i <= totalPages; i++) {
+            centerHTML += `<a class="page-item ${i === currentPage ? 'active' : ''}" href="#" data-page="${i}">${i}</a>`;
+          }
+        } else {
+          if (currentPage <= 3) {
+            for (let i = 1; i <= 4; i++) {
+              centerHTML += `<a class="page-item ${i === currentPage ? 'active' : ''}" href="#" data-page="${i}">${i}</a>`;
+            }
+            centerHTML += '<span class="page-ellipsis">...</span>';
+            centerHTML += `<a class="page-item" href="#" data-page="${totalPages}">${totalPages}</a>`;
+          } else if (currentPage >= totalPages - 2) {
+            centerHTML += `<a class="page-item" href="#" data-page="1">1</a>`;
+            centerHTML += '<span class="page-ellipsis">...</span>';
+            for (let i = totalPages - 3; i <= totalPages; i++) {
+              centerHTML += `<a class="page-item ${i === currentPage ? 'active' : ''}" href="#" data-page="${i}">${i}</a>`;
+            }
+          } else {
+            centerHTML += `<a class="page-item" href="#" data-page="1">1</a>`;
+            centerHTML += '<span class="page-ellipsis">...</span>';
+            for (let i = currentPage - 1; i <= currentPage + 1; i++) {
+              centerHTML += `<a class="page-item ${i === currentPage ? 'active' : ''}" href="#" data-page="${i}">${i}</a>`;
+            }
+            centerHTML += '<span class="page-ellipsis">...</span>';
+            centerHTML += `<a class="page-item" href="#" data-page="${totalPages}">${totalPages}</a>`;
+          }
+        }
+
+        // 下一个按钮
+        if (currentPage < totalPages) {
+          rightHTML = `<a class="page-item page-nav" href="#" data-page="${currentPage + 1}">下一个</a>`;
+        } else {
+          rightHTML = `<span class="page-item page-nav" style="opacity:0.5;cursor:default;">下一个</span>`;
+        }
+
+        document.getElementById('page-prev-slot').innerHTML = leftHTML;
+        document.getElementById('page-center-slot').innerHTML = centerHTML;
+        document.getElementById('page-next-slot').innerHTML = rightHTML;
+
+        // 事件绑定
+        pagination.onclick = function (e) {
+          e.preventDefault();
+          if (
+            e.target.classList.contains('page-item') &&
+            !e.target.classList.contains('active') &&
+            e.target.hasAttribute('data-page')
+          ) {
+            const page = parseInt(e.target.getAttribute('data-page'));
+            if (page && page !== currentPage) {
+              renderPage(page);
+              renderPagination();
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+          }
+        };
+      }
+
+      // 渲染标签网格
+      function renderTagsGrid() {
+
+        // 收集所有标签
+        const tagCounts = {};
+        allArticles.forEach(article => {
+          if (article.tags) {
+            const tags = article.tags.split(',').map(tag => tag.trim());
+            tags.forEach(tag => {
+              if (tag) {
+                tagCounts[tag] = (tagCounts[tag] || 0) + 1;
+              }
+            });
+          }
+        });
+
+        // 渲染标签网格
+        const tagsGrid = document.getElementById('tags-grid');
+        tagsGrid.innerHTML = '';
+
+        Object.entries(tagCounts).forEach(([tag, count], index) => {
+          const tagElement = document.createElement('a');
+          tagElement.href = '#';
+          tagElement.className = 'tag-item';
+          tagElement.innerHTML = `
+                    ${tag}
+                    <span class="tag-count">${count}</span>
+                `;
+          tagElement.onclick = function (e) {
+            e.preventDefault();
+            selectTag(tag);
+          };
+          tagsGrid.appendChild(tagElement);
+
+          // 如果是第一个标签且还没有选中任何标签，自动选择它
+          if (index === 0 && !selectedTag) {
+
+            selectTag(tag);
+          }
+        });
+      }
+
+      // 选择标签
+      function selectTag(tag) {
+
+        selectedTag = tag;
+        tagsCurrentPage = 1; // 重置页码
+
+        // 更新标签项状态
+        document.querySelectorAll('.tag-item').forEach(item => {
+          item.classList.remove('active');
+          if (item.textContent.trim().startsWith(tag)) {
+            item.classList.add('active');
+          }
+        });
+
+        // 筛选文章
+        filteredArticles = allArticles.filter(article => {
+          if (!article.tags) return false;
+          const tags = article.tags.split(',').map(t => t.trim());
+          return tags.includes(tag);
+        });
+
+        // 渲染第一页
+        renderTagsPage(1);
+      }
+
+      // 渲染标签页文章
+      function renderTagsPage(page) {
+        if (!selectedTag || filteredArticles.length === 0) {
+          const tagsArticles = document.getElementById('tags-articles');
+          tagsArticles.innerHTML = `
+                    <h3 class="tags-articles-title">请选择一个标签查看相关文章</h3>
+                `;
+          tagsArticles.classList.add('show');
+          document.getElementById('tags-pagination').style.display = 'none';
+          return;
+        }
+
+        const startIndex = (page - 1) * articlesPerPage;
+        const endIndex = startIndex + articlesPerPage;
+        const pageArticles = filteredArticles.slice(startIndex, endIndex);
+
+        const tagsArticles = document.getElementById('tags-articles');
+        tagsArticles.innerHTML = `
+                <h3 class="tags-articles-title">标签：${selectedTag} (${filteredArticles.length}篇文章)</h3>
+            `;
+
+        pageArticles.forEach(article => {
+          tagsArticles.innerHTML += `
+                    <div class="post-card">
+                        <div class="post-meta">
+                            <span class="post-title">${article.title}</span>
+                            <span class="post-tag">${article.tags}</span>
+                            <span class="post-date">${article.date}</span>
+                        </div>
+                        <div class="post-summary">
+                            ${article.summary}
+                        </div>
+                        <div class="post-action">
+                            <a href="#" class="read-more" data-filename="${article.filename}">阅读全文</a>
+                        </div>
+                    </div>
+                `;
+        });
+
+        tagsArticles.classList.add('show');
+        tagsCurrentPage = page;
+
+        // 渲染分页导航
+        renderTagsPagination();
+      }
+
+      // 渲染标签页分页导航
+      function renderTagsPagination() {
+        const totalPages = Math.ceil(filteredArticles.length / articlesPerPage);
+        const pagination = document.getElementById('tags-pagination');
+
+        if (totalPages <= 1) {
+          pagination.style.display = 'none';
+          return;
+        }
+        pagination.style.display = 'flex';
+
+        let leftHTML = '';
+        let centerHTML = '';
+        let rightHTML = '';
+
+        // 上一个按钮（第一页时不渲染）
+        if (tagsCurrentPage > 1) {
+          leftHTML = `<a class="page-item page-nav" href="#" data-page="${tagsCurrentPage - 1}">上一个</a>`;
+        } else {
+          leftHTML = '';
+        }
+
+        // 页码渲染逻辑
+        const maxVisiblePages = 5;
+        if (totalPages <= maxVisiblePages) {
+          for (let i = 1; i <= totalPages; i++) {
+            centerHTML += `<a class="page-item ${i === tagsCurrentPage ? 'active' : ''}" href="#" data-page="${i}">${i}</a>`;
+          }
+        } else {
+          if (tagsCurrentPage <= 3) {
+            for (let i = 1; i <= 4; i++) {
+              centerHTML += `<a class="page-item ${i === tagsCurrentPage ? 'active' : ''}" href="#" data-page="${i}">${i}</a>`;
+            }
+            centerHTML += '<span class="page-ellipsis">...</span>';
+            centerHTML += `<a class="page-item" href="#" data-page="${totalPages}">${totalPages}</a>`;
+          } else if (tagsCurrentPage >= totalPages - 2) {
+            centerHTML += `<a class="page-item" href="#" data-page="1">1</a>`;
+            centerHTML += '<span class="page-ellipsis">...</span>';
+            for (let i = totalPages - 3; i <= totalPages; i++) {
+              centerHTML += `<a class="page-item ${i === tagsCurrentPage ? 'active' : ''}" href="#" data-page="${i}">${i}</a>`;
+            }
+          } else {
+            centerHTML += `<a class="page-item" href="#" data-page="1">1</a>`;
+            centerHTML += '<span class="page-ellipsis">...</span>';
+            for (let i = tagsCurrentPage - 1; i <= tagsCurrentPage + 1; i++) {
+              centerHTML += `<a class="page-item ${i === tagsCurrentPage ? 'active' : ''}" href="#" data-page="${i}">${i}</a>`;
+            }
+            centerHTML += '<span class="page-ellipsis">...</span>';
+            centerHTML += `<a class="page-item" href="#" data-page="${totalPages}">${totalPages}</a>`;
+          }
+        }
+
+        // 下一个按钮
+        if (tagsCurrentPage < totalPages) {
+          rightHTML = `<a class="page-item page-nav" href="#" data-page="${tagsCurrentPage + 1}">下一个</a>`;
+        } else {
+          rightHTML = `<span class="page-item page-nav" style="opacity:0.5;cursor:default;">下一个</span>`;
+        }
+
+        document.getElementById('tags-page-prev-slot').innerHTML = leftHTML;
+        document.getElementById('tags-page-center-slot').innerHTML = centerHTML;
+        document.getElementById('tags-page-next-slot').innerHTML = rightHTML;
+
+        // 事件绑定
+        pagination.onclick = function (e) {
+          e.preventDefault();
+          if (
+            e.target.classList.contains('page-item') &&
+            !e.target.classList.contains('active') &&
+            e.target.hasAttribute('data-page')
+          ) {
+            const page = parseInt(e.target.getAttribute('data-page'));
+            if (page && page !== tagsCurrentPage) {
+              renderTagsPage(page);
+              renderTagsPagination();
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+          }
+        };
+      }
+
+      // 切换视图
+      function switchView(view) {
+        currentView = view;
+
+        if (view === 'home') {
+          document.getElementById('tags-page').style.display = 'none';
+          document.getElementById('links-page').style.display = 'none';
+          document.getElementById('about-page').style.display = 'none';
+          document.getElementById('main-content').style.display = 'block';
+          document.getElementById('pagination').style.display = 'flex';
+          selectedTag = null;
+          tagsCurrentPage = 1;
+          filteredArticles = [];
+
+          // 重置标签项状态
+          document.querySelectorAll('.tag-item').forEach(item => {
+            item.classList.remove('active');
+          });
+          document.getElementById('tags-articles').classList.remove('show');
+          document.getElementById('tags-pagination').style.display = 'none';
+        } else if (view === 'tags') {
+          document.getElementById('tags-page').style.display = 'block';
+          document.getElementById('links-page').style.display = 'none';
+          document.getElementById('about-page').style.display = 'none';
+          document.getElementById('main-content').style.display = 'none';
+          document.getElementById('pagination').style.display = 'none';
+        } else if (view === 'links') {
+          document.getElementById('tags-page').style.display = 'none';
+          document.getElementById('links-page').style.display = 'block';
+          document.getElementById('about-page').style.display = 'none';
+          document.getElementById('main-content').style.display = 'none';
+          document.getElementById('pagination').style.display = 'none';
+
+          // 渲染友链页面
+          renderLinksPage();
+        } else if (view === 'about') {
+          document.getElementById('tags-page').style.display = 'none';
+          document.getElementById('links-page').style.display = 'none';
+          document.getElementById('about-page').style.display = 'block';
+          document.getElementById('main-content').style.display = 'none';
+          document.getElementById('pagination').style.display = 'none';
+
+          // 更新统计数据
+          updateAboutStats();
+        }
+      }
+
+      // 加载友链数据
+      async function loadLinks() {
+        try {
+          const response = await fetch('link.md');
+          const text = await response.text();
+
+          // 解析友链数据
+          linksData = parseLinksData(text);
+
+        } catch (error) {
+          console.error('加载友链数据失败:', error);
+          linksData = { categories: [] };
+        }
+      }
+
+      // 解析友链数据
+      function parseLinksData(text) {
+        const lines = text.split('\n');
+        const links = [];
+
+        for (let i = 0; i < lines.length; i++) {
+          const line = lines[i].trim();
+
+          // 跳过空行和front matter
+          if (!line || line.startsWith('---') || line.startsWith('title:') || line.startsWith('description:')) {
+            continue;
+          }
+
+          // 解析友链项
+          if (line.startsWith('- **')) {
+            const linkMatch = line.match(/- \*\*(.*?)\*\*/);
+            if (linkMatch) {
+              const linkTitle = linkMatch[1];
+              const link = {
+                title: linkTitle,
+                url: '',
+                description: '',
+                avatar: ''
+              };
+
+              // 读取后续的属性行
+              let j = i + 1;
+              while (j < lines.length && lines[j].trim().startsWith('- ')) {
+                const attrLine = lines[j].trim();
+                if (attrLine.includes('url:')) {
+                  link.url = attrLine.split('url:')[1].trim();
+                } else if (attrLine.includes('description:')) {
+                  link.description = attrLine.split('description:')[1].trim();
+                } else if (attrLine.includes('avatar:')) {
+                  link.avatar = attrLine.split('avatar:')[1].trim();
+                }
+                j++;
+              }
+
+              links.push(link);
+              i = j - 1; // 跳过已处理的行
+            }
+          }
+        }
+
+        return { links };
+      }
+
+      // 渲染友链页面
+      function renderLinksPage() {
+        if (!linksData || !linksData.links) {
+          return;
+        }
+
+        const linksList = document.getElementById('links-list');
+        linksList.innerHTML = '';
+
+        linksData.links.forEach(link => {
+          const listItem = document.createElement('li');
+
+          const iconHTML = link.avatar ?
+            `<img src="${link.avatar}" alt="${link.title}" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">` : '';
+
+          const fallbackIcon = `<span>${link.title.charAt(0).toUpperCase()}</span>`;
+
+          listItem.innerHTML = `
+                    <a href="${link.url}" class="link-item" target="_blank" rel="noopener noreferrer">
+                        <div class="link-icon">
+                            ${iconHTML}
+                            <div style="display: ${link.avatar ? 'none' : 'flex'}; align-items: center; justify-content: center; width: 100%; height: 100%; font-size: 0.7rem; color: #333; font-weight: bold;">
+                                ${fallbackIcon}
+                            </div>
+                        </div>
+                        <div class="link-content">
+                            <div class="link-name">${link.title}</div>
+                            <div class="link-intro">${link.description}</div>
+                        </div>
+                    </a>
+                `;
+
+          linksList.appendChild(listItem);
+        });
+      }
+
+      // 更新关于页面的统计数据
+      function updateAboutStats() {
+        // 文章总数
+        document.getElementById('total-posts').textContent = allArticles.length;
+
+        // 标签分类数
+        const tagCounts = {};
+        allArticles.forEach(article => {
+          if (article.tags) {
+            const tags = article.tags.split(',').map(tag => tag.trim());
+            tags.forEach(tag => {
+              if (tag) {
+                tagCounts[tag] = (tagCounts[tag] || 0) + 1;
+              }
+            });
+          }
+        });
+        document.getElementById('total-tags').textContent = Object.keys(tagCounts).length;
+
+        // 友链数量
+        const totalLinks = linksData && linksData.links ? linksData.links.length : 0;
+        document.getElementById('total-links').textContent = totalLinks;
+      }
+
+      // 加载并渲染关于页面Markdown
+      async function renderAboutMarkdown() {
+        try {
+          const res = await fetch('about.md');
+          const md = await res.text();
+          // 使用marked.js解析markdown
+          if (window.marked) {
+            document.getElementById('about-md').innerHTML = window.marked.parse(md);
+          } else {
+            document.getElementById('about-md').innerText = md;
+          }
+        } catch (e) {
+          document.getElementById('about-md').innerText = '加载关于内容失败';
+        }
+      }
+
+      // 加载并渲染文章详情页面
+      async function renderArticleDetail(filename) {
+        try {
+          // 查找文章信息
+          const article = allArticles.find(a => a.filename === filename);
+          if (!article) {
+            throw new Error('文章不存在');
+          }
+
+          // 加载文章内容
+          const res = await fetch('docs/' + filename);
+          const text = await res.text();
+
+          // 解析 front matter
+          const match = text.match(/^---([\s\S]*?)---/);
+          let content = text;
+          if (match) {
+            content = text.slice(match[0].length).trim();
+          }
+
+          // 只渲染正文内容到article-md
+          if (window.marked) {
+            document.getElementById('article-md').innerHTML = window.marked.parse(content);
+          } else {
+            document.getElementById('article-md').innerText = content;
+          }
+
+          // 显示文章详情页面并更新 hero 标题和副标题
+          showPage('article');
+          updateHeroTitle('article', article.title);
+          const heroSubtitle = document.querySelector('.hero-subtitle');
+          if (heroSubtitle) {
+            let tagText = article.tags ? `${article.tags}` : '';
+            let dateText = article.date ? `${article.date}` : '';
+            heroSubtitle.textContent = [tagText, dateText].filter(Boolean).join(' / ');
+          }
+
+          // ====== 蜘蛛与目录功能 ======
+          // 生成目录数据
+          function generateTOC(md) {
+            const lines = md.split('\n');
+            let toc = [];
+            lines.forEach(line => {
+              const match = line.match(/^(#{1,6})\s+(.+)/);
+              if (match) {
+                toc.push({ level: match[1].length, text: match[2] });
+              }
+            });
+            return toc;
+          }
+          // 渲染目录弹窗
+          function renderTOCDrawer(toc) {
+            let html = '<div class="toc-title">目录</div><ul class="toc-list">';
+            toc.forEach(item => {
+              html += `<li class="toc-item toc-lv${item.level}"><a href="#" data-anchor="${encodeURIComponent(item.text)}">${item.text}</a></li>`;
+            });
+            html += '</ul>';
+            return html;
+          }
+          // 插入/显示蜘蛛和目录弹窗
+          let spiderContainer = document.getElementById('spider-container');
+          if (spiderContainer) spiderContainer.style.display = '';
+          let tocDrawer = document.getElementById('toc-drawer');
+          if (!tocDrawer) {
+            tocDrawer = document.createElement('div');
+            tocDrawer.id = 'toc-drawer';
+            tocDrawer.className = 'toc-drawer';
+            document.body.appendChild(tocDrawer);
+          }
+          let tocMask = document.getElementById('toc-mask');
+          if (!tocMask) {
+            tocMask = document.createElement('div');
+            tocMask.id = 'toc-mask';
+            tocMask.className = 'toc-mask';
+            document.body.appendChild(tocMask);
+          }
+          const toc = generateTOC(content);
+          tocDrawer.innerHTML = renderTOCDrawer(toc);
+          tocDrawer.classList.remove('open');
+          tocMask.classList.remove('open');
+          document.body.classList.remove('toc-open');
+          // 蜘蛛点击弹出/收回目录
+          const spider = document.getElementById('spider');
+          const thread = document.getElementById('spider-thread');
+          if (thread) thread.style.height = '200px';
+          if (spider) {
+            spider.onclick = function(e) {
+              if (tocDrawer.classList.contains('open')) {
+                tocDrawer.classList.remove('open');
+                tocMask.classList.remove('open');
+                document.body.classList.remove('toc-open');
+              } else {
+                // 互斥：打开目录时自动关闭移动菜单
+                document.body.classList.remove('drawer-open');
+                let drawer = document.getElementById('drawer');
+                if (drawer) drawer.classList.remove('open');
+                let drawerMask = document.getElementById('drawer-mask');
+                if (drawerMask) drawerMask.classList.remove('open');
+                tocDrawer.classList.add('open');
+                tocMask.classList.add('open');
+                document.body.classList.add('toc-open');
+              }
+            };
+          }
+          // 目录点击跳转
+          tocDrawer.onclick = function(e) {
+            if (e.target.tagName === 'A' && e.target.dataset.anchor) {
+              e.preventDefault();
+              // 滚动到对应标题
+              const anchors = document.querySelectorAll('.article-content h1, .article-content h2, .article-content h3, .article-content h4, .article-content h5, .article-content h6');
+              for (let el of anchors) {
+                if (encodeURIComponent(el.textContent.trim()) === e.target.dataset.anchor) {
+                  el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                  break;
+                }
+              }
+              // 关闭目录弹窗
+              tocDrawer.classList.remove('open');
+              tocMask.classList.remove('open');
+              document.body.classList.remove('toc-open');
+            }
+          };
+          // 点击空白处收回目录
+          tocMask.onclick = function() {
+            tocDrawer.classList.remove('open');
+            tocMask.classList.remove('open');
+            document.body.classList.remove('toc-open');
+          };
+          // 离开详情页时隐藏蜘蛛和目录弹窗
+          document.addEventListener('click', function hideSpiderOnLeave(e) {
+            if (!document.getElementById('article-page') || document.getElementById('article-page').style.display === 'none') {
+              if (spiderContainer) spiderContainer.style.display = 'none';
+              if (tocDrawer) tocDrawer.classList.remove('open');
+              if (tocMask) tocMask.classList.remove('open');
+              document.body.classList.remove('toc-open');
+              if (drawerMask) drawerMask.classList.remove('open');
+              if (drawer) drawer.classList.remove('open');
+              document.body.classList.remove('drawer-open');
+              document.removeEventListener('click', hideSpiderOnLeave);
+            }
+          });
+          // =========================
+        } catch (e) {
+          console.error('加载文章详情失败:', e);
+          document.getElementById('article-md').innerText = '加载文章内容失败';
+        }
+      }
+
+      // 全局点击事件，优先处理阅读全文和标签点击
+      document.addEventListener('click', function(e) {
+        // 1. 处理阅读全文按钮
+        if (e.target.classList.contains('read-more')) {
+          e.preventDefault();
+          const filename = e.target.getAttribute('data-filename');
+          if (filename) {
+            renderArticleDetail(filename);
+          }
+          return;
+        }
+        // 2. 处理文章详情页标签点击
+        if (e.target.classList.contains('article-tag-link')) {
+          e.preventDefault();
+          const tag = e.target.getAttribute('data-tag');
+          if (tag) {
+            showPage('tags');
+            setTimeout(() => selectTag(tag), 0);
+          }
+          return;
+        }
+        // 3. 处理文章卡片标签点击
+        if (e.target.classList.contains('card-tag-link')) {
+          e.preventDefault();
+          const tag = e.target.getAttribute('data-tag');
+          if (tag) {
+            showPage('tags');
+            setTimeout(() => selectTag(tag), 0);
+          }
+          return;
+        }
+      });
+
+     
+
+      // 绑定搜索结果页面返回按钮
+      document.getElementById('back-from-search').addEventListener('click', function(e) {
+        e.preventDefault();
+        showPage('home');
+      });
+
+      // 绑定搜索框事件
+      function bindSearchEvents() {
+        const searchBox = document.getElementById('search-box');
+        const searchInput = searchBox.querySelector('input');
+        const searchIcon = searchBox.querySelector('svg');
+        
+        // 搜索图标点击事件
+        searchIcon.addEventListener('click', function() {
+          const keyword = searchInput.value.trim();
+          if (keyword) {
+            performSearch(keyword);
+          }
+        });
+        
+        // 回车键搜索
+        searchInput.addEventListener('keypress', function(e) {
+          if (e.key === 'Enter') {
+            const keyword = searchInput.value.trim();
+            if (keyword) {
+              performSearch(keyword);
+            }
+          }
+        });
+        
+        // 抽屉菜单搜索框
+        const drawerSearchBox = document.querySelector('.drawer-search-box');
+        const drawerSearchInput = drawerSearchBox ? drawerSearchBox.querySelector('input') : null;
+        const drawerSearchIcon = drawerSearchBox ? drawerSearchBox.querySelector('svg') : null;
+        if (drawerSearchInput) {
+          drawerSearchInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+              const keyword = this.value.trim();
+              if (keyword) {
+                performSearch(keyword);
+              }
+            }
+          });
+        }
+        if (drawerSearchIcon && drawerSearchInput) {
+          drawerSearchIcon.addEventListener('click', function() {
+            const keyword = drawerSearchInput.value.trim();
+            if (keyword) {
+              performSearch(keyword);
+            }
+          });
+        }
+      }
+      
+      // 初始化搜索事件
+      bindSearchEvents();
+
+      // 监听页面切换到关于页面时渲染
+      function showAboutPage() {
+        document.getElementById('about-page').style.display = 'block';
+        document.getElementById('main-content').style.display = 'none';
+        document.getElementById('pagination').style.display = 'none';
+        renderAboutMarkdown();
+      }
+      // 假设有导航按钮，绑定事件
+      const aboutNav = document.querySelector('.nav a[href="#about"]');
+      if (aboutNav) {
+        aboutNav.addEventListener('click', function (e) {
+          e.preventDefault();
+          showAboutPage();
+        });
+      }
+
+      // 页面加载时自动加载文章
+      loadArticles();
+
+      // 导航栏事件处理
+      document.querySelectorAll('.nav a').forEach(link => {
+        link.addEventListener('click', function (e) {
+          e.preventDefault();
+          const text = this.textContent.trim();
+
+          if (text === '标签') {
+            switchView('tags');
+          } else if (text === '友链') {
+            switchView('links');
+          } else if (text === '关于') {
+            switchView('about');
+          } else if (text === '首页') {
+            switchView('home');
+          }
+          // 其他导航项可以在这里添加
+        });
+      });
+
+      // 侧边栏导航事件处理
+      document.querySelectorAll('.drawer-nav a').forEach(link => {
+        link.addEventListener('click', function (e) {
+          e.preventDefault();
+          const text = this.textContent.trim();
+
+          if (text === '标签') {
+            switchView('tags');
+            // 关闭侧边栏
+            document.getElementById('drawer').classList.remove('open');
+            document.body.classList.remove('drawer-open');
+          } else if (text === '友链') {
+            switchView('links');
+            // 关闭侧边栏
+            document.getElementById('drawer').classList.remove('open');
+            document.body.classList.remove('drawer-open');
+          } else if (text === '关于') {
+            switchView('about');
+            // 关闭侧边栏
+            document.getElementById('drawer').classList.remove('open');
+            document.body.classList.remove('drawer-open');
+          } else if (text === '首页') {
+            switchView('home');
+            // 关闭侧边栏
+            document.getElementById('drawer').classList.remove('open');
+            document.body.classList.remove('drawer-open');
+          }
+          // 其他导航项可以在这里添加
+        });
+      });
+
+      const searchToggle = document.getElementById('search-toggle');
+      const searchBox = document.getElementById('search-box');
+      const searchInput = searchBox.querySelector('input');
+
+      if (searchToggle && searchBox) {
+        searchToggle.onclick = function (event) {
+          searchToggle.style.visibility = 'hidden';
+          searchBox.classList.add('open');
+          setTimeout(() => {
+            searchInput.focus();
+          }, 300);
+          event.stopPropagation();
+        };
+
+        document.addEventListener('click', function (e) {
+          if (searchBox.classList.contains('open')) {
+            if (!searchBox.contains(e.target)) {
+              searchBox.classList.remove('open');
+              setTimeout(() => {
+                searchToggle.style.visibility = 'visible';
+              }, 300);
+            }
+          }
+        });
+      }
+
+      function updateHeroParallax() {
+        const hero = document.querySelector('.hero-image');
+        if (!hero) return;
+        const winW = window.innerWidth;
+        // 以1920为基准，窗口越窄图片越大，越宽图片越小，范围[100%, 120%]
+        const scale = Math.max(1, Math.min(1.2, 1920 / winW));
+        hero.style.backgroundSize = `${scale * 100}% auto`;
+      }
+      window.addEventListener('resize', updateHeroParallax);
+      updateHeroParallax(); // 初始调用
+
+      // 移动端汉堡菜单与抽屉交互
+      const hamburgerMenu = document.getElementById('hamburger-menu');
+      const drawer = document.getElementById('drawer');
+      let drawerMask = document.getElementById('drawer-mask');
+      if (!drawerMask) {
+        drawerMask = document.createElement('div');
+        drawerMask.id = 'drawer-mask';
+        drawerMask.className = 'drawer-mask';
+        drawerMask.style.cssText = 'position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,0.15);z-index:1999;display:none;';
+        document.body.appendChild(drawerMask);
+      }
+      function setDrawerOpen(open) {
+        if (open) {
+          // 互斥：打开移动菜单时自动关闭目录
+          document.body.classList.remove('toc-open');
+          let tocDrawer = document.getElementById('toc-drawer');
+          if (tocDrawer) tocDrawer.classList.remove('open');
+          let tocMask = document.getElementById('toc-mask');
+          if (tocMask) tocMask.classList.remove('open');
+          drawer.classList.add('open');
+          document.body.classList.add('drawer-open');
+          drawerMask.classList.add('open');
+          drawerMask.style.display = 'block';
+        } else {
+          drawer.classList.remove('open');
+          document.body.classList.remove('drawer-open');
+          drawerMask.classList.remove('open');
+          drawerMask.style.display = 'none';
+        }
+      }
+
+      let drawerOpenState = false;
+      if (hamburgerMenu && drawer) {
+        hamburgerMenu.addEventListener('click', function (e) {
+          drawerOpenState = !drawerOpenState;
+          setDrawerOpen(drawerOpenState);
+          e.stopPropagation();
+        });
+        // 点击遮罩关闭移动菜单
+        drawerMask.onclick = function() {
+          drawerOpenState = false;
+          setDrawerOpen(false);
+        };
+        document.addEventListener('click', function (e) {
+          if (drawer.classList.contains('open')) {
+            // 如果点击发生在drawer内部，不关闭
+            if (drawer.contains(e.target)) return;
+            drawerOpenState = false;
+            setDrawerOpen(false);
+          }
+        });
+        window.addEventListener('resize', function () {
+          if (window.innerWidth > 768) setDrawerOpen(false);
+        });
+      }
+
+      // 汉堡菜单随页面滚动隐藏
+      window.addEventListener('scroll', function () {
+        var hamburger = document.getElementById('hamburger-menu');
+        if (!hamburger) return;
+
+        if (window.scrollY > 307) {
+          hamburger.classList.add('hamburger-hidden');
+
+        } else {
+          hamburger.classList.remove('hamburger-hidden');
+
+        }
+      });
+
+      // 更新 hero 区域标题
+      function updateHeroTitle(view, articleTitle = '') {
+        const heroTitle = document.querySelector('.hero-title');
+        const heroSubtitle = document.querySelector('.hero-subtitle');
+        
+        switch(view) {
+          case 'home':
+            heroTitle.textContent = '我的网站';
+            heroSubtitle.textContent = '副标题描述';
+            break;
+          case 'tags':
+            heroTitle.textContent = '标签分类';
+            heroSubtitle.textContent = '';
+            break;
+          case 'links':
+            heroTitle.textContent = '友情链接';
+            heroSubtitle.textContent = '';
+            break;
+          case 'about':
+            heroTitle.textContent = '关于';
+            heroSubtitle.textContent = '';
+            break;
+          case 'article':
+            heroTitle.textContent = articleTitle || '文章详情';
+            heroSubtitle.textContent = '';
+            break;
+          case 'search':
+            heroTitle.textContent = articleTitle || '搜索结果';
+            heroSubtitle.textContent = '';
+            break;
+          default:
+            heroTitle.textContent = '我的网站';
+            heroSubtitle.textContent = '副标题描述';
+        }
+      }
+
+      // 页面切换函数
+      function showPage(view) {
+        document.getElementById('main-content').style.display = (view === 'home') ? 'block' : 'none';
+        document.getElementById('pagination').style.display = (view === 'home') ? 'flex' : 'none';
+        document.getElementById('tags-page').style.display = (view === 'tags') ? 'block' : 'none';
+        document.getElementById('links-page').style.display = (view === 'links') ? 'block' : 'none';
+        document.getElementById('about-page').style.display = (view === 'about') ? 'block' : 'none';
+        document.getElementById('article-page').style.display = (view === 'article') ? 'block' : 'none';
+        document.getElementById('search-page').style.display = (view === 'search') ? 'block' : 'none';
+        
+        // 更新 hero 区域标题
+        updateHeroTitle(view);
+        
+        if (view === 'about') renderAboutMarkdown();
+      }
+      // 绑定所有导航
+      [...document.querySelectorAll('.nav a, .drawer-nav a')].forEach(a => {
+        a.addEventListener('click', function (e) {
+          const hash = a.getAttribute('href');
+          if (hash.startsWith('#')) {
+            e.preventDefault();
+            if (hash === '#about') showPage('about');
+            else if (hash === '#tags') showPage('tags');
+            else if (hash === '#links') showPage('links');
+            else showPage('home');
+          }
+        });
+      });
+      // 默认显示主页
+      showPage('home');
+
+      // 搜索功能
+      async function performSearch(keyword) {
+        if (!keyword.trim()) {
+          return;
+        }
+        
+        currentSearchKeyword = keyword.trim();
+        searchResults = [];
+        
+        // 显示搜索页面和加载状态
+        showPage('search');
+        updateHeroTitle('search', `搜索: ${keyword}`);
+        
+        const container = document.getElementById('search-results');
+        const keywordSpan = document.getElementById('search-keyword');
+        const countSpan = document.getElementById('search-count');
+        
+        // 显示加载状态
+        keywordSpan.textContent = `关键词: "${currentSearchKeyword}"`;
+        countSpan.textContent = '正在搜索...';
+        container.innerHTML = '<div class="search-loading">正在搜索文章内容，请稍候...</div>';
+        
+        // 搜索文章标题、日期、标签和完整内容
+        for (const article of allArticles) {
+          let hasMatch = false;
+          let searchSnippet = '';
+          
+          // 检查标题、日期、标签
+          const metaText = `${article.title} ${article.date} ${article.tags}`.toLowerCase();
+          const keywordLower = keyword.toLowerCase();
+          
+          if (metaText.includes(keywordLower)) {
+            hasMatch = true;
+          }
+          
+          // 加载完整文章内容进行搜索
+          try {
+            const res = await fetch('docs/' + article.filename);
+            const text = await res.text();
+            
+            // 解析 front matter
+            const match = text.match(/^---([\s\S]*?)---/);
+            let content = text;
+            if (match) {
+              content = text.slice(match[0].length).trim();
+            }
+            
+            // 在完整内容中搜索关键词
+            const contentLower = content.toLowerCase();
+            const keywordIndex = contentLower.indexOf(keywordLower);
+            
+            if (keywordIndex !== -1) {
+              hasMatch = true;
+              
+              // 提取包含关键词的上下文片段（前后各150字）
+              const start = Math.max(0, keywordIndex - 150);
+              const end = Math.min(content.length, keywordIndex + keyword.length + 150);
+              searchSnippet = content.substring(start, end);
+              
+              // 如果片段不是从开头开始，添加省略号
+              if (start > 0) {
+                searchSnippet = '...' + searchSnippet;
+              }
+              if (end < content.length) {
+                searchSnippet = searchSnippet + '...';
+              }
+            }
+          } catch (error) {
+            console.error('加载文章内容失败:', error);
+          }
+          
+          if (hasMatch) {
+            searchResults.push({
+              ...article,
+              searchSnippet: searchSnippet || article.summary
+            });
+          }
+        }
+        
+        // 按时间排序搜索结果
+        searchResults.sort((a, b) => {
+          const dateA = new Date(a.date);
+          const dateB = new Date(b.date);
+          return dateB - dateA;
+        });
+        
+        // 显示搜索结果
+        searchCurrentPage = 1;
+        renderSearchResults(1);
+      }
+
+      // 高亮关键词函数
+      function highlightKeyword(text, keyword) {
+        if (!keyword || !text) return text;
+        
+        const regex = new RegExp(`(${keyword.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
+        return text.replace(regex, '<mark class="search-highlight">$1</mark>');
+      }
+
+      // 渲染搜索结果
+      function renderSearchResults(page) {
+        const startIndex = (page - 1) * articlesPerPage;
+        const endIndex = startIndex + articlesPerPage;
+        const pageResults = searchResults.slice(startIndex, endIndex);
+        
+        const container = document.getElementById('search-results');
+        const keywordSpan = document.getElementById('search-keyword');
+        const countSpan = document.getElementById('search-count');
+        
+        // 更新搜索信息
+        keywordSpan.textContent = `关键词: "${currentSearchKeyword}"`;
+        countSpan.textContent = `找到 ${searchResults.length} 篇文章`;
+        
+        // 渲染搜索结果
+        container.innerHTML = '';
+        
+        if (searchResults.length === 0) {
+          container.innerHTML = `
+            <div class="search-no-results">
+              <p>没有找到包含 "${currentSearchKeyword}" 的文章</p>
+              <p>请尝试其他关键词</p>
+            </div>
+          `;
+          document.getElementById('search-pagination').style.display = 'none';
+          return;
+        }
+        
+        pageResults.forEach(article => {
+          // 高亮标题、标签、日期和搜索片段中的关键词
+          const highlightedTitle = highlightKeyword(article.title, currentSearchKeyword);
+          const highlightedTags = highlightKeyword(article.tags, currentSearchKeyword);
+          const highlightedDate = highlightKeyword(article.date, currentSearchKeyword);
+          const highlightedSnippet = highlightKeyword(article.searchSnippet, currentSearchKeyword);
+          
+          container.innerHTML += `
+            <div class="post-card">
+              <div class="post-meta">
+                <span class="post-title">${highlightedTitle}</span>
+                <span class="post-tag">${highlightedTags}</span>
+                <span class="post-date">${highlightedDate}</span>
+              </div>
+              <div class="post-summary">
+                ${highlightedSnippet}
+              </div>
+              <div class="post-action">
+                <a href="#" class="read-more" data-filename="${article.filename}">阅读全文</a>
+              </div>
+            </div>
+          `;
+        });
+        
+        // 渲染搜索分页
+        renderSearchPagination();
+      }
+
+      // 渲染搜索分页
+      function renderSearchPagination() {
+        const totalPages = Math.ceil(searchResults.length / articlesPerPage);
+        const pagination = document.getElementById('search-pagination');
+        
+        if (totalPages <= 1) {
+          pagination.style.display = 'none';
+          return;
+        }
+        
+        pagination.style.display = 'flex';
+        
+        let leftHTML = '';
+        let centerHTML = '';
+        let rightHTML = '';
+
+        // 上一个按钮
+        if (searchCurrentPage > 1) {
+          leftHTML = `<a class="page-item page-nav" href="#" data-page="${searchCurrentPage - 1}">上一个</a>`;
+        }
+
+        // 页码渲染逻辑
+        const maxVisiblePages = 5;
+        if (totalPages <= maxVisiblePages) {
+          for (let i = 1; i <= totalPages; i++) {
+            centerHTML += `<a class="page-item ${i === searchCurrentPage ? 'active' : ''}" href="#" data-page="${i}">${i}</a>`;
+          }
+        } else {
+          if (searchCurrentPage <= 3) {
+            for (let i = 1; i <= 4; i++) {
+              centerHTML += `<a class="page-item ${i === searchCurrentPage ? 'active' : ''}" href="#" data-page="${i}">${i}</a>`;
+            }
+            centerHTML += '<span class="page-ellipsis">...</span>';
+            centerHTML += `<a class="page-item" href="#" data-page="${totalPages}">${totalPages}</a>`;
+          } else if (searchCurrentPage >= totalPages - 2) {
+            centerHTML += `<a class="page-item" href="#" data-page="1">1</a>`;
+            centerHTML += '<span class="page-ellipsis">...</span>';
+            for (let i = totalPages - 3; i <= totalPages; i++) {
+              centerHTML += `<a class="page-item ${i === searchCurrentPage ? 'active' : ''}" href="#" data-page="${i}">${i}</a>`;
+            }
+          } else {
+            centerHTML += `<a class="page-item" href="#" data-page="1">1</a>`;
+            centerHTML += '<span class="page-ellipsis">...</span>';
+            for (let i = searchCurrentPage - 1; i <= searchCurrentPage + 1; i++) {
+              centerHTML += `<a class="page-item ${i === searchCurrentPage ? 'active' : ''}" href="#" data-page="${i}">${i}</a>`;
+            }
+            centerHTML += '<span class="page-ellipsis">...</span>';
+            centerHTML += `<a class="page-item" href="#" data-page="${totalPages}">${totalPages}</a>`;
+          }
+        }
+
+        // 下一个按钮
+        if (searchCurrentPage < totalPages) {
+          rightHTML = `<a class="page-item page-nav" href="#" data-page="${searchCurrentPage + 1}">下一个</a>`;
+        } else {
+          rightHTML = `<span class="page-item page-nav" style="opacity:0.5;cursor:default;">下一个</span>`;
+        }
+
+        document.getElementById('search-page-prev-slot').innerHTML = leftHTML;
+        document.getElementById('search-page-center-slot').innerHTML = centerHTML;
+        document.getElementById('search-page-next-slot').innerHTML = rightHTML;
+
+        // 事件绑定
+        pagination.onclick = function(e) {
+          e.preventDefault();
+          if (
+            e.target.classList.contains('page-item') &&
+            !e.target.classList.contains('active') &&
+            e.target.hasAttribute('data-page')
+          ) {
+            const page = parseInt(e.target.getAttribute('data-page'));
+            if (page && page !== searchCurrentPage) {
+              searchCurrentPage = page;
+              renderSearchResults(page);
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+          }
+        };
+      }
+    });
+  </script>
 </body>
+
 </html>
