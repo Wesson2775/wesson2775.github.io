@@ -296,8 +296,13 @@
         avatars.forEach(id => {
           const element = document.getElementById(id);
           if (element) {
-            element.src = siteConfig.avatar;
-            element.alt = siteConfig.author;
+            if (siteConfig.avatar && typeof siteConfig.avatar === 'string' && siteConfig.avatar.trim() !== '') {
+              element.src = siteConfig.avatar;
+              element.alt = siteConfig.author || '头像';
+              element.style.display = '';
+            } else {
+              element.style.display = 'none';
+            }
           }
         });
 
