@@ -436,39 +436,71 @@
         }
       }
 
-      // 渲染指定页的文章
-      function renderPage(page) {
+      // 文章摘要缓存
+      let articleSummaries = {};
+      // 按需加载摘要
+      async function fetchSummary(filename) {
+        if (articleSummaries[filename]) return articleSummaries[filename];
+        const res = await fetch('docs/' + filename);
+        const text = await res.text();
+        // 解析 front matter 和正文，取前100字
+        const match = text.match(/^---[\s\S]*?---/);
+        let content = text;
+        if (match) content = text.slice(match[0].length).trim();
+        const summary = content.slice(0, 100) + (content.length > 100 ? '...' : '');
+        articleSummaries[filename] = summary;
+        return summary;
+      }
+      // 覆盖renderPage函数，实现分页按需加载摘要
+      async function renderPage(page) {
         const startIndex = (page - 1) * articlesPerPage;
         const endIndex = startIndex + articlesPerPage;
         const pageArticles = allArticles.slice(startIndex, endIndex);
-
+        // 预加载当前页和下一页摘要
+        const preloadFiles = [
+          ...pageArticles,
+          ...allArticles.slice(endIndex, endIndex + articlesPerPage)
+        ].map(a => a.filename);
+        await Promise.all(preloadFiles.map(fetchSummary));
+        // 渲染当前页
         const container = document.querySelector('.main-content');
         container.innerHTML = '';
-
-        pageArticles.forEach(article => {
-          // 标签渲染为可点击链接
+        for (const article of pageArticles) {
+          const summary = await fetchSummary(article.filename);
           let tagLinks = '';
           if (article.tags) {
             tagLinks = article.tags.split(',').map(tag => `<a href=\"#\" class=\"card-tag-link\" data-tag=\"${tag.trim()}\">${tag.trim()}</a>`).join(', ');
           }
           container.innerHTML += `
-                    <div class=\"post-card\">
-                        <div class=\"post-meta\">
-                            <span class=\"post-title\">${article.title}</span>
-                            <span class=\"post-date\">${article.date}</span>
-                            <span class=\"post-tag\">${tagLinks}</span>
-                        </div>
-                        <div class=\"post-summary\">
-                            ${article.summary}
-                        </div>
-                        <div class=\"post-action\">
-                            <a href=\"#\" class=\"read-more\" data-filename=\"${article.filename}\">阅读全文</a>
-                        </div>
-                    </div>
-                `;
-        });
-
+            <div class=\"post-card\">
+              <div class=\"post-meta\">
+                <span class=\"post-title\">${article.title}</span>
+                <span class=\"post-date\">${article.date}</span>
+                <span class=\"post-tag\">${tagLinks}</span>
+              </div>
+              <div class=\"post-summary\">${summary}</div>
+              <div class=\"post-action\">
+                <a href=\"#\" class=\"read-more\" data-filename=\"${article.filename}\">阅读全文</a>
+              </div>
+            </div>
+          `;
+        }
         currentPage = page;
+        // 依次动画显示卡片
+        const cards = document.querySelectorAll('.main-content .post-card');
+        cards.forEach((card, i) => {
+          card.style.opacity = '0';
+          card.style.transform = 'translateY(40px)';
+          card.style.transition = 'opacity 0.6s cubic-bezier(0.4,0,0.2,1), transform 0.6s cubic-bezier(0.4,0,0.2,1)';
+        });
+        setTimeout(() => {
+          cards.forEach((card, i) => {
+            setTimeout(() => {
+              card.style.opacity = '1';
+              card.style.transform = 'translateY(0)';
+            }, i * 80);
+          });
+        }, 80);
       }
 
       // 渲染分页导航
@@ -534,7 +566,7 @@
         document.getElementById('page-next-slot').innerHTML = rightHTML;
 
         // 事件绑定
-        pagination.onclick = function (e) {
+        pagination.onclick = async function (e) {
           e.preventDefault();
           if (
             e.target.classList.contains('page-item') &&
@@ -543,7 +575,7 @@
           ) {
             const page = parseInt(e.target.getAttribute('data-page'));
             if (page && page !== currentPage) {
-              renderPage(page);
+              await renderPage(page);
               renderPagination();
               window.scrollTo({ top: 0, behavior: 'smooth' });
             }
@@ -618,8 +650,8 @@
         renderTagsPage(1);
       }
 
-      // 渲染标签页文章
-      function renderTagsPage(page) {
+      // 标签页按需加载摘要
+      async function renderTagsPage(page) {
         if (!selectedTag || filteredArticles.length === 0) {
           const tagsArticles = document.getElementById('tags-articles');
           tagsArticles.innerHTML = `
@@ -629,38 +661,37 @@
           document.getElementById('tags-pagination').style.display = 'none';
           return;
         }
-
         const startIndex = (page - 1) * articlesPerPage;
         const endIndex = startIndex + articlesPerPage;
         const pageArticles = filteredArticles.slice(startIndex, endIndex);
-
+        // 预加载当前页和下一页摘要
+        const preloadFiles = [
+          ...pageArticles,
+          ...filteredArticles.slice(endIndex, endIndex + articlesPerPage)
+        ].map(a => a.filename);
+        await Promise.all(preloadFiles.map(fetchSummary));
         const tagsArticles = document.getElementById('tags-articles');
         tagsArticles.innerHTML = `
                 <h3 class="tags-articles-title">标签：${selectedTag} (${filteredArticles.length}篇文章)</h3>
             `;
-
-        pageArticles.forEach(article => {
+        for (const article of pageArticles) {
+          const summary = await fetchSummary(article.filename);
           tagsArticles.innerHTML += `
-                    <div class="post-card">
-                        <div class="post-meta">
-                            <span class="post-title">${article.title}</span>
-                            <span class="post-tag">${article.tags}</span>
-                            <span class="post-date">${article.date}</span>
-                        </div>
-                        <div class="post-summary">
-                            ${article.summary}
-                        </div>
-                        <div class="post-action">
-                            <a href="#" class="read-more" data-filename="${article.filename}">阅读全文</a>
-                        </div>
-                    </div>
-                `;
-        });
-
+            <div class="post-card">
+                <div class="post-meta">
+                    <span class="post-title">${article.title}</span>
+                    <span class="post-tag">${article.tags}</span>
+                    <span class="post-date">${article.date}</span>
+                </div>
+                <div class="post-summary">${summary}</div>
+                <div class="post-action">
+                    <a href="#" class="read-more" data-filename="${article.filename}">阅读全文</a>
+                </div>
+            </div>
+          `;
+        }
         tagsArticles.classList.add('show');
         tagsCurrentPage = page;
-
-        // 渲染分页导航
         renderTagsPagination();
       }
 
@@ -728,7 +759,7 @@
         document.getElementById('tags-page-next-slot').innerHTML = rightHTML;
 
         // 事件绑定
-        pagination.onclick = function (e) {
+        pagination.onclick = async function (e) {
           e.preventDefault();
           if (
             e.target.classList.contains('page-item') &&
@@ -737,7 +768,7 @@
           ) {
             const page = parseInt(e.target.getAttribute('data-page'));
             if (page && page !== tagsCurrentPage) {
-              renderTagsPage(page);
+              await renderTagsPage(page);
               renderTagsPagination();
               window.scrollTo({ top: 0, behavior: 'smooth' });
             }
@@ -1528,23 +1559,23 @@
         return text.replace(regex, '<mark class="search-highlight">$1</mark>');
       }
 
-      // 渲染搜索结果
-      function renderSearchResults(page) {
+      // 搜索页按需加载摘要
+      async function renderSearchResults(page) {
         const startIndex = (page - 1) * articlesPerPage;
         const endIndex = startIndex + articlesPerPage;
         const pageResults = searchResults.slice(startIndex, endIndex);
-        
+        // 预加载当前页和下一页摘要
+        const preloadFiles = [
+          ...pageResults,
+          ...searchResults.slice(endIndex, endIndex + articlesPerPage)
+        ].map(a => a.filename);
+        await Promise.all(preloadFiles.map(fetchSummary));
         const container = document.getElementById('search-results');
         const keywordSpan = document.getElementById('search-keyword');
         const countSpan = document.getElementById('search-count');
-        
-        // 更新搜索信息
         keywordSpan.textContent = `关键词: "${currentSearchKeyword}"`;
         countSpan.textContent = `找到 ${searchResults.length} 篇文章`;
-        
-        // 渲染搜索结果
         container.innerHTML = '';
-        
         if (searchResults.length === 0) {
           container.innerHTML = `
             <div class="search-no-results">
@@ -1555,14 +1586,13 @@
           document.getElementById('search-pagination').style.display = 'none';
           return;
         }
-        
-        pageResults.forEach(article => {
-          // 高亮标题、标签、日期和搜索片段中的关键词
+        for (const article of pageResults) {
+          const summary = await fetchSummary(article.filename);
+          // 高亮关键词
           const highlightedTitle = highlightKeyword(article.title, currentSearchKeyword);
           const highlightedTags = highlightKeyword(article.tags, currentSearchKeyword);
           const highlightedDate = highlightKeyword(article.date, currentSearchKeyword);
-          const highlightedSnippet = highlightKeyword(article.searchSnippet, currentSearchKeyword);
-          
+          const highlightedSnippet = highlightKeyword(summary, currentSearchKeyword);
           container.innerHTML += `
             <div class="post-card">
               <div class="post-meta">
@@ -1578,9 +1608,7 @@
               </div>
             </div>
           `;
-        });
-        
-        // 渲染搜索分页
+        }
         renderSearchPagination();
       }
 
@@ -1647,7 +1675,7 @@
         document.getElementById('search-page-next-slot').innerHTML = rightHTML;
 
         // 事件绑定
-        pagination.onclick = function(e) {
+        pagination.onclick = async function (e) {
           e.preventDefault();
           if (
             e.target.classList.contains('page-item') &&
@@ -1657,7 +1685,7 @@
             const page = parseInt(e.target.getAttribute('data-page'));
             if (page && page !== searchCurrentPage) {
               searchCurrentPage = page;
-              renderSearchResults(page);
+              await renderSearchResults(page);
               window.scrollTo({ top: 0, behavior: 'smooth' });
             }
           }
