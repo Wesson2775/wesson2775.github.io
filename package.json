@@ -1,0 +1,26 @@
+{
+  "name": "wesson2775-blog",
+  "version": "1.0.0",
+  "description": "个人博客网站",
+  "main": "generate-rss.js",
+  "scripts": {
+    "generate-rss": "node generate-rss.js",
+    "watch": "node watch-rss.js",
+    "dev": "node watch-rss.js"
+  },
+  "keywords": [
+    "blog",
+    "rss",
+    "markdown",
+    "static-site"
+  ],
+  "author": "博主",
+  "license": "MIT",
+  "dependencies": {
+    "chokidar": "^3.5.3"
+  },
+  "devDependencies": {},
+  "engines": {
+    "node": ">=14.0.0"
+  }
+} 
