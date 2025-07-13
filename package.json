@@ -6,7 +6,13 @@
   "scripts": {
     "generate-rss": "node generate-rss.js",
     "watch": "node watch-rss.js",
-    "dev": "node watch-rss.js"
+    "dev": "node watch-rss.js",
+    "process-content": "node scripts/process-content.js",
+    "process-link": "node scripts/process-content.js link",
+    "process-about": "node scripts/process-content.js about",
+    "process-articles": "node scripts/process-content.js articles",
+    "process-config": "node scripts/process-content.js config",
+    "process-all": "node scripts/process-content.js all"
   },
   "keywords": [
     "blog",
@@ -17,7 +23,8 @@
   "author": "博主",
   "license": "MIT",
   "dependencies": {
-    "chokidar": "^3.5.3"
+    "chokidar": "^3.5.3",
+    "marked": "^9.1.6"
   },
   "devDependencies": {},
   "engines": {
