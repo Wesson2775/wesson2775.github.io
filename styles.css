@@ -1,6 +1,6 @@
 @font-face {
   font-family: 'LXGWWenKai';
-  src: url('./LXGWWenKai-Regular.ttf') format('truetype');
+  src: url('public/fonts/LXGWWenKai-Regular.ttf') format('truetype');
   font-display: swap;
 }
 
@@ -207,7 +207,7 @@ body {
   width: 100%;
   height: 307px;
   min-height: 307px;
-  background: url('1920.jpg') center center / cover no-repeat;
+  background: url('public/images/1920.jpg') center center / cover no-repeat;
   overflow: hidden;
   position: relative;
 }
