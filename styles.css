@@ -1710,4 +1710,12 @@ body.drawer-open .site-content {
   transition: color 0.2s, fill 0.2s, stroke 0.2s;
 }
 
+img[loading="lazy"] {
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+img[loading="lazy"][src]:not([src=""]) {
+  opacity: 1;
+}
+
 
