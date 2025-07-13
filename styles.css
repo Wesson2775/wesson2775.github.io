@@ -128,12 +128,12 @@ body {
 }
 
 .header-right .icon.search {
-  background-image: url('搜索图标.svg');
+  background-image: url('');
   margin-left: 0;
 }
 
 .header-right .icon.email {
-  background-image: url('邮箱图标.svg');
+  background-image: url('');
 }
 
 .header-right .icon.rss svg {
@@ -964,8 +964,10 @@ html {
   
   .drawer-icons a[title="GitHub"]:hover svg,
   .drawer-icons a[title="RSS订阅"]:hover svg {
-    fill: #ffd700;
-    stroke: none;
+    color: #ff9800;
+    fill: #ff9800;
+    stroke: #ff9800;
+    transition: color 0.2s, fill 0.2s, stroke 0.2s;
   }
   
   .drawer-icons a[title="邮箱"]:hover svg {
@@ -1653,6 +1655,59 @@ body.drawer-open .site-content {
   color: #222;
   width: 100%;
   padding: 4px 0;
+}
+
+/* 内容区自下而上滑动聚集动画 */
+.slide-up-animate {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.7s cubic-bezier(0.4,0,0.2,1), transform 0.7s cubic-bezier(0.4,0,0.2,1);
+  will-change: opacity, transform;
+}
+.slide-up-animate.active {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* 子元素分批动画（如文章卡片、标签、友链项） */
+.slide-up-animate .post-card,
+.slide-up-animate .tag-item,
+.slide-up-animate .link-item {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.7s cubic-bezier(0.4,0,0.2,1), transform 0.7s cubic-bezier(0.4,0,0.2,1);
+}
+.slide-up-animate.active .post-card,
+.slide-up-animate.active .tag-item,
+.slide-up-animate.active .link-item {
+  opacity: 1;
+  transform: translateY(0);
+}
+.slide-up-animate.active .post-card:nth-child(1),
+.slide-up-animate.active .tag-item:nth-child(1),
+.slide-up-animate.active .link-item:nth-child(1) { transition-delay: 0.05s; }
+.slide-up-animate.active .post-card:nth-child(2),
+.slide-up-animate.active .tag-item:nth-child(2),
+.slide-up-animate.active .link-item:nth-child(2) { transition-delay: 0.12s; }
+.slide-up-animate.active .post-card:nth-child(3),
+.slide-up-animate.active .tag-item:nth-child(3),
+.slide-up-animate.active .link-item:nth-child(3) { transition-delay: 0.19s; }
+.slide-up-animate.active .post-card:nth-child(4),
+.slide-up-animate.active .tag-item:nth-child(4),
+.slide-up-animate.active .link-item:nth-child(4) { transition-delay: 0.26s; }
+.slide-up-animate.active .post-card:nth-child(5),
+.slide-up-animate.active .tag-item:nth-child(5),
+.slide-up-animate.active .link-item:nth-child(5) { transition-delay: 0.33s; }
+.slide-up-animate.active .post-card:nth-child(6),
+.slide-up-animate.active .tag-item:nth-child(6),
+.slide-up-animate.active .link-item:nth-child(6) { transition-delay: 0.40s; }
+
+.drawer-icons a[title="RSS订阅"]:hover svg,
+.header-right .icon.rss:hover svg {
+  color: #ff9800;
+  fill: #ff9800;
+  stroke: #ff9800;
+  transition: color 0.2s, fill 0.2s, stroke 0.2s;
 }
 
 

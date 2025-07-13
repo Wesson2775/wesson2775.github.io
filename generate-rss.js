@@ -145,7 +145,6 @@ function generateAtomXml(entries, siteConfig) {
 function generateRSS() {
   try {
     const siteConfig = getSiteConfig();
-    console.log('开始生成RSS...');
     
     // 读取文章列表
     const listPath = path.join(__dirname, 'list.json');
@@ -161,7 +160,6 @@ function generateRSS() {
       const filePath = path.join(__dirname, localConfig.docsDir, filename);
       
       if (!fs.existsSync(filePath)) {
-        console.warn(`警告: 文件 ${filename} 不存在，跳过`);
         continue;
       }
       
@@ -170,7 +168,6 @@ function generateRSS() {
       
       // 检查必要的元数据
       if (!metadata.title || !metadata.date) {
-        console.warn(`警告: 文件 ${filename} 缺少必要的元数据 (title 或 date)，跳过`);
         continue;
       }
       
@@ -193,19 +190,7 @@ function generateRSS() {
     // 写入文件
     fs.writeFileSync(localConfig.outputFile, atomXml, 'utf8');
     
-    console.log(`RSS生成成功！共处理 ${entries.length} 篇文章`);
-    console.log(`输出文件: ${localConfig.outputFile}`);
-    
-    // 显示最新文章信息
-    if (entries.length > 0) {
-      console.log('\n最新文章:');
-      entries.slice(0, 3).forEach((entry, index) => {
-        console.log(`${index + 1}. ${entry.title} (${entry.date.toISOString().split('T')[0]})`);
-      });
-    }
-    
   } catch (error) {
-    console.error('生成RSS时出错:', error.message);
     process.exit(1);
   }
 }

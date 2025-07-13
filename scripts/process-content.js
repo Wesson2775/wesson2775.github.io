@@ -17,7 +17,6 @@ function processLinkFile() {
   const outputPath = path.join(__dirname, '..', 'data', 'links.json');
   
   if (!fs.existsSync(linkPath)) {
-    console.log('link.md not found, skipping...');
     return;
   }
   
@@ -64,10 +63,8 @@ function processLinkFile() {
     
     // 写入JSON文件
     fs.writeFileSync(outputPath, JSON.stringify(links, null, 2));
-    console.log('✅ link.md processed successfully');
     
   } catch (error) {
-    console.error('❌ Error processing link.md:', error.message);
   }
 }
 
@@ -77,7 +74,6 @@ function processAboutFile() {
   const outputPath = path.join(__dirname, '..', 'data', 'about.json');
   
   if (!fs.existsSync(aboutPath)) {
-    console.log('about.md not found, skipping...');
     return;
   }
   
@@ -126,10 +122,8 @@ function processAboutFile() {
     
     // 写入JSON文件
     fs.writeFileSync(outputPath, JSON.stringify(sections, null, 2));
-    console.log('✅ about.md processed successfully');
     
   } catch (error) {
-    console.error('❌ Error processing about.md:', error.message);
   }
 }
 
@@ -139,7 +133,6 @@ function updateArticleList() {
   const outputPath = path.join(__dirname, '..', 'list.json');
   
   if (!fs.existsSync(docsPath)) {
-    console.log('docs directory not found, skipping...');
     return;
   }
   
@@ -200,10 +193,8 @@ function updateArticleList() {
     
     // 写入JSON文件
     fs.writeFileSync(outputPath, JSON.stringify(articles, null, 2));
-    console.log(`✅ Article list updated with ${articles.length} articles`);
     
   } catch (error) {
-    console.error('❌ Error updating article list:', error.message);
   }
 }
 
@@ -213,7 +204,6 @@ function updateSiteConfig() {
   const outputPath = path.join(__dirname, '..', 'data', 'site-config.json');
   
   if (!fs.existsSync(configPath)) {
-    console.log('site.json not found, skipping...');
     return;
   }
   
@@ -228,18 +218,14 @@ function updateSiteConfig() {
     
     // 写入处理后的配置
     fs.writeFileSync(outputPath, JSON.stringify(config, null, 2));
-    console.log('✅ Site configuration updated successfully');
     
   } catch (error) {
-    console.error('❌ Error updating site configuration:', error.message);
   }
 }
 
 // 主函数
 function main() {
   const args = process.argv.slice(2);
-  
-  console.log('🚀 Starting content processing...');
   
   if (args.length === 0 || args.includes('all')) {
     processLinkFile();
@@ -252,8 +238,6 @@ function main() {
     if (args.includes('articles')) updateArticleList();
     if (args.includes('config')) updateSiteConfig();
   }
-  
-  console.log('✅ Content processing completed!');
 }
 
 // 运行主函数

@@ -21,13 +21,7 @@ function debounce(func, delay) {
 
 // 重新生成RSS的函数
 function regenerateRSS() {
-  console.log('\n检测到文件变化，重新生成RSS...');
-  try {
-    generateRSS();
-    console.log('RSS重新生成完成！\n');
-  } catch (error) {
-    console.error('重新生成RSS时出错:', error.message);
-  }
+  generateRSS();
 }
 
 // 防抖后的重新生成函数
@@ -35,11 +29,6 @@ const debouncedRegenerateRSS = debounce(regenerateRSS, config.debounceDelay);
 
 // 启动文件监听
 function startWatching() {
-  console.log('开始监听文件变化...');
-  console.log(`监听目录: ${config.docsDir}`);
-  console.log(`监听文件: ${config.listFile}`);
-  console.log('按 Ctrl+C 停止监听\n');
-
   // 监听docs目录下的所有.md文件
   const docsWatcher = chokidar.watch(path.join(config.docsDir, '**/*.md'), {
     persistent: true,
@@ -63,41 +52,33 @@ function startWatching() {
   // 监听markdown文件变化
   docsWatcher
     .on('add', (filePath) => {
-      console.log(`新增文件: ${path.relative('.', filePath)}`);
       debouncedRegenerateRSS();
     })
     .on('change', (filePath) => {
-      console.log(`文件修改: ${path.relative('.', filePath)}`);
       debouncedRegenerateRSS();
     })
     .on('unlink', (filePath) => {
-      console.log(`文件删除: ${path.relative('.', filePath)}`);
       debouncedRegenerateRSS();
     })
     .on('error', (error) => {
-      console.error('监听docs目录时出错:', error);
     });
 
   // 监听list.json文件变化
   listWatcher
     .on('change', (filePath) => {
-      console.log(`文件修改: ${path.relative('.', filePath)}`);
       debouncedRegenerateRSS();
     })
     .on('error', (error) => {
-      console.error('监听list.json时出错:', error);
     });
 
   // 处理进程退出
   process.on('SIGINT', () => {
-    console.log('\n停止监听...');
     docsWatcher.close();
     listWatcher.close();
     process.exit(0);
   });
 
   process.on('SIGTERM', () => {
-    console.log('\n停止监听...');
     docsWatcher.close();
     listWatcher.close();
     process.exit(0);
@@ -107,14 +88,7 @@ function startWatching() {
 // 如果直接运行此脚本
 if (require.main === module) {
   // 首次生成RSS
-  console.log('首次生成RSS...');
-  try {
-    generateRSS();
-    console.log('首次RSS生成完成！\n');
-  } catch (error) {
-    console.error('首次生成RSS时出错:', error.message);
-    process.exit(1);
-  }
+  generateRSS();
 
   // 开始监听
   startWatching();
