@@ -157,7 +157,7 @@
       <div class="about-container">
         <div class="about-header">
           <div class="about-avatar">
-            <img src="头像.png" alt="头像" id="about-avatar" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+            <img src="头像.png" alt="头像" id="about-avatar" class="avatar" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
             <div class="avatar-fallback">我</div>
           </div>
           <h1 class="about-name" id="about-name">我的博客</h1>
@@ -279,7 +279,7 @@
         if (!siteConfig) return;
 
         // 更新头像
-        const avatars = ['drawer-avatar', 'header-avatar', 'about-avatar'];
+        const avatars = ['drawer-avatar', 'header-avatar'];
         avatars.forEach(id => {
           const element = document.getElementById(id);
           if (element) {
@@ -287,6 +287,24 @@
             element.alt = siteConfig.author;
           }
         });
+
+        // 关于页头像支持图片或字符
+        function isImageUrl(url) {
+          return /\.(png|jpe?g|gif|svg|webp)$/i.test(url) || /^https?:\/\//.test(url);
+        }
+        const aboutAvatarImg = document.getElementById('about-avatar');
+        const aboutAvatarFallback = document.querySelector('.about-avatar .avatar-fallback');
+        if (aboutAvatarImg && aboutAvatarFallback) {
+          if (isImageUrl(siteConfig.avatar)) {
+            aboutAvatarImg.style.display = '';
+            aboutAvatarImg.src = siteConfig.avatar;
+            aboutAvatarFallback.style.display = 'none';
+          } else {
+            aboutAvatarImg.style.display = 'none';
+            aboutAvatarFallback.style.display = 'flex';
+            aboutAvatarFallback.textContent = siteConfig.avatar || '我';
+          }
+        }
 
         // 更新GitHub链接
         const githubLinks = ['drawer-github', 'header-github'];
@@ -327,7 +345,7 @@
       // 自动加载文章列表
       let allArticles = []; // 存储所有文章
       let currentPage = 1; // 当前页码
-      const articlesPerPage = 2; // 每页显示5篇文章
+      const articlesPerPage = 5; // 每页显示5篇文章
       let currentView = 'home'; // 当前视图：'home' 或 'tags' 或 'links' 或 'about'
       let selectedTag = null; // 当前选中的标签
       let tagsCurrentPage = 1; // 标签页当前页码
@@ -1647,6 +1665,40 @@
         };
       }
     });
+
+    (function () {
+      // 只在桌面端生效
+      if (/Mobi|Android|iPhone|iPad|iPod|Windows Phone/i.test(navigator.userAgent)) return;
+
+      let isScrolling = false;
+      let velocity = 0;
+
+      function animateScroll() {
+        if (Math.abs(velocity) < 0.1) {
+          isScrolling = false;
+          velocity = 0;
+          return;
+        }
+        window.scrollBy(0, velocity);
+        velocity *= 0.88  ; // 摩擦力更大，惯性更快消失
+        requestAnimationFrame(animateScroll);
+      }
+
+      window.addEventListener('wheel', function (e) {
+        if (e.ctrlKey || e.metaKey || e.altKey) return;
+        if (e.defaultPrevented) return;
+
+        e.preventDefault();
+
+        velocity += e.deltaY * 0.3; // 叠加更小
+        velocity = Math.max(Math.min(velocity, 30), -30); // 最大速度更小
+
+        if (!isScrolling) {
+          isScrolling = true;
+          animateScroll();
+        }
+      }, { passive: false });
+    })();
   </script>
 </body>
 
