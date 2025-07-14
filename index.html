@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="styles.css">
   <link rel="icon" href="public/favicon.ico">
-  <title>Document</title>
+  <title></title>
   <!-- 预加载字体和首屏图片 -->
   <link rel="preload" href="public/fonts/LXGWWenKai-Regular.ttf" as="font" type="font/ttf" crossorigin>
   <link rel="preload" href="public/images/1920.jpg" as="image">
@@ -260,21 +260,95 @@
 
       // 站点配置信息
       let siteConfig = null;
+      
+      // MD文件缓存
+      const mdCache = new Map();
+      
+      // 图片懒加载观察器
+      let imageObserver = null;
 
-      // 加载站点配置
-      async function loadSiteConfig() {
+      // 初始化图片懒加载
+      function initImageLazyLoading() {
+        if ('IntersectionObserver' in window) {
+          imageObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+              if (entry.isIntersecting) {
+                const img = entry.target;
+                if (img.dataset.src) {
+                  img.src = img.dataset.src;
+                  img.removeAttribute('data-src');
+                  img.classList.remove('lazy');
+                  imageObserver.unobserve(img);
+                }
+              }
+            });
+          }, {
+            rootMargin: '50px 0px',
+            threshold: 0.01
+          });
+        }
+      }
+
+      // 添加图片懒加载
+      function addLazyLoading(img) {
+        if (imageObserver && img.dataset.src) {
+          imageObserver.observe(img);
+        }
+      }
+
+      // 缓存MD文件内容
+      async function fetchWithCache(url) {
+        if (mdCache.has(url)) {
+          return mdCache.get(url);
+        }
+        
         try {
-          const response = await fetch('config/site.json');
+          const response = await fetch(url);
           if (!response.ok) {
-            throw new Error(`获取站点配置失败: ${response.status} ${response.statusText}`);
+            throw new Error(`获取文件失败: ${response.status} ${response.statusText}`);
           }
-          siteConfig = await response.json();
-         
+          const content = await response.text();
+          mdCache.set(url, content);
+          return content;
+        } catch (error) {
+          console.error(`获取文件失败 ${url}:`, error);
+          throw error;
+        }
+      }
+
+      // 并行加载站点配置和文章列表
+      async function loadSiteConfigAndArticles() {
+        try {
+          // 并行请求 site.json 和 list.json
+          const [siteResponse, listResponse] = await Promise.all([
+            fetch('config/site.json'),
+            fetch('list.json')
+          ]);
+
+          // 检查响应状态
+          if (!siteResponse.ok) {
+            throw new Error(`获取站点配置失败: ${siteResponse.status} ${siteResponse.statusText}`);
+          }
+          if (!listResponse.ok) {
+            throw new Error(`获取文章列表失败: ${listResponse.status} ${listResponse.statusText}`);
+          }
+
+          // 并行解析JSON
+          const [siteData, files] = await Promise.all([
+            siteResponse.json(),
+            listResponse.json()
+          ]);
+
+          siteConfig = siteData;
           
           // 更新页面元素
           updateSiteElements();
+
+          // 加载文章内容
+          await loadArticlesFromFiles(files);
+          
         } catch (error) {
-          console.error('加载站点配置失败:', error);
+          console.error('加载配置和文章失败:', error);
           // 使用默认配置
           siteConfig = {
             title: '我的博客',
@@ -285,6 +359,7 @@
             avatar: '头像.png',
             github: 'https://github.com/your-username'
           };
+          updateSiteElements();
         }
       }
 
@@ -298,9 +373,12 @@
           const element = document.getElementById(id);
           if (element) {
             if (siteConfig.avatar && typeof siteConfig.avatar === 'string' && siteConfig.avatar.trim() !== '') {
-              element.src = siteConfig.avatar;
+              // 为头像添加懒加载
+              element.dataset.src = siteConfig.avatar;
+              element.classList.add('lazy');
               element.alt = siteConfig.author || '头像';
               element.style.display = '';
+              addLazyLoading(element);
             } else {
               element.style.display = 'none';
             }
@@ -316,7 +394,10 @@
         if (aboutAvatarImg && aboutAvatarFallback) {
           if (isImageUrl(siteConfig.avatar)) {
             aboutAvatarImg.style.display = '';
-            aboutAvatarImg.src = siteConfig.avatar;
+            // 为关于页头像添加懒加载
+            aboutAvatarImg.dataset.src = siteConfig.avatar;
+            aboutAvatarImg.classList.add('lazy');
+            addLazyLoading(aboutAvatarImg);
             aboutAvatarFallback.style.display = 'none';
           } else {
             aboutAvatarImg.style.display = 'none';
@@ -374,29 +455,14 @@
       let searchCurrentPage = 1; // 搜索页当前页码
       let currentSearchKeyword = ''; // 当前搜索关键词
 
-      async function loadArticles() {
+      async function loadArticlesFromFiles(files) {
         try {
-         
-          
-          // 1. 获取 md 文件列表
-          const listRes = await fetch('list.json');
-          if (!listRes.ok) {
-            throw new Error(`获取文章列表失败: ${listRes.status} ${listRes.statusText}`);
-          }
-          const files = await listRes.json();
-         
-
-          // 2. 依次读取每个 md 文件
-          allArticles = await Promise.all(files.map(async (file) => {
+          // 并行读取所有 md 文件
+          const articlePromises = files.map(async (file) => {
             try {
-              const res = await fetch('docs/' + file);
-              if (!res.ok) {
-                console.error(`加载文件失败: ${file}, 状态: ${res.status}`);
-                return null;
-              }
-              const text = await res.text();
+              const text = await fetchWithCache('docs/' + file);
 
-              // 3. 解析 front matter
+              // 解析 front matter
               const match = text.match(/^---([\s\S]*?)---/);
               let meta = {};
               let content = text;
@@ -421,32 +487,33 @@
               console.error(`处理文件 ${file} 时出错:`, fileError);
               return null;
             }
-          }));
+          });
+
+          allArticles = await Promise.all(articlePromises);
 
           // 过滤掉加载失败的文章
           allArticles = allArticles.filter(article => article !== null);
-         
 
           if (allArticles.length === 0) {
             throw new Error('没有成功加载任何文章');
           }
 
-          // 4. 按时间排序（最新的在前面）
+          // 按时间排序（最新的在前面）
           allArticles.sort((a, b) => {
             const dateA = new Date(a.date);
             const dateB = new Date(b.date);
             return dateB - dateA; // 降序排列，最新的在前面
           });
 
-          // 5. 渲染第一页
+          // 渲染第一页
           renderPage(1);
           renderPagination();
           renderTagsGrid();
 
-          // 5. 加载友链数据
+          // 加载友链数据
           await loadLinks();
 
-          // 6. 更新统计数据
+          // 更新统计数据
           updateAboutStats();
           
         } catch (error) {
@@ -460,15 +527,20 @@
       // 按需加载摘要
       async function fetchSummary(filename) {
         if (articleSummaries[filename]) return articleSummaries[filename];
-        const res = await fetch('docs/' + filename);
-        const text = await res.text();
-        // 解析 front matter 和正文，取前100字
-        const match = text.match(/^---[\s\S]*?---/);
-        let content = text;
-        if (match) content = text.slice(match[0].length).trim();
-        const summary = content.slice(0, 100) + (content.length > 100 ? '...' : '');
-        articleSummaries[filename] = summary;
-        return summary;
+        
+        try {
+          const text = await fetchWithCache('docs/' + filename);
+          // 解析 front matter 和正文，取前100字
+          const match = text.match(/^---[\s\S]*?---/);
+          let content = text;
+          if (match) content = text.slice(match[0].length).trim();
+          const summary = content.slice(0, 100) + (content.length > 100 ? '...' : '');
+          articleSummaries[filename] = summary;
+          return summary;
+        } catch (error) {
+          console.error(`获取摘要失败 ${filename}:`, error);
+          return '摘要加载失败...';
+        }
       }
       // 覆盖renderPage函数，实现分页按需加载摘要
       async function renderPage(page) {
@@ -494,7 +566,7 @@
             <div class=\"post-card\">
               <div class=\"post-meta\">
                 <span class=\"post-title\">${article.title}</span>
-                <span class=\"post-date\">${article.date}</span>
+                <span class="post-date">${article.date}</span>
                 <span class=\"post-tag\">${tagLinks}</span>
               </div>
               <div class=\"post-summary\">${summary}</div>
@@ -845,8 +917,7 @@
       // 加载友链数据
       async function loadLinks() {
         try {
-          const response = await fetch('link.md');
-          const text = await response.text();
+          const text = await fetchWithCache('link.md');
 
           // 解析友链数据
           linksData = parseLinksData(text);
@@ -918,7 +989,7 @@
           const listItem = document.createElement('li');
 
           const iconHTML = link.avatar ?
-            `<img src="${link.avatar}" alt="${link.title}" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">` : '';
+            `<img data-src="${link.avatar}" alt="${link.title}" class="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">` : '';
 
           const fallbackIcon = `<span>${link.title.charAt(0).toUpperCase()}</span>`;
 
@@ -938,6 +1009,12 @@
                 `;
 
           linksList.appendChild(listItem);
+          
+          // 为友链头像添加懒加载
+          const img = listItem.querySelector('img');
+          if (img) {
+            addLazyLoading(img);
+          }
         });
       }
 
@@ -982,8 +1059,7 @@
       // 加载并渲染关于页面Markdown
       async function renderAboutMarkdown() {
         try {
-          const res = await fetch('about.md');
-          const md = await res.text();
+          const md = await fetchWithCache('about.md');
           // 使用marked.js解析markdown
           if (window.marked) {
             document.getElementById('about-md').innerHTML = window.marked.parse(md);
@@ -1004,9 +1080,8 @@
             throw new Error('文章不存在');
           }
 
-          // 加载文章内容
-          const res = await fetch('docs/' + filename);
-          const text = await res.text();
+          // 加载文章内容（使用缓存）
+          const text = await fetchWithCache('docs/' + filename);
 
           // 解析 front matter
           const match = text.match(/^---([\s\S]*?)---/);
@@ -1251,9 +1326,11 @@
       }
 
       // 页面加载时自动加载配置和文章
-      loadSiteConfig().then(() => {
-        loadArticles();
-      });
+      // 初始化图片懒加载
+      initImageLazyLoading();
+      
+      // 加载站点配置和文章
+      loadSiteConfigAndArticles();
 
       // 导航栏事件处理
       document.querySelectorAll('.nav a').forEach(link => {
