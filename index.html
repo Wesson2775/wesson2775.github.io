@@ -249,7 +249,7 @@
 
     <footer class="footer">
       <div class="footer-content">
-        <span>© 2024 我的博客. 保留所有权利。</span>
+        <span id="footer-title">© 2024 我的博客. 保留所有权利。</span>
       </div>
     </footer>
   </div> <!-- site-content end -->
@@ -440,6 +440,12 @@
 
         // 更新页面标题
         document.title = siteConfig.title;
+
+        // 更新页脚标题
+        const footerTitle = document.getElementById('footer-title');
+        if (footerTitle && siteConfig && siteConfig.title) {
+          footerTitle.textContent = `© 2024 ${siteConfig.title}. 保留所有权利。`;
+        }
       }
 
       // 自动加载文章列表
@@ -581,8 +587,8 @@
         const cards = document.querySelectorAll('.main-content .post-card');
         cards.forEach((card, i) => {
           card.style.opacity = '0';
-          card.style.transform = 'translateY(40px)';
-          card.style.transition = 'opacity 0.6s cubic-bezier(0.4,0,0.2,1), transform 0.6s cubic-bezier(0.4,0,0.2,1)';
+          card.style.transform = 'translateY(120px)';
+          card.style.transition = 'opacity 0.8s cubic-bezier(0.4,0,0.2,1), transform .8s cubic-bezier(0.4,0,0.2,1)';
         });
         setTimeout(() => {
           cards.forEach((card, i) => {
@@ -784,6 +790,21 @@
         tagsArticles.classList.add('show');
         tagsCurrentPage = page;
         renderTagsPagination();
+        // 新增动画效果
+        const tagCards = document.querySelectorAll('.tags-articles .post-card');
+        tagCards.forEach((card, i) => {
+          card.style.opacity = '0';
+          card.style.transform = 'translateY(120px)';
+          card.style.transition = 'opacity 0.8s cubic-bezier(0.4,0,0.2,1), transform .8s cubic-bezier(0.4,0,0.2,1)';
+        });
+        setTimeout(() => {
+          tagCards.forEach((card, i) => {
+            setTimeout(() => {
+              card.style.opacity = '1';
+              card.style.transform = 'translateY(0)';
+            }, i * 80);
+          });
+        }, 80);
       }
 
       // 渲染标签页分页导航
@@ -1016,6 +1037,21 @@
             addLazyLoading(img);
           }
         });
+        // 新增动画效果
+        const linkCards = document.querySelectorAll('.links-list .link-item');
+        linkCards.forEach((card, i) => {
+          card.style.opacity = '0';
+          card.style.transform = 'translateY(120px)';
+          card.style.transition = 'opacity 0.8s cubic-bezier(0.4,0,0.2,1), transform .8s cubic-bezier(0.4,0,0.2,1)';
+        });
+        setTimeout(() => {
+          linkCards.forEach((card, i) => {
+            setTimeout(() => {
+              card.style.opacity = '1';
+              card.style.transform = 'translateY(0)';
+            }, i * 80);
+          });
+        }, 80);
       }
 
       // 更新关于页面的统计数据

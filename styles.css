@@ -1659,7 +1659,7 @@ body.drawer-open .site-content {
 
 /* 内容区自下而上滑动聚集动画 */
 .slide-up-animate {
-  opacity: 0;
+  opacity: 1;
   transform: translateY(40px);
   transition: opacity 0.7s cubic-bezier(0.4,0,0.2,1), transform 0.7s cubic-bezier(0.4,0,0.2,1);
   will-change: opacity, transform;
