@@ -978,6 +978,12 @@ html {
     transition: transform 0.4s cubic-bezier(0.4,0,0.2,1);
     will-change: transform;
   }
+  .hero-title {
+    font-size: 1.5rem;
+  }
+  .hero-subtitle {
+    font-size: 0.95rem;
+  }
 }
 
 .header {
