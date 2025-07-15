@@ -1571,6 +1571,12 @@
         document.getElementById('article-page').style.display = (view === 'article') ? 'block' : 'none';
         document.getElementById('search-page').style.display = (view === 'search') ? 'block' : 'none';
         
+        // 新增：切换body的home类
+        if (view === 'home') {
+          document.body.classList.add('home');
+        } else {
+          document.body.classList.remove('home');
+        }
         // 更新 hero 区域标题
         updateHeroTitle(view);
         

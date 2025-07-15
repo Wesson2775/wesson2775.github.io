@@ -1754,4 +1754,21 @@ img.lazy:not([src]):not([src=""]) {
   border: 1px solid #e0e0e0;
 }
 
+@media (max-width: 768px) {
+  /* 首页大号，其他页面小号 */
+  .hero-title {
+    font-size: 1.2rem;
+  }
+  .hero-subtitle {
+    font-size: 0.85rem;
+  }
+  /* 仅首页保持大号 */
+  body.home .hero-title {
+    font-size: 2.5rem;
+  }
+  body.home .hero-subtitle {
+    font-size: 1.2rem;
+  }
+}
+
 
