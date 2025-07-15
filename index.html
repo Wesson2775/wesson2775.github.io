@@ -260,7 +260,7 @@
 
       // 站点配置信息
       let siteConfig = null;
-      
+
       // MD文件缓存
       const mdCache = new Map();
       
@@ -536,13 +536,13 @@
         
         try {
           const text = await fetchWithCache('docs/' + filename);
-          // 解析 front matter 和正文，取前100字
-          const match = text.match(/^---[\s\S]*?---/);
-          let content = text;
-          if (match) content = text.slice(match[0].length).trim();
-          const summary = content.slice(0, 100) + (content.length > 100 ? '...' : '');
-          articleSummaries[filename] = summary;
-          return summary;
+        // 解析 front matter 和正文，取前100字
+        const match = text.match(/^---[\s\S]*?---/);
+        let content = text;
+        if (match) content = text.slice(match[0].length).trim();
+        const summary = content.slice(0, 100) + (content.length > 100 ? '...' : '');
+        articleSummaries[filename] = summary;
+        return summary;
         } catch (error) {
           console.error(`获取摘要失败 ${filename}:`, error);
           return '摘要加载失败...';

@@ -72,7 +72,7 @@ jobs:
             fi
             
             # 检查脚本变化
-            if echo "$CHANGED_FILES" | grep -E "^(generate-rss\.js|watch-rss\.js)$"; then
+            if echo "$CHANGED_FILES" | grep -E "^(generate-rss\.js|watch-rss\.js|process-content\.js)$"; then
               echo "scripts=true" >> $GITHUB_OUTPUT
             else
               echo "scripts=false" >> $GITHUB_OUTPUT
@@ -122,14 +122,14 @@ jobs:
         if: needs.detect-changes.outputs.docs-changed == 'true'
         run: |
           echo "Updating article list..."
-          node scripts/process-content.js articles
+          node process-content.js articles
           echo "Article list updated successfully"
       
       - name: Update site configuration
         if: needs.detect-changes.outputs.config-changed == 'true'
         run: |
           echo "Updating site configuration..."
-          node scripts/process-content.js config
+          node process-content.js config
           echo "Site configuration updated successfully"
       
       - name: Process markdown files
@@ -139,12 +139,12 @@ jobs:
           
           if [ "${{ needs.detect-changes.outputs.link-changed }}" = "true" ]; then
             echo "Processing link.md..."
-            node scripts/process-content.js link
+            node process-content.js link
           fi
           
           if [ "${{ needs.detect-changes.outputs.about-changed }}" = "true" ]; then
             echo "Processing about.md..."
-            node scripts/process-content.js about
+            node process-content.js about
           fi
           
           echo "Markdown files processed successfully"
