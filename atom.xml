@@ -311,7 +311,7 @@ TypeScript让代码更健壮。]]>
     <link href="https://wesson2775.github.io/docs/2023-08-20-docker" rel="alternate" type="text/html"/>
     <id>https://wesson2775.github.io/docs/2023-08-20-docker</id>
     <updated>2023-08-20T00:00:00.000Z</updated>
-    <summary type="text">Docker基础入门吖 Docker让应用部署更简单高效。 基础知识 - 镜像与容器 - Dockerfile - 容器编排 _啦啦啦 总结 Docker是现代开发的重要工具。</summary>
+    <summary type="text">Docker基础入门吖 Docker让应用部署更简单高效。 基础知识 - 镜像与容器 - Dockerfile - 容器编排 _啦啦啦 总结 Docker是现代开发的重要工具。  <iframe src="//player.bilibili.com/player.html?isOutside=true&aid=113846832335114&bvid=BV1TgwAeDEXa&cid=279320...</summary>
     <content type="html" xml:base="https://wesson2775.github.io/docs/2023-08-20-docker">
       <![CDATA[# Docker基础入门吖
 
@@ -323,7 +323,8 @@ Docker让应用部署更简单高效。
 - 容器编排
 _啦啦啦
 ## 总结
-Docker是现代开发的重要工具。]]>
+Docker是现代开发的重要工具。 
+<iframe src="//player.bilibili.com/player.html?isOutside=true&aid=113846832335114&bvid=BV1TgwAeDEXa&cid=27932033787&p=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"></iframe>]]>
     </content>
     <category term="后端"/>
     <category term="Docker"/>
