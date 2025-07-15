@@ -450,6 +450,7 @@
 
       // 自动加载文章列表
       let allArticles = []; // 存储所有文章
+      let articleSummaries = {}; // 文章摘要缓存
       let currentPage = 1; // 当前页码
       const articlesPerPage = 5; // 每页显示5篇文章
       let currentView = 'home'; // 当前视图：'home' 或 'tags' 或 'links' 或 'about'
@@ -461,32 +462,36 @@
       let searchCurrentPage = 1; // 搜索页当前页码
       let currentSearchKeyword = ''; // 当前搜索关键词
 
+      // 文章元信息解析函数
+      function parseHtmlMetaAndContent(html) {
+        // 提取第一个<h2>标签内容
+        const h2Match = html.match(/<h2>([\s\S]*?)<\/h2>/i);
+        let meta = { title: '', date: '', tags: '', summary: '' };
+        if (h2Match) {
+          h2Match[1].split(/\r?\n/).forEach(line => {
+            if (line.startsWith('title:')) meta.title = line.replace('title:', '').trim();
+            else if (line.startsWith('date:')) meta.date = line.replace('date:', '').trim();
+            else if (line.startsWith('tags:')) meta.tags = line.replace('tags:', '').replace(/\[|\]/g, '').split(',').map(t => t.trim()).join(',');
+            else if (line.startsWith('summary:')) meta.summary = line.replace('summary:', '').trim();
+          });
+        }
+        // 正文内容：去掉第一个<h2>标签
+        const content = html.replace(/<h2>[\s\S]*?<\/h2>/i, '').trim();
+        return { ...meta, content };
+      }
+
+      // 重写loadArticlesFromFiles
       async function loadArticlesFromFiles(files) {
         try {
-          // 并行读取所有 md 文件
           const articlePromises = files.map(async (file) => {
             try {
-              const text = await fetchWithCache('docs/' + file);
-
-              // 解析 front matter
-              const match = text.match(/^---([\s\S]*?)---/);
-              let meta = {};
-              let content = text;
-              if (match) {
-                const yaml = match[1];
-                content = text.slice(match[0].length).trim();
-                yaml.split('\n').forEach(line => {
-                  const [key, ...rest] = line.split(':');
-                  if (key && rest.length) {
-                    meta[key.trim()] = rest.join(':').trim().replace(/^\[|\]$/g, '');
-                  }
-                });
-              }
+              const text = await fetchWithCache('articles/' + file);
+              const meta = parseHtmlMetaAndContent(text);
               return {
-                title: meta.title || file.replace('.md', ''),
+                title: meta.title || file.replace('.html', ''),
                 date: meta.date || '',
                 tags: meta.tags || '',
-                summary: content.slice(0, 120) + (content.length > 120 ? '...' : ''),
+                summary: meta.summary || meta.content.slice(0, 120) + (meta.content.length > 120 ? '...' : ''),
                 filename: file
               };
             } catch (fileError) {
@@ -494,60 +499,49 @@
               return null;
             }
           });
-
           allArticles = await Promise.all(articlePromises);
-
-          // 过滤掉加载失败的文章
           allArticles = allArticles.filter(article => article !== null);
-
           if (allArticles.length === 0) {
             throw new Error('没有成功加载任何文章');
           }
-
-          // 按时间排序（最新的在前面）
           allArticles.sort((a, b) => {
             const dateA = new Date(a.date);
             const dateB = new Date(b.date);
-            return dateB - dateA; // 降序排列，最新的在前面
+            return dateB - dateA;
           });
-
-          // 渲染第一页
           renderPage(1);
           renderPagination();
           renderTagsGrid();
-
-          // 加载友链数据
           await loadLinks();
-
-          // 更新统计数据
           updateAboutStats();
-          
         } catch (error) {
           console.error('加载文章失败:', error);
           document.querySelector('.main-content').innerHTML = `<div class="post-card"><div class="post-summary">文章加载失败: ${error.message}</div></div>`;
         }
       }
 
-      // 文章摘要缓存
-      let articleSummaries = {};
-      // 按需加载摘要
+      // 修复fetchSummary，优先summary字段，无则正文前100字
       async function fetchSummary(filename) {
         if (articleSummaries[filename]) return articleSummaries[filename];
-        
         try {
-          const text = await fetchWithCache('docs/' + filename);
-        // 解析 front matter 和正文，取前100字
-        const match = text.match(/^---[\s\S]*?---/);
-        let content = text;
-        if (match) content = text.slice(match[0].length).trim();
-        const summary = content.slice(0, 100) + (content.length > 100 ? '...' : '');
-        articleSummaries[filename] = summary;
-        return summary;
+          const text = await fetchWithCache('articles/' + filename);
+          const meta = parseHtmlMetaAndContent(text);
+          let summary = '';
+          if (meta.summary && meta.summary.trim()) {
+            summary = meta.summary.trim();
+          } else {
+            // 去除所有HTML标签，仅保留文本
+            const plain = meta.content.replace(/<[^>]+>/g, '').replace(/\s+/g, ' ').trim();
+            summary = plain.slice(0, 100) + (plain.length > 100 ? '...' : '');
+          }
+          articleSummaries[filename] = summary;
+          return summary;
         } catch (error) {
           console.error(`获取摘要失败 ${filename}:`, error);
           return '摘要加载失败...';
         }
       }
+
       // 覆盖renderPage函数，实现分页按需加载摘要
       async function renderPage(page) {
         const startIndex = (page - 1) * articlesPerPage;
@@ -1107,146 +1101,26 @@
         }
       }
 
-      // 加载并渲染文章详情页面
+      // 重写renderArticleDetail
       async function renderArticleDetail(filename) {
         try {
-          // 查找文章信息
           const article = allArticles.find(a => a.filename === filename);
           if (!article) {
             throw new Error('文章不存在');
           }
-
-          // 加载文章内容（使用缓存）
-          const text = await fetchWithCache('docs/' + filename);
-
-          // 解析 front matter
-          const match = text.match(/^---([\s\S]*?)---/);
-          let content = text;
-          if (match) {
-            content = text.slice(match[0].length).trim();
-          }
-
-          // 只渲染正文内容到article-md
-          if (window.marked) {
-            document.getElementById('article-md').innerHTML = window.marked.parse(content);
-          } else {
-            document.getElementById('article-md').innerText = content;
-          }
-
-          // 显示文章详情页面并更新 hero 标题和副标题
+          const text = await fetchWithCache('articles/' + filename);
+          const meta = parseHtmlMetaAndContent(text);
+          // 渲染正文（第一个<h1>及其后内容）
+          document.getElementById('article-md').innerHTML = meta.content;
           showPage('article');
-          updateHeroTitle('article', article.title);
+          updateHeroTitle('article', meta.title);
           const heroSubtitle = document.querySelector('.hero-subtitle');
           if (heroSubtitle) {
-            let tagText = article.tags ? `${article.tags}` : '';
-            let dateText = article.date ? `${article.date}` : '';
+            let tagText = meta.tags ? `${meta.tags}` : '';
+            let dateText = meta.date ? `${meta.date}` : '';
             heroSubtitle.textContent = [tagText, dateText].filter(Boolean).join(' / ');
           }
-
-          // ====== 蜘蛛与目录功能 ======
-          // 生成目录数据
-          function generateTOC(md) {
-            const lines = md.split('\n');
-            let toc = [];
-            lines.forEach(line => {
-              const match = line.match(/^(#{1,6})\s+(.+)/);
-              if (match) {
-                toc.push({ level: match[1].length, text: match[2] });
-              }
-            });
-            return toc;
-          }
-          // 渲染目录弹窗
-          function renderTOCDrawer(toc) {
-            let html = '<div class="toc-title">目录</div><ul class="toc-list">';
-            toc.forEach(item => {
-              html += `<li class="toc-item toc-lv${item.level}"><a href="#" data-anchor="${encodeURIComponent(item.text)}">${item.text}</a></li>`;
-            });
-            html += '</ul>';
-            return html;
-          }
-          // 显示悬浮目录图标并创建目录弹窗
-          let floatingTocIcon = document.getElementById('floating-toc-icon');
-          if (floatingTocIcon) floatingTocIcon.style.display = 'flex';
-          
-          let tocDrawer = document.getElementById('toc-drawer');
-          if (!tocDrawer) {
-            tocDrawer = document.createElement('div');
-            tocDrawer.id = 'toc-drawer';
-            tocDrawer.className = 'toc-drawer';
-            document.body.appendChild(tocDrawer);
-          }
-          let tocMask = document.getElementById('toc-mask');
-          if (!tocMask) {
-            tocMask = document.createElement('div');
-            tocMask.id = 'toc-mask';
-            tocMask.className = 'toc-mask';
-            document.body.appendChild(tocMask);
-          }
-          const toc = generateTOC(content);
-          tocDrawer.innerHTML = renderTOCDrawer(toc);
-          tocDrawer.classList.remove('open');
-          tocMask.classList.remove('open');
-          document.body.classList.remove('toc-open');
-          
-          // 悬浮图标点击弹出/收回目录
-          if (floatingTocIcon) {
-            floatingTocIcon.onclick = function(e) {
-              if (tocDrawer.classList.contains('open')) {
-                tocDrawer.classList.remove('open');
-                tocMask.classList.remove('open');
-                document.body.classList.remove('toc-open');
-              } else {
-                // 互斥：打开目录时自动关闭移动菜单
-                document.body.classList.remove('drawer-open');
-                let drawer = document.getElementById('drawer');
-                if (drawer) drawer.classList.remove('open');
-                let drawerMask = document.getElementById('drawer-mask');
-                if (drawerMask) drawerMask.classList.remove('open');
-                tocDrawer.classList.add('open');
-                tocMask.classList.add('open');
-                document.body.classList.add('toc-open');
-              }
-            };
-          }
-          // 目录点击跳转
-          tocDrawer.onclick = function(e) {
-            if (e.target.tagName === 'A' && e.target.dataset.anchor) {
-              e.preventDefault();
-              // 滚动到对应标题
-              const anchors = document.querySelectorAll('.article-content h1, .article-content h2, .article-content h3, .article-content h4, .article-content h5, .article-content h6');
-              for (let el of anchors) {
-                if (encodeURIComponent(el.textContent.trim()) === e.target.dataset.anchor) {
-                  el.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                  break;
-                }
-              }
-              // 关闭目录弹窗
-              tocDrawer.classList.remove('open');
-              tocMask.classList.remove('open');
-              document.body.classList.remove('toc-open');
-            }
-          };
-          // 点击空白处收回目录
-          tocMask.onclick = function() {
-            tocDrawer.classList.remove('open');
-            tocMask.classList.remove('open');
-            document.body.classList.remove('toc-open');
-          };
-          // 离开详情页时隐藏悬浮图标和目录弹窗
-          document.addEventListener('click', function hideFloatingIconOnLeave(e) {
-            if (!document.getElementById('article-page') || document.getElementById('article-page').style.display === 'none') {
-              if (floatingTocIcon) floatingTocIcon.style.display = 'none';
-              if (tocDrawer) tocDrawer.classList.remove('open');
-              if (tocMask) tocMask.classList.remove('open');
-              document.body.classList.remove('toc-open');
-              if (drawerMask) drawerMask.classList.remove('open');
-              if (drawer) drawer.classList.remove('open');
-              document.body.classList.remove('drawer-open');
-              document.removeEventListener('click', hideFloatingIconOnLeave);
-            }
-          });
-          // =========================
+          // 目录功能可选保留或移除
         } catch (e) {
           console.error('加载文章详情失败:', e);
           document.getElementById('article-md').innerText = '加载文章内容失败';
@@ -1635,7 +1509,7 @@
           
           // 加载完整文章内容进行搜索
           try {
-            const res = await fetch('docs/' + article.filename);
+            const res = await fetch('articles/' + article.filename);
             const text = await res.text();
             
             // 解析 front matter

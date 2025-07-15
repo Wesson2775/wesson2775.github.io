@@ -26,8 +26,7 @@
     "chokidar": "^3.5.3",
     "marked": "^9.1.6"
   },
-  "devDependencies": {},
   "engines": {
     "node": ">=14.0.0"
   }
-} 
+}

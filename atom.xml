@@ -13,342 +13,288 @@
   <generator>Custom RSS Generator</generator>
   <entry>
     <title>AI助力前端开发</title>
-    <link href="https://wesson2775.github.io/docs/2024-07-02-ai-frontend" rel="alternate" type="text/html"/>
-    <id>https://wesson2775.github.io/docs/2024-07-02-ai-frontend</id>
+    <link href="https://wesson2775.github.io/articles/2024-07-02-ai-frontend.html" rel="alternate" type="text/html"/>
+    <id>https://wesson2775.github.io/articles/2024-07-02-ai-frontend.html</id>
     <updated>2024-07-02T00:00:00.000Z</updated>
-    <summary type="text">AI助力前端开发 随着AI技术的发展，前端开发也迎来了新的变革。本文将介绍AI在前端开发中的应用场景与实践经验。 主要内容 - 代码自动补全 - 智能测试 - 设计辅助 总结 AI正在不断提升前端开发的效率和体验，未来可期。</summary>
-    <content type="html" xml:base="https://wesson2775.github.io/docs/2024-07-02-ai-frontend">
-      <![CDATA[# AI助力前端开发
+    <content type="html" xml:base="https://wesson2775.github.io/articles/2024-07-02-ai-frontend.html"><![CDATA[<hr>
 
-随着AI技术的发展，前端开发也迎来了新的变革。本文将介绍AI在前端开发中的应用场景与实践经验。
-
-## 主要内容
-- 代码自动补全
-- 智能测试
-- 设计辅助
-
-## 总结
-AI正在不断提升前端开发的效率和体验，未来可期。]]>
-    </content>
+<h1>AI助力前端开发</h1>
+<p>随着AI技术的发展，前端开发也迎来了新的变革。本文将介绍AI在前端开发中的应用场景与实践经验。</p>
+<h2>主要内容</h2>
+<ul>
+<li>代码自动补全</li>
+<li>智能测试</li>
+<li>设计辅助</li>
+</ul>
+<h2>总结</h2>
+<p>AI正在不断提升前端开发的效率和体验，未来可期。 </p>]]></content>
     <category term="前端开发"/>
     <category term="AI"/>
   </entry>
   <entry>
     <title>JavaScript开发小技巧</title>
-    <link href="https://wesson2775.github.io/docs/2024-07-01-js-tricks" rel="alternate" type="text/html"/>
-    <id>https://wesson2775.github.io/docs/2024-07-01-js-tricks</id>
+    <link href="https://wesson2775.github.io/articles/2024-07-01-js-tricks.html" rel="alternate" type="text/html"/>
+    <id>https://wesson2775.github.io/articles/2024-07-01-js-tricks.html</id>
     <updated>2024-07-01T00:00:00.000Z</updated>
-    <summary type="text">JavaScript开发小技巧 在日常开发中，掌握一些小技巧可以大大提升效率。 技巧一：数组去重 使用Set快速实现数组去重： ``js const arr = [1,2,2,3]; const unique = [...new Set(arr)]; ` 技巧二：对象属性合并 使用Object.assign或展开运算符： `js const a = {x:1}, b={y:2}; const c ...</summary>
-    <content type="html" xml:base="https://wesson2775.github.io/docs/2024-07-01-js-tricks">
-      <![CDATA[# JavaScript开发小技巧
+    <content type="html" xml:base="https://wesson2775.github.io/articles/2024-07-01-js-tricks.html"><![CDATA[<hr>
 
-在日常开发中，掌握一些小技巧可以大大提升效率。
-
-## 技巧一：数组去重
-使用Set快速实现数组去重：
-```js
-const arr = [1,2,2,3];
+<h1>JavaScript开发小技巧</h1>
+<p>在日常开发中，掌握一些小技巧可以大大提升效率。</p>
+<h2>技巧一：数组去重</h2>
+<p>使用Set快速实现数组去重：</p>
+<pre><code class="language-js">const arr = [1,2,2,3];
 const unique = [...new Set(arr)];
-```
-
-## 技巧二：对象属性合并
-使用Object.assign或展开运算符：
-```js
-const a = {x:1}, b={y:2};
+</code></pre>
+<h2>技巧二：对象属性合并</h2>
+<p>使用Object.assign或展开运算符：</p>
+<pre><code class="language-js">const a = {x:1}, b={y:2};
 const c = {...a, ...b};
-```
-
-## 总结
-多用原生API，代码更简洁。]]>
-    </content>
+</code></pre>
+<h2>总结</h2>
+<p>多用原生API，代码更简洁。 </p>]]></content>
     <category term="前端开发"/>
     <category term="JavaScript"/>
   </entry>
   <entry>
     <title>网站性能优化实战</title>
-    <link href="https://wesson2775.github.io/docs/2024-06-18-web-performance" rel="alternate" type="text/html"/>
-    <id>https://wesson2775.github.io/docs/2024-06-18-web-performance</id>
+    <link href="https://wesson2775.github.io/articles/2024-06-18-web-performance.html" rel="alternate" type="text/html"/>
+    <id>https://wesson2775.github.io/articles/2024-06-18-web-performance.html</id>
     <updated>2024-06-18T00:00:00.000Z</updated>
-    <summary type="text">网站性能优化实战 优化网站性能可以提升用户体验和SEO排名。 主要方法 - 图片懒加载 - 资源压缩与合并 - 使用CDN 总结 性能优化是前端开发的重要环节。</summary>
-    <content type="html" xml:base="https://wesson2775.github.io/docs/2024-06-18-web-performance">
-      <![CDATA[# 网站性能优化实战
+    <content type="html" xml:base="https://wesson2775.github.io/articles/2024-06-18-web-performance.html"><![CDATA[<hr>
 
-优化网站性能可以提升用户体验和SEO排名。
-
-## 主要方法
-- 图片懒加载
-- 资源压缩与合并
-- 使用CDN
-
-## 总结
-性能优化是前端开发的重要环节。]]>
-    </content>
+<h1>网站性能优化实战</h1>
+<p>优化网站性能可以提升用户体验和SEO排名。</p>
+<h2>主要方法</h2>
+<ul>
+<li>图片懒加载</li>
+<li>资源压缩与合并</li>
+<li>使用CDN</li>
+</ul>
+<h2>总结</h2>
+<p>性能优化是前端开发的重要环节。 </p>]]></content>
     <category term="前端开发"/>
     <category term="性能优化"/>
   </entry>
   <entry>
     <title>CSS实用技巧</title>
-    <link href="https://wesson2775.github.io/docs/2024-05-20-css-tips" rel="alternate" type="text/html"/>
-    <id>https://wesson2775.github.io/docs/2024-05-20-css-tips</id>
+    <link href="https://wesson2775.github.io/articles/2024-05-20-css-tips.html" rel="alternate" type="text/html"/>
+    <id>https://wesson2775.github.io/articles/2024-05-20-css-tips.html</id>
     <updated>2024-05-20T00:00:00.000Z</updated>
-    <summary type="text">CSS实用技巧 掌握CSS小技巧可以让页面更美观。 技巧 - 使用flex布局实现居中 - 响应式设计 - 变量与主题切换 总结 CSS让网页更灵活。</summary>
-    <content type="html" xml:base="https://wesson2775.github.io/docs/2024-05-20-css-tips">
-      <![CDATA[# CSS实用技巧
+    <content type="html" xml:base="https://wesson2775.github.io/articles/2024-05-20-css-tips.html"><![CDATA[<hr>
 
-掌握CSS小技巧可以让页面更美观。
-
-## 技巧
-- 使用flex布局实现居中
-- 响应式设计
-- 变量与主题切换
-
-## 总结
-CSS让网页更灵活。]]>
-    </content>
+<h1>CSS实用技巧</h1>
+<p>掌握CSS小技巧可以让页面更美观。</p>
+<h2>技巧</h2>
+<ul>
+<li>使用flex布局实现居中</li>
+<li>响应式设计</li>
+<li>变量与主题切换</li>
+</ul>
+<h2>总结</h2>
+<p>CSS让网页更灵活。 </p>]]></content>
     <category term="前端开发"/>
     <category term="CSS"/>
   </entry>
   <entry>
     <title>高效的Git工作流</title>
-    <link href="https://wesson2775.github.io/docs/2024-04-15-git-workflow" rel="alternate" type="text/html"/>
-    <id>https://wesson2775.github.io/docs/2024-04-15-git-workflow</id>
+    <link href="https://wesson2775.github.io/articles/2024-04-15-git-workflow.html" rel="alternate" type="text/html"/>
+    <id>https://wesson2775.github.io/articles/2024-04-15-git-workflow.html</id>
     <updated>2024-04-15T00:00:00.000Z</updated>
-    <summary type="text">高效的Git工作流 合理的Git工作流能提升团队协作效率。 常见工作流 - Git Flow - Forking Flow - Feature Branch 总结 选择合适的工作流，事半功倍。</summary>
-    <content type="html" xml:base="https://wesson2775.github.io/docs/2024-04-15-git-workflow">
-      <![CDATA[# 高效的Git工作流
+    <content type="html" xml:base="https://wesson2775.github.io/articles/2024-04-15-git-workflow.html"><![CDATA[<hr>
 
-合理的Git工作流能提升团队协作效率。
-
-## 常见工作流
-- Git Flow
-- Forking Flow
-- Feature Branch
-
-## 总结
-选择合适的工作流，事半功倍。]]>
-    </content>
+<h1>高效的Git工作流</h1>
+<p>合理的Git工作流能提升团队协作效率。</p>
+<h2>常见工作流</h2>
+<ul>
+<li>Git Flow</li>
+<li>Forking Flow</li>
+<li>Feature Branch</li>
+</ul>
+<h2>总结</h2>
+<p>选择合适的工作流，事半功倍。 </p>]]></content>
     <category term="工具"/>
     <category term="Git"/>
   </entry>
   <entry>
     <title>Linux基础入门</title>
-    <link href="https://wesson2775.github.io/docs/2024-03-10-linux-basic" rel="alternate" type="text/html"/>
-    <id>https://wesson2775.github.io/docs/2024-03-10-linux-basic</id>
+    <link href="https://wesson2775.github.io/articles/2024-03-10-linux-basic.html" rel="alternate" type="text/html"/>
+    <id>https://wesson2775.github.io/articles/2024-03-10-linux-basic.html</id>
     <updated>2024-03-10T00:00:00.000Z</updated>
-    <summary type="text">Linux基础入门 Linux是最流行的开源操作系统之一。 基础命令 - ls - cd - cp/mv/rm 总结 多练习命令行，提升效率。</summary>
-    <content type="html" xml:base="https://wesson2775.github.io/docs/2024-03-10-linux-basic">
-      <![CDATA[# Linux基础入门
+    <content type="html" xml:base="https://wesson2775.github.io/articles/2024-03-10-linux-basic.html"><![CDATA[<hr>
 
-Linux是最流行的开源操作系统之一。
-
-## 基础命令
-- ls
-- cd
-- cp/mv/rm
-
-## 总结
-多练习命令行，提升效率。]]>
-    </content>
+<h1>Linux基础入门</h1>
+<p>Linux是最流行的开源操作系统之一。</p>
+<h2>基础命令</h2>
+<ul>
+<li>ls</li>
+<li>cd</li>
+<li>cp/mv/rm</li>
+</ul>
+<h2>总结</h2>
+<p>多练习命令行，提升效率。 </p>]]></content>
     <category term="Linux"/>
     <category term="操作系统"/>
   </entry>
   <entry>
     <title>Vue3与Vue2的对比</title>
-    <link href="https://wesson2775.github.io/docs/2024-02-05-vue3-vs-vue2" rel="alternate" type="text/html"/>
-    <id>https://wesson2775.github.io/docs/2024-02-05-vue3-vs-vue2</id>
+    <link href="https://wesson2775.github.io/articles/2024-02-05-vue3-vs-vue2.html" rel="alternate" type="text/html"/>
+    <id>https://wesson2775.github.io/articles/2024-02-05-vue3-vs-vue2.html</id>
     <updated>2024-02-05T00:00:00.000Z</updated>
-    <summary type="text">Vue3与Vue2的对比 Vue3在性能、API设计等方面有诸多提升。 主要区别 - Composition API - 更快的响应式 - 更好的TypeScript支持 总结 建议新项目优先选择Vue3。</summary>
-    <content type="html" xml:base="https://wesson2775.github.io/docs/2024-02-05-vue3-vs-vue2">
-      <![CDATA[# Vue3与Vue2的对比
+    <content type="html" xml:base="https://wesson2775.github.io/articles/2024-02-05-vue3-vs-vue2.html"><![CDATA[<hr>
 
-Vue3在性能、API设计等方面有诸多提升。
-
-## 主要区别
-- Composition API
-- 更快的响应式
-- 更好的TypeScript支持
-
-## 总结
-建议新项目优先选择Vue3。]]>
-    </content>
+<h1>Vue3与Vue2的对比</h1>
+<p>Vue3在性能、API设计等方面有诸多提升。</p>
+<h2>主要区别</h2>
+<ul>
+<li>Composition API</li>
+<li>更快的响应式</li>
+<li>更好的TypeScript支持</li>
+</ul>
+<h2>总结</h2>
+<p>建议新项目优先选择Vue3。 </p>]]></content>
     <category term="前端开发"/>
     <category term="Vue3"/>
   </entry>
   <entry>
     <title>AI工具推荐</title>
-    <link href="https://wesson2775.github.io/docs/2024-01-12-ai-tools" rel="alternate" type="text/html"/>
-    <id>https://wesson2775.github.io/docs/2024-01-12-ai-tools</id>
+    <link href="https://wesson2775.github.io/articles/2024-01-12-ai-tools.html" rel="alternate" type="text/html"/>
+    <id>https://wesson2775.github.io/articles/2024-01-12-ai-tools.html</id>
     <updated>2024-01-12T00:00:00.000Z</updated>
-    <summary type="text">AI工具推荐 AI工具可以极大提升工作效率。 推荐工具 - ChatGPT - Copilot - Midjourney 总结 善用AI工具，事半功倍。</summary>
-    <content type="html" xml:base="https://wesson2775.github.io/docs/2024-01-12-ai-tools">
-      <![CDATA[# AI工具推荐
+    <content type="html" xml:base="https://wesson2775.github.io/articles/2024-01-12-ai-tools.html"><![CDATA[<hr>
 
-AI工具可以极大提升工作效率。
-
-## 推荐工具
-- ChatGPT
-- Copilot
-- Midjourney
-
-## 总结
-善用AI工具，事半功倍。]]>
-    </content>
+<h1>AI工具推荐</h1>
+<p>AI工具可以极大提升工作效率。</p>
+<h2>推荐工具</h2>
+<ul>
+<li>ChatGPT</li>
+<li>Copilot</li>
+<li>Midjourney</li>
+</ul>
+<h2>总结</h2>
+<p>善用AI工具，事半功倍。 </p>]]></content>
     <category term="AI"/>
     <category term="工具"/>
   </entry>
   <entry>
     <title>React Hooks实用指南</title>
-    <link href="https://wesson2775.github.io/docs/2023-12-25-react-hooks" rel="alternate" type="text/html"/>
-    <id>https://wesson2775.github.io/docs/2023-12-25-react-hooks</id>
+    <link href="https://wesson2775.github.io/articles/2023-12-25-react-hooks.html" rel="alternate" type="text/html"/>
+    <id>https://wesson2775.github.io/articles/2023-12-25-react-hooks.html</id>
     <updated>2023-12-25T00:00:00.000Z</updated>
-    <summary type="text">React Hooks实用指南 Hooks让函数组件拥有更强大的状态和副作用管理能力。 常用Hooks - useState - useEffect - useContext 总结 Hooks让React开发更高效。</summary>
-    <content type="html" xml:base="https://wesson2775.github.io/docs/2023-12-25-react-hooks">
-      <![CDATA[# React Hooks实用指南
+    <content type="html" xml:base="https://wesson2775.github.io/articles/2023-12-25-react-hooks.html"><![CDATA[<hr>
 
-Hooks让函数组件拥有更强大的状态和副作用管理能力。
-
-## 常用Hooks
-- useState
-- useEffect
-- useContext
-
-## 总结
-Hooks让React开发更高效。]]>
-    </content>
+<h1>React Hooks实用指南</h1>
+<p>Hooks让函数组件拥有更强大的状态和副作用管理能力。</p>
+<h2>常用Hooks</h2>
+<ul>
+<li>useState</li>
+<li>useEffect</li>
+<li>useContext</li>
+</ul>
+<h2>总结</h2>
+<p>Hooks让React开发更高效。 </p>]]></content>
     <category term="前端开发"/>
     <category term="React"/>
   </entry>
   <entry>
     <title>Vue3新特性解析</title>
-    <link href="https://wesson2775.github.io/docs/2023-12-05-vue3-feature" rel="alternate" type="text/html"/>
-    <id>https://wesson2775.github.io/docs/2023-12-05-vue3-feature</id>
+    <link href="https://wesson2775.github.io/articles/2023-12-05-vue3-feature.html" rel="alternate" type="text/html"/>
+    <id>https://wesson2775.github.io/articles/2023-12-05-vue3-feature.html</id>
     <updated>2023-12-05T00:00:00.000Z</updated>
-    <summary type="text">Vue3新特性解析 Vue3 带来了许多令人兴奋的新特性，包括 Composition API、性能提升等。 主要内容 - Composition API - 更快的响应式系统 - 更好的TypeScript支持 总结 Vue3让前端开发更加高效和灵活。</summary>
-    <content type="html" xml:base="https://wesson2775.github.io/docs/2023-12-05-vue3-feature">
-      <![CDATA[# Vue3新特性解析
+    <content type="html" xml:base="https://wesson2775.github.io/articles/2023-12-05-vue3-feature.html"><![CDATA[<hr>
 
-Vue3 带来了许多令人兴奋的新特性，包括 Composition API、性能提升等。
-
-## 主要内容
-- Composition API
-- 更快的响应式系统
-- 更好的TypeScript支持
-
-## 总结
-Vue3让前端开发更加高效和灵活。]]>
-    </content>
+<h1>Vue3新特性解析</h1>
+<p>Vue3 带来了许多令人兴奋的新特性，包括 Composition API、性能提升等。</p>
+<h2>主要内容</h2>
+<ul>
+<li>Composition API</li>
+<li>更快的响应式系统</li>
+<li>更好的TypeScript支持</li>
+</ul>
+<h2>总结</h2>
+<p>Vue3让前端开发更加高效和灵活。 </p>]]></content>
     <category term="前端开发"/>
     <category term="Vue3"/>
   </entry>
   <entry>
     <title>Node.js入门基础</title>
-    <link href="https://wesson2775.github.io/docs/2023-11-18-nodejs-intro" rel="alternate" type="text/html"/>
-    <id>https://wesson2775.github.io/docs/2023-11-18-nodejs-intro</id>
+    <link href="https://wesson2775.github.io/articles/2023-11-18-nodejs-intro.html" rel="alternate" type="text/html"/>
+    <id>https://wesson2775.github.io/articles/2023-11-18-nodejs-intro.html</id>
     <updated>2023-11-18T00:00:00.000Z</updated>
-    <summary type="text">Node.js入门基础 Node.js让JavaScript可以运行在服务端。 基础知识 - npm包管理 - 异步编程 - Express框架 总结 Node.js让前后端开发无缝衔接。</summary>
-    <content type="html" xml:base="https://wesson2775.github.io/docs/2023-11-18-nodejs-intro">
-      <![CDATA[# Node.js入门基础
+    <content type="html" xml:base="https://wesson2775.github.io/articles/2023-11-18-nodejs-intro.html"><![CDATA[<hr>
 
-Node.js让JavaScript可以运行在服务端。
-
-## 基础知识
-- npm包管理
-- 异步编程
-- Express框架
-
-## 总结
-Node.js让前后端开发无缝衔接。]]>
-    </content>
+<h1>Node.js入门基础</h1>
+<p>Node.js让JavaScript可以运行在服务端。</p>
+<h2>基础知识</h2>
+<ul>
+<li>npm包管理</li>
+<li>异步编程</li>
+<li>Express框架</li>
+</ul>
+<h2>总结</h2>
+<p>Node.js让前后端开发无缝衔接。 </p>]]></content>
     <category term="Node.js"/>
     <category term="后端"/>
   </entry>
   <entry>
     <title>算法基础知识</title>
-    <link href="https://wesson2775.github.io/docs/2023-10-10-algorithm" rel="alternate" type="text/html"/>
-    <id>https://wesson2775.github.io/docs/2023-10-10-algorithm</id>
+    <link href="https://wesson2775.github.io/articles/2023-10-10-algorithm.html" rel="alternate" type="text/html"/>
+    <id>https://wesson2775.github.io/articles/2023-10-10-algorithm.html</id>
     <updated>2023-10-10T00:00:00.000Z</updated>
-    <summary type="text">算法基础知识 掌握算法有助于提升编程能力。 常见算法 - 排序算法 - 查找算法 - 动态规划 总结 多刷题，提升算法能力。</summary>
-    <content type="html" xml:base="https://wesson2775.github.io/docs/2023-10-10-algorithm">
-      <![CDATA[# 算法基础知识
+    <content type="html" xml:base="https://wesson2775.github.io/articles/2023-10-10-algorithm.html"><![CDATA[<hr>
 
-掌握算法有助于提升编程能力。
-
-## 常见算法
-- 排序算法
-- 查找算法
-- 动态规划
-
-## 总结
-多刷题，提升算法能力。]]>
-    </content>
+<h1>算法基础知识</h1>
+<p>掌握算法有助于提升编程能力。</p>
+<h2>常见算法</h2>
+<ul>
+<li>排序算法</li>
+<li>查找算法</li>
+<li>动态规划</li>
+</ul>
+<h2>总结</h2>
+<p>多刷题，提升算法能力。 </p>]]></content>
     <category term="算法"/>
     <category term="编程"/>
   </entry>
   <entry>
     <title>TypeScript入门指南</title>
-    <link href="https://wesson2775.github.io/docs/2023-09-05-typescript" rel="alternate" type="text/html"/>
-    <id>https://wesson2775.github.io/docs/2023-09-05-typescript</id>
+    <link href="https://wesson2775.github.io/articles/2023-09-05-typescript.html" rel="alternate" type="text/html"/>
+    <id>https://wesson2775.github.io/articles/2023-09-05-typescript.html</id>
     <updated>2023-09-05T00:00:00.000Z</updated>
-    <summary type="text">TypeScript入门指南 TypeScript为JavaScript带来了类型系统。 基础知识 - 类型注解 - 接口与类型别名 - 泛型 总结 TypeScript让代码更健壮。</summary>
-    <content type="html" xml:base="https://wesson2775.github.io/docs/2023-09-05-typescript">
-      <![CDATA[# TypeScript入门指南
+    <content type="html" xml:base="https://wesson2775.github.io/articles/2023-09-05-typescript.html"><![CDATA[<hr>
 
-TypeScript为JavaScript带来了类型系统。
-
-## 基础知识
-- 类型注解
-- 接口与类型别名
-- 泛型
-
-## 总结
-TypeScript让代码更健壮。]]>
-    </content>
+<h1>TypeScript入门指南</h1>
+<p>TypeScript为JavaScript带来了类型系统。</p>
+<h2>基础知识</h2>
+<ul>
+<li>类型注解</li>
+<li>接口与类型别名</li>
+<li>泛型</li>
+</ul>
+<h2>总结</h2>
+<p>TypeScript让代码更健壮。 </p>]]></content>
     <category term="前端开发"/>
     <category term="TypeScript"/>
   </entry>
   <entry>
     <title>Docker基础入门吖</title>
-    <link href="https://wesson2775.github.io/docs/2023-08-20-docker" rel="alternate" type="text/html"/>
-    <id>https://wesson2775.github.io/docs/2023-08-20-docker</id>
+    <link href="https://wesson2775.github.io/articles/2023-08-20-docker.html" rel="alternate" type="text/html"/>
+    <id>https://wesson2775.github.io/articles/2023-08-20-docker.html</id>
     <updated>2023-08-20T00:00:00.000Z</updated>
-    <summary type="text">Docker基础入门吖 Docker让应用部署更简单高效。 基础知识 - 镜像与容器 - Dockerfile - 容器编排 _啦啦啦 总结 Docker是现代开发的重要工具。  <iframe src="//player.bilibili.com/player.html?isOutside=true&aid=113846832335114&bvid=BV1TgwAeDEXa&cid=279320...</summary>
-    <content type="html" xml:base="https://wesson2775.github.io/docs/2023-08-20-docker">
-      <![CDATA[# Docker基础入门吖
+    <content type="html" xml:base="https://wesson2775.github.io/articles/2023-08-20-docker.html"><![CDATA[<hr>
 
-Docker让应用部署更简单高效。
-
-## 基础知识
-- 镜像与容器
-- Dockerfile
-- 容器编排
-_啦啦啦
-## 总结
-Docker是现代开发的重要工具。 
-<iframe src="//player.bilibili.com/player.html?isOutside=true&aid=113846832335114&bvid=BV1TgwAeDEXa&cid=27932033787&p=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"></iframe>]]>
-    </content>
+<h1>Docker基础入门吖</h1>
+<p>Docker让应用部署更简单高效。</p>
+<h2>基础知识</h2>
+<ul>
+<li>镜像与容器</li>
+<li>Dockerfile</li>
+<li>容器编排
+_啦啦啦</li>
+</ul>
+<h2>总结</h2>
+<p>Docker是现代开发的重要工具。 </p>
+<iframe src="//player.bilibili.com/player.html?isOutside=true&aid=113846832335114&bvid=BV1TgwAeDEXa&cid=27932033787&p=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"></iframe>]]></content>
     <category term="后端"/>
     <category term="Docker"/>
-  </entry>
-  <entry>
-    <title>SQL实用技巧</title>
-    <link href="https://wesson2775.github.io/docs/2023-07-15-sql-tips" rel="alternate" type="text/html"/>
-    <id>https://wesson2775.github.io/docs/2023-07-15-sql-tips</id>
-    <updated>2023-07-15T00:00:00.000Z</updated>
-    <summary type="text">SQL实用技巧 掌握SQL技巧可以高效操作数据库。 技巧 - 多表连接 - 子查询 - 索引优化 总结 SQL是数据处理的基础技能。</summary>
-    <content type="html" xml:base="https://wesson2775.github.io/docs/2023-07-15-sql-tips">
-      <![CDATA[# SQL实用技巧
-
-掌握SQL技巧可以高效操作数据库。
-
-## 技巧
-- 多表连接
-- 子查询
-- 索引优化
-
-## 总结
-SQL是数据处理的基础技能。]]>
-    </content>
-    <category term="数据库"/>
-    <category term="SQL"/>
   </entry>
 </feed>

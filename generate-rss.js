@@ -12,52 +12,30 @@ function getSiteConfig() {
 
 // 只保留本地路径配置
 const localConfig = {
-  docsDir: './docs',
+  articlesDir: './articles',
   outputFile: './atom.xml'
 };
 
-// 解析markdown文件的front matter
-function parseFrontMatter(content) {
-  const frontMatterRegex = /^---\s*\n([\s\S]*?)\n---\s*\n([\s\S]*)$/;
-  const match = content.match(frontMatterRegex);
-  
-  if (!match) {
-    return { metadata: {}, content: content.trim() };
+// 解析html文章的第一个<h2>元信息
+function parseHtmlMetaAndContent(html) {
+  const h2Match = html.match(/<h2>([\s\S]*?)<\/h2>/i);
+  let meta = { title: '', date: '', tags: [] };
+  if (h2Match) {
+    h2Match[1].split(/\r?\n/).forEach(line => {
+      if (line.startsWith('title:')) meta.title = line.replace('title:', '').trim();
+      else if (line.startsWith('date:')) meta.date = line.replace('date:', '').trim();
+      else if (line.startsWith('tags:')) meta.tags = line.replace('tags:', '').replace(/\[|\]/g, '').split(',').map(t => t.trim()).filter(Boolean);
+    });
   }
-  
-  const metadataStr = match[1];
-  const contentStr = match[2];
-  
-  const metadata = {};
-  metadataStr.split('\n').forEach(line => {
-    const colonIndex = line.indexOf(':');
-    if (colonIndex > 0) {
-      const key = line.substring(0, colonIndex).trim();
-      let value = line.substring(colonIndex + 1).trim();
-      
-      // 处理数组类型的值
-      if (value.startsWith('[') && value.endsWith(']')) {
-        value = value.slice(1, -1).split(',').map(item => item.trim().replace(/['"]/g, ''));
-      }
-      // 处理字符串类型的值
-      else if (value.startsWith('"') && value.endsWith('"')) {
-        value = value.slice(1, -1);
-      }
-      else if (value.startsWith("'") && value.endsWith("'")) {
-        value = value.slice(1, -1);
-      }
-      
-      metadata[key] = value;
-    }
-  });
-  
-  return { metadata, content: contentStr.trim() };
+  // 正文内容：去掉第一个<h2>标签
+  const content = html.replace(/<h2>[\s\S]*?<\/h2>/i, '').trim();
+  return { ...meta, content };
 }
 
 // 生成文章的唯一ID
 function generateEntryId(filename, date, siteConfig) {
-  const baseName = path.basename(filename, '.md');
-  return `${siteConfig.siteUrl}/docs/${baseName}`;
+  const baseName = path.basename(filename, '.html');
+  return `${siteConfig.siteUrl}/articles/${baseName}.html`;
 }
 
 // 格式化日期为RFC 3339格式
@@ -65,79 +43,22 @@ function formatDate(date) {
   return new Date(date).toISOString();
 }
 
-// 清理HTML标签，获取纯文本摘要
-function stripHtml(html) {
-  return html.replace(/<[^>]*>/g, '').replace(/\s+/g, ' ').trim();
-}
-
-// 生成摘要
-function generateSummary(content, maxLength = 200) {
-  // 移除markdown语法，获取纯文本
-  let text = content
-    .replace(/^#+\s+/gm, '') // 移除标题
-    .replace(/\*\*(.*?)\*\*/g, '$1') // 移除粗体
-    .replace(/\*(.*?)\*/g, '$1') // 移除斜体
-    .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1') // 移除链接
-    .replace(/`([^`]+)`/g, '$1') // 移除代码
-    .replace(/```[\s\S]*?```/g, '') // 移除代码块
-    .replace(/\n+/g, ' ') // 将换行替换为空格
-    .trim();
-  
-  if (text.length <= maxLength) {
-    return text;
-  }
-  
-  return text.substring(0, maxLength) + '...';
-}
-
-// 生成atom.xml内容
+// 生成atom.xml内容（无summary）
 function generateAtomXml(entries, siteConfig) {
   const now = new Date();
   const latestEntry = entries.length > 0 ? entries[0] : null;
-  
-  let atomXml = `<?xml version="1.0" encoding="UTF-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom">
-  <title>${siteConfig.title}</title>
-  <subtitle>${siteConfig.description}</subtitle>
-  <link href="${siteConfig.siteUrl}" rel="alternate" type="text/html"/>
-  <link href="${siteConfig.siteUrl}/atom.xml" rel="self" type="application/atom+xml"/>
-  <id>${siteConfig.siteUrl}/</id>
-  <updated>${latestEntry ? formatDate(latestEntry.date) : formatDate(now)}</updated>
-  <author>
-    <name>${siteConfig.author}</name>
-    <email>${siteConfig.email}</email>
-  </author>
-  <generator>Custom RSS Generator</generator>`;
-
+  let atomXml = `<?xml version="1.0" encoding="UTF-8"?>\n<feed xmlns="http://www.w3.org/2005/Atom">\n  <title>${siteConfig.title}</title>\n  <subtitle>${siteConfig.description}</subtitle>\n  <link href="${siteConfig.siteUrl}" rel="alternate" type="text/html"/>\n  <link href="${siteConfig.siteUrl}/atom.xml" rel="self" type="application/atom+xml"/>\n  <id>${siteConfig.siteUrl}/</id>\n  <updated>${latestEntry ? formatDate(latestEntry.date) : formatDate(now)}</updated>\n  <author>\n    <name>${siteConfig.author}</name>\n    <email>${siteConfig.email}</email>\n  </author>\n  <generator>Custom RSS Generator</generator>`;
   entries.forEach(entry => {
-    const summary = generateSummary(entry.content);
     const entryUrl = generateEntryId(entry.filename, entry.date, siteConfig);
-    
-    atomXml += `
-  <entry>
-    <title>${entry.title}</title>
-    <link href="${entryUrl}" rel="alternate" type="text/html"/>
-    <id>${entryUrl}</id>
-    <updated>${formatDate(entry.date)}</updated>
-    <summary type="text">${summary}</summary>
-    <content type="html" xml:base="${entryUrl}">
-      <![CDATA[${entry.content}]]>
-    </content>`;
-    
+    atomXml += `\n  <entry>\n    <title>${entry.title}</title>\n    <link href="${entryUrl}" rel="alternate" type="text/html"/>\n    <id>${entryUrl}</id>\n    <updated>${formatDate(entry.date)}</updated>\n    <content type="html" xml:base="${entryUrl}"><![CDATA[${entry.content}]]></content>`;
     if (entry.tags && entry.tags.length > 0) {
       entry.tags.forEach(tag => {
-        atomXml += `
-    <category term="${tag}"/>`;
+        atomXml += `\n    <category term="${tag}"/>`;
       });
     }
-    
-    atomXml += `
-  </entry>`;
+    atomXml += `\n  </entry>`;
   });
-
-  atomXml += `
-</feed>`;
-
+  atomXml += `\n</feed>`;
   return atomXml;
 }
 
@@ -145,59 +66,40 @@ function generateAtomXml(entries, siteConfig) {
 function generateRSS() {
   try {
     const siteConfig = getSiteConfig();
-    
-    // 读取文章列表
     const listPath = path.join(__dirname, 'list.json');
     if (!fs.existsSync(listPath)) {
       throw new Error('list.json 文件不存在');
     }
-    
     const articleList = JSON.parse(fs.readFileSync(listPath, 'utf8'));
     const entries = [];
-    
-    // 读取每个markdown文件
     for (const filename of articleList) {
-      const filePath = path.join(__dirname, localConfig.docsDir, filename);
-      
+      const filePath = path.join(__dirname, localConfig.articlesDir, filename);
       if (!fs.existsSync(filePath)) {
         continue;
       }
-      
-      const content = fs.readFileSync(filePath, 'utf8');
-      const { metadata, content: articleContent } = parseFrontMatter(content);
-      
-      // 检查必要的元数据
-      if (!metadata.title || !metadata.date) {
+      const html = fs.readFileSync(filePath, 'utf8');
+      const meta = parseHtmlMetaAndContent(html);
+      if (!meta.title || !meta.date) {
         continue;
       }
-      
       entries.push({
         filename,
-        title: metadata.title,
-        date: new Date(metadata.date),
-        content: articleContent,
-        tags: metadata.tags || [],
-        summary: metadata.summary || ''
+        title: meta.title,
+        date: new Date(meta.date),
+        content: meta.content,
+        tags: meta.tags
       });
     }
-    
-    // 按日期排序（最新的在前）
     entries.sort((a, b) => b.date - a.date);
-    
-    // 生成atom.xml
     const atomXml = generateAtomXml(entries, siteConfig);
-    
-    // 写入文件
     fs.writeFileSync(localConfig.outputFile, atomXml, 'utf8');
-    
   } catch (error) {
     process.exit(1);
   }
 }
 
-// 如果直接运行此脚本
 if (require.main === module) {
   generateRSS();
 }
 
-module.exports = { generateRSS, parseFrontMatter, generateAtomXml }; 
+module.exports = { generateRSS, parseHtmlMetaAndContent, generateAtomXml }; 

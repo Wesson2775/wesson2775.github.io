@@ -4,7 +4,7 @@ on:
   push:
     branches: [ main, master ]
     paths:
-      - 'docs/**'
+      - 'articles/**'
       - 'link.md'
       - 'about.md'
       - 'config/**'
@@ -16,7 +16,7 @@ jobs:
   detect-changes:
     runs-on: ubuntu-latest
     outputs:
-      docs-changed: ${{ steps.changes.outputs.docs }}
+      articles-changed: ${{ steps.changes.outputs.articles }}
       link-changed: ${{ steps.changes.outputs.link }}
       about-changed: ${{ steps.changes.outputs.about }}
       config-changed: ${{ steps.changes.outputs.config }}
@@ -34,7 +34,7 @@ jobs:
           # 获取上次提交的文件变化
           if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
             # 手动触发时，检查所有相关文件
-            echo "docs=true" >> $GITHUB_OUTPUT
+            echo "articles=true" >> $GITHUB_OUTPUT
             echo "link=true" >> $GITHUB_OUTPUT
             echo "about=true" >> $GITHUB_OUTPUT
             echo "config=true" >> $GITHUB_OUTPUT
@@ -43,11 +43,11 @@ jobs:
             # 检查具体文件变化
             CHANGED_FILES=$(git diff --name-only HEAD~1 HEAD)
             
-            # 检查docs目录变化
-            if echo "$CHANGED_FILES" | grep -q "^docs/"; then
-              echo "docs=true" >> $GITHUB_OUTPUT
+            # 检查articles目录变化
+            if echo "$CHANGED_FILES" | grep -q "^articles/"; then
+              echo "articles=true" >> $GITHUB_OUTPUT
             else
-              echo "docs=false" >> $GITHUB_OUTPUT
+              echo "articles=false" >> $GITHUB_OUTPUT
             fi
             
             # 检查link.md变化
@@ -80,7 +80,7 @@ jobs:
           fi
           
           echo "Changes detected:"
-          echo "  docs: ${{ steps.changes.outputs.docs }}"
+          echo "  articles: ${{ steps.changes.outputs.articles }}"
           echo "  link: ${{ steps.changes.outputs.link }}"
           echo "  about: ${{ steps.changes.outputs.about }}"
           echo "  config: ${{ steps.changes.outputs.config }}"
@@ -90,7 +90,7 @@ jobs:
     needs: detect-changes
     runs-on: ubuntu-latest
     if: |
-      needs.detect-changes.outputs.docs-changed == 'true' ||
+      needs.detect-changes.outputs.articles-changed == 'true' ||
       needs.detect-changes.outputs.link-changed == 'true' ||
       needs.detect-changes.outputs.about-changed == 'true' ||
       needs.detect-changes.outputs.config-changed == 'true' ||
@@ -112,14 +112,14 @@ jobs:
         run: npm ci
       
       - name: Update RSS feed
-        if: needs.detect-changes.outputs.docs-changed == 'true' || needs.detect-changes.outputs.scripts-changed == 'true'
+        if: needs.detect-changes.outputs.articles-changed == 'true' || needs.detect-changes.outputs.scripts-changed == 'true'
         run: |
           echo "Updating RSS feed..."
           node generate-rss.js
           echo "RSS feed updated successfully"
       
       - name: Update article list
-        if: needs.detect-changes.outputs.docs-changed == 'true'
+        if: needs.detect-changes.outputs.articles-changed == 'true'
         run: |
           echo "Updating article list..."
           node process-content.js articles
@@ -166,7 +166,7 @@ jobs:
             git commit -m "Auto-update content from GitHub Action
             
             Changes detected:
-            - docs: ${{ needs.detect-changes.outputs.docs-changed }}
+            - articles: ${{ needs.detect-changes.outputs.articles-changed }}
             - link: ${{ needs.detect-changes.outputs.link-changed }}
             - about: ${{ needs.detect-changes.outputs.about-changed }}
             - config: ${{ needs.detect-changes.outputs.config-changed }}
@@ -191,7 +191,7 @@ jobs:
         run: |
           echo "✅ Content update completed successfully!"
           echo "Changes processed:"
-          echo "  - docs: ${{ needs.detect-changes.outputs.docs-changed }}"
+          echo "  - articles: ${{ needs.detect-changes.outputs.articles-changed }}"
           echo "  - link: ${{ needs.detect-changes.outputs.link-changed }}"
           echo "  - about: ${{ needs.detect-changes.outputs.about-changed }}"
           echo "  - config: ${{ needs.detect-changes.outputs.config-changed }}"
