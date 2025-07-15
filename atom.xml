@@ -236,7 +236,7 @@ const c = {...a, ...b};
     <category term="后端"/>
   </entry>
   <entry>
-    <title>算法基础知识</title>
+    <title>算法基础知识附属国</title>
     <link href="https://wesson2775.github.io/articles/2023-10-10-algorithm.html" rel="alternate" type="text/html"/>
     <id>https://wesson2775.github.io/articles/2023-10-10-algorithm.html</id>
     <updated>2023-10-10T00:00:00.000Z</updated>
@@ -262,11 +262,11 @@ const c = {...a, ...b};
     <updated>2023-09-05T00:00:00.000Z</updated>
     <content type="html" xml:base="https://wesson2775.github.io/articles/2023-09-05-typescript.html"><![CDATA[<hr>
 
-<h1>TypeScript入门指南</h1>
+<h1>TypeScript入门指南er</h1>
 <p>TypeScript为JavaScript带来了类型系统。</p>
 <h2>基础知识</h2>
 <ul>
-<li>类型注解</li>
+<li>类型注解ereeereee</li>
 <li>接口与类型别名</li>
 <li>泛型</li>
 </ul>
@@ -276,24 +276,23 @@ const c = {...a, ...b};
     <category term="TypeScript"/>
   </entry>
   <entry>
-    <title>Docker基础入门吖</title>
+    <title>Docker基础入门</title>
     <link href="https://wesson2775.github.io/articles/2023-08-20-docker.html" rel="alternate" type="text/html"/>
     <id>https://wesson2775.github.io/articles/2023-08-20-docker.html</id>
     <updated>2023-08-20T00:00:00.000Z</updated>
     <content type="html" xml:base="https://wesson2775.github.io/articles/2023-08-20-docker.html"><![CDATA[<hr>
 
-<h1>Docker基础入门吖</h1>
+<h1>Docker基础入门啊</h1>
 <p>Docker让应用部署更简单高效。</p>
 <h2>基础知识</h2>
 <ul>
 <li>镜像与容器</li>
 <li>Dockerfile</li>
-<li>容器编排
-_啦啦啦</li>
+<li>容器编排</li>
 </ul>
 <h2>总结</h2>
-<p>Docker是现代开发的重要工具。 </p>
-<iframe src="//player.bilibili.com/player.html?isOutside=true&aid=113846832335114&bvid=BV1TgwAeDEXa&cid=27932033787&p=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"></iframe>]]></content>
+<p>Docker是现代开发的重要工具。</p>
+<iframe src="https://player.bilibili.com/player.html?isOutside=true&aid=113846832335114&bvid=BV1TgwAeDEXa&cid=27932033787&p=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"></iframe>]]></content>
     <category term="后端"/>
     <category term="Docker"/>
   </entry>
