@@ -1025,7 +1025,7 @@ html {
 
 #about-md {
   color: #e0e0e0;
-  font-size: 1rem;
+  font-size: 0.95rem; /* 原为1rem，整体缩小 */
   line-height: 1.8;
   max-width: 700px;
   margin: 0 auto;
@@ -1035,12 +1035,12 @@ html {
   margin: 1.5em 0 0.7em 0;
   font-weight: bold;
 }
-#about-md h1 { font-size: 1.3rem; border-bottom: 1px solid #444; padding-bottom: 0.3em; }
-#about-md h2 { font-size: 1.1rem; border-bottom: 1px solid #333; padding-bottom: 0.2em; }
-#about-md h3 { font-size: 1rem; }
-#about-md h4 { font-size: 0.95rem; }
-#about-md h5 { font-size: 0.9rem; }
-#about-md h6 { font-size: 0.85rem; }
+#about-md h1 { font-size: 1.1rem; border-bottom: 1px solid #444; padding-bottom: 0.3em; }
+#about-md h2 { font-size: 1rem; border-bottom: 1px solid #333; padding-bottom: 0.2em; }
+#about-md h3 { font-size: 0.95rem; }
+#about-md h4 { font-size: 0.9rem; }
+#about-md h5 { font-size: 0.85rem; }
+#about-md h6 { font-size: 0.8rem; }
 #about-md ul, #about-md ol { margin: 1em 0 1em 1.5em; }
 #about-md li { margin: 0.3em 0; }
 #about-md a { color: #ffd700; text-decoration: underline; }
