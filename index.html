@@ -655,7 +655,7 @@
         if (currentPage < totalPages) {
           rightHTML = `<a class="page-item page-nav" href="#" data-page="${currentPage + 1}">下一个</a>`;
         } else {
-          rightHTML = `<span class="page-item page-nav" style="opacity:0.5;cursor:default;">下一个</span>`;
+          rightHTML = '';
         }
 
         document.getElementById('page-prev-slot').innerHTML = leftHTML;
@@ -863,7 +863,7 @@
         if (tagsCurrentPage < totalPages) {
           rightHTML = `<a class="page-item page-nav" href="#" data-page="${tagsCurrentPage + 1}">下一个</a>`;
         } else {
-          rightHTML = `<span class="page-item page-nav" style="opacity:0.5;cursor:default;">下一个</span>`;
+          rightHTML = '';
         }
 
         document.getElementById('tags-page-prev-slot').innerHTML = leftHTML;
@@ -1799,7 +1799,7 @@
         if (searchCurrentPage < totalPages) {
           rightHTML = `<a class="page-item page-nav" href="#" data-page="${searchCurrentPage + 1}">下一个</a>`;
         } else {
-          rightHTML = `<span class="page-item page-nav" style="opacity:0.5;cursor:default;">下一个</span>`;
+          rightHTML = '';
         }
 
         document.getElementById('search-page-prev-slot').innerHTML = leftHTML;
