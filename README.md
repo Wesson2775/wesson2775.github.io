@@ -1,210 +1,148 @@
-# 个人博客 RSS 生成器
+# 行之 · 个人博客
 
-这是一个自动化的RSS生成工具，能够动态读取markdown文件并生成符合Atom标准的RSS订阅源。支持配置文件管理，实现文章列表和RSS文件的自动更新。
+本项目是一个**极简高效的个人博客系统**，支持 Markdown 写作、标签分类、友链、关于页、全文搜索、RSS 订阅等功能。  
+**代码托管于 [GitHub](https://github.com/wesson2775/wesson2775.github.io)**，**部署于 [Vercel](https://vercel.com/)**，支持一键自动化部署与持续集成。
 
-## 功能特性
+## 在线预览
 
-- 🔄 **自动生成**: 根据markdown文件自动生成atom.xml
-- 📝 **Front Matter解析**: 支持YAML格式的元数据解析
-- 🏷️ **标签支持**: 自动提取文章标签
-- 📅 **日期排序**: 按发布日期自动排序
-- 👀 **文件监听**: 实时监听文件变化，自动重新生成
-- 📱 **移动友好**: 生成的RSS支持各种RSS阅读器
-- ⚙️ **配置管理**: 统一的配置文件管理站点信息
-- 🌐 **前端集成**: 前端自动读取配置并渲染站点信息
+- 博客主页：[https://wesson2775.github.io/](https://wesson2775.github.io/)
+- RSS 订阅：[https://wesson2775.github.io/atom.xml](https://wesson2775.github.io/atom.xml)
 
-## 安装依赖
+---
+
+## 项目特色
+
+- 📝 **Markdown 写作**：所有文章、关于、友链均用 Markdown 编写，内容与代码分离，便于管理。
+- 🏷️ **标签分类**：自动提取标签，支持标签筛选与聚合。
+- 🔍 **全文搜索**：内置前端搜索，支持关键词快速定位文章。
+- 🔗 **友链管理**：支持多分组友链，结构化展示。
+- 👤 **关于页面**：支持自定义个人介绍、技能、联系方式等。
+- 🔄 **自动 RSS**：自动生成 Atom 格式 RSS 订阅源。
+- ⚡ **自动化部署**：支持 GitHub Actions 自动构建与 Vercel 部署。
+- 📱 **响应式设计**：适配 PC 与移动端，体验流畅。
+- 🛠️ **极简无后端**：纯静态，无需服务器，易于维护。
+
+---
+
+## 技术栈
+
+- 前端：原生 HTML5 / CSS3 / JavaScript（无框架依赖）
+- 内容处理：Node.js + marked + chokidar
+- 自动化：GitHub Actions
+- 部署：Vercel / GitHub Pages
+
+---
+
+## 目录结构
+
+```
+.
+├── index.html              # 博客主页面
+├── styles.css              # 样式文件
+├── watch-rss.js            # 文件监听与自动生成
+├── generate-rss.js         # RSS 生成脚本
+├── process-content.js      # 内容处理脚本（友链、关于、文章索引等）
+├── atom.xml                # 自动生成的 RSS 文件
+├── list.json               # 自动生成的文章列表
+├── link.md                 # 友链 Markdown
+├── about.md                # 关于我 Markdown
+├── docs/                   # 文章目录（Markdown 格式）
+├── config/
+│   └── site.json           # 站点基础配置
+├── public/                 # 静态资源（图片、字体等）
+├── .github/workflows/      # GitHub Actions 工作流
+└── package.json            # 项目依赖与脚本
+```
+
+---
+
+## 快速开始
+
+### 1. 克隆项目
+
+```bash
+git clone https://github.com/wesson2775/wesson2775.github.io.git
+cd wesson2775.github.io
+```
+
+### 2. 安装依赖
 
 ```bash
 npm install
 ```
 
-## 使用方法
+### 3. 本地开发与内容处理
 
-### 1. 一次性生成RSS
+- 监听并自动生成 RSS、文章索引等：
 
-```bash
-npm run generate-rss
-```
+  ```bash
+  npm run dev
+  # 或
+  npm run watch
+  ```
 
-或者直接运行：
+- 一次性生成 RSS：
 
-```bash
-node generate-rss.js
-```
+  ```bash
+  npm run generate-rss
+  ```
 
-### 2. 监听模式（推荐）
+- 处理所有内容（友链、关于、文章索引、配置）：
 
-```bash
-npm run watch
-```
+  ```bash
+  npm run process-all
+  ```
 
-或者：
+### 4. 本地预览
 
-```bash
-npm run dev
-```
+直接用 VSCode Live Server 或 `npx serve` 等静态服务器工具预览 `index.html`。
 
-监听模式会：
-- 首次生成RSS
-- 持续监听`docs/`目录下的markdown文件变化
-- 监听`list.json`文件变化
-- 自动重新生成RSS
-
-## 文件结构要求
-
-### 1. 配置文件 (`config/site.json`)
-
-```json
-{
-  "title": "我的博客",
-  "description": "热爱技术，分享知识，记录成长",
-  "author": "博主",
-  "email": "xxx@email.com",
-  "siteUrl": "https://wesson2775.github.io",
-  "avatar": "头像.png",
-  "github": "https://github.com/your-username"
-}
-```
-
-### 2. 文章列表文件 (`list.json`)
-
-```json
-[
-  "2024-07-02-ai-frontend.md",
-  "2024-06-18-web-performance.md",
-  "2024-05-20-css-tips.md"
-]
-```
-
-### 3. Markdown文件格式
-
-每个markdown文件需要包含YAML格式的front matter：
-
-```markdown
----
-title: 文章标题
-date: 2024-07-02
-tags: [前端开发, AI]
-summary: 文章摘要（可选）
 ---
 
-# 文章内容
+## 部署到 Vercel
 
-这里是文章的正文内容...
-```
+1. 登录 [Vercel](https://vercel.com/)，新建项目，关联你的 GitHub 仓库。
+2. 构建命令填写：`npm run generate-rss`
+3. 输出目录填写：`./`（根目录）
+4. 部署后即可通过 Vercel 分配的域名访问你的博客。
 
-### 4. 必要的元数据
+> 你也可以选择 GitHub Pages 作为静态托管，详见下方“常见问题”。
 
-- `title`: 文章标题（必需）
-- `date`: 发布日期（必需，格式：YYYY-MM-DD）
-- `tags`: 标签数组（可选）
-- `summary`: 文章摘要（可选）
+---
 
-## 配置说明
+## 个性化配置
 
-### 后端配置
+- **站点信息**：编辑 `config/site.json`，自定义博客标题、描述、作者、邮箱、头像、GitHub 链接等。
+- **关于页面**：编辑 `about.md`，支持 Markdown 格式。
+- **友链管理**：编辑 `link.md`，支持多分组友链。
+- **文章发布**：在 `docs/` 目录下新建 Markdown 文件，自动收录到博客与 RSS。
+- **样式美化**：可自定义 `styles.css`，支持深色模式、响应式等。
 
-在`config/site.json`文件中配置站点信息：
+---
 
-- `title`: 博客标题（同时用作首页标题）
-- `description`: 博客描述（同时用作首页副标题）
-- `author`: 作者名称
-- `email`: 作者邮箱
-- `siteUrl`: 网站URL
-- `avatar`: 头像文件路径
-- `github`: GitHub链接
+## 常见问题
 
-### 前端配置
+- **Vercel 部署后 RSS/文章不更新？**
+  - 确保构建命令包含 `npm run generate-rss`，每次推送后自动生成最新内容。
+- **GitHub Pages 访问路径不对？**
+  - 检查 `site.json` 里的 `siteUrl` 是否与你的 Pages 地址一致。
+- **本地预览样式错乱？**
+  - 请用本地静态服务器打开，避免直接双击 HTML 文件。
+- **如何自定义导航/页面？**
+  - 修改 `index.html`，可增删导航项，支持自定义页面。
 
-前端会自动读取`config/site.json`并更新以下元素：
+---
 
-- 页面标题 (`document.title`)
-- 头像图片 (`drawer-avatar`, `header-avatar`, `about-avatar`)
-- GitHub链接 (`drawer-github`, `header-github`)
-- 邮箱链接 (`drawer-email`, `header-email`)
-- 首页标题和副标题 (`hero-title`, `hero-subtitle`) - 使用 `title` 和 `description`
-- 关于页面信息 (`about-name`, `about-bio`)
+## 贡献与自定义
 
-## 输出格式
+欢迎 Fork 本项目，个性化你的博客！如有建议或问题，欢迎提 Issue 或 PR。
 
-生成的`atom.xml`文件符合Atom 1.0标准，包含：
-
-- 博客基本信息（标题、描述、作者等）
-- 文章列表（按日期倒序排列）
-- 每篇文章的标题、链接、发布日期、摘要、标签
-- 完整的文章内容（CDATA格式）
-
-## 示例输出
-
-```xml
-<?xml version="1.0" encoding="UTF-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom">
-  <title>我的博客</title>
-  <subtitle>热爱技术，分享知识，记录成长</subtitle>
-  <link href="https://wesson2775.github.io" rel="alternate" type="text/html"/>
-  <link href="https://wesson2775.github.io/atom.xml" rel="self" type="application/atom+xml"/>
-  <id>https://wesson2775.github.io/</id>
-  <updated>2024-07-02T00:00:00.000Z</updated>
-  <author>
-    <name>博主</name>
-    <email>xxx@email.com</email>
-  </author>
-  <generator>Custom RSS Generator</generator>
-  <entry>
-    <title>AI助力前端开发</title>
-    <link href="https://wesson2775.github.io/docs/2024-07-02-ai-frontend" rel="alternate" type="text/html"/>
-    <id>https://wesson2775.github.io/docs/2024-07-02-ai-frontend</id>
-    <updated>2024-07-02T00:00:00.000Z</updated>
-    <summary type="text">本文介绍了AI如何提升前端开发效率...</summary>
-    <content type="html" xml:base="https://wesson2775.github.io/docs/2024-07-02-ai-frontend">
-      <![CDATA[# AI助力前端开发
-
-随着AI技术的发展，前端开发也迎来了新的变革...]]>
-    </content>
-    <category term="前端开发"/>
-    <category term="AI"/>
-  </entry>
-</feed>
-```
-
-## 部署到GitHub Pages
-
-1. 确保所有文件都已提交到GitHub仓库
-2. 在仓库设置中启用GitHub Pages
-3. 选择部署分支（通常是`main`或`master`）
-4. 访问 `https://your-username.github.io/repository-name` 查看网站
-5. RSS订阅地址为 `https://your-username.github.io/repository-name/atom.xml`
-
-## 故障排除
-
-### 1. 文件不存在错误
-
-确保：
-- `config/site.json`文件存在且格式正确
-- `list.json`文件存在且格式正确
-- `docs/`目录存在
-- markdown文件路径正确
-
-### 2. 元数据解析错误
-
-检查markdown文件的front matter格式：
-- 确保以`---`开始和结束
-- 确保`title`和`date`字段存在
-- 日期格式为`YYYY-MM-DD`
-
-### 3. 监听模式不工作
-
-- 确保安装了`chokidar`依赖
-- 检查文件权限
-- 在Windows上可能需要管理员权限
-
-### 4. 前端配置不生效
-
-- 检查`config/site.json`文件格式是否正确
-- 确保文件路径为`config/site.json`（不是`config/site.json`）
-- 检查浏览器控制台是否有错误信息
+---
 
 ## 许可证
 
-MIT License 
+MIT License
+
+---
+
+如需更详细的使用说明、二次开发建议或定制化需求，请随时联系作者。 
