@@ -534,6 +534,7 @@ html {
 .about-header {
   text-align: center;
   margin-bottom: 48px;
+  border-bottom: none;
 }
 
 .about-avatar {
@@ -1041,8 +1042,8 @@ html {
   margin: 1.5em 0 0.7em 0;
   font-weight: bold;
 }
-#about-md h1 { font-size: 1.1rem; border-bottom: 1px solid #444; padding-bottom: 0.3em; }
-#about-md h2 { font-size: 1rem; border-bottom: 1px solid #333; padding-bottom: 0.2em; }
+#about-md h1 { font-size: 1.1rem; border-bottom: none; padding-bottom: 0.3em; }
+#about-md h2 { font-size: 1rem; border-bottom: none; padding-bottom: 0.2em; }
 #about-md h3 { font-size: 0.95rem; }
 #about-md h4 { font-size: 0.9rem; }
 #about-md h5 { font-size: 0.85rem; }
@@ -1073,7 +1074,7 @@ html {
 .article-header {
   margin-bottom: 32px;
   padding-bottom: 24px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  border-bottom: none;
 }
 
 .article-title {
@@ -1120,6 +1121,9 @@ html {
   line-height: 1.7;
   max-width: 700px;
   margin: 0 auto;
+  border-top: none;
+  border-bottom: none;
+  border: none;
 }
 
 /* 文章内容的 Markdown 样式 */
@@ -1137,8 +1141,8 @@ html {
   font-weight: bold;
 }
 
-#article-md h1 { font-size: 1.3rem; border-bottom: 1px solid #444; padding-bottom: 0.3em; }
-#article-md h2 { font-size: 1.1rem; border-bottom: 1px solid #333; padding-bottom: 0.2em; }
+#article-md h1 { font-size: 1.3rem; border-bottom: none; padding-bottom: 0.3em; }
+#article-md h2 { font-size: 1.1rem; border-bottom: none; padding-bottom: 0.2em; }
 #article-md h3 { font-size: 1rem; }
 #article-md h4 { font-size: 0.95rem; }
 #article-md h5 { font-size: 0.9rem; }
@@ -1235,10 +1239,7 @@ html {
 }
 
 #article-md hr {
-  border: none;
-  height: 1px;
-  background: rgba(255, 255, 255, 0.1);
-  margin: 2em 0;
+  display: none;
 }
 
 /* 移动端适配 */
