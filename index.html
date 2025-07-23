@@ -204,9 +204,10 @@
           <script src="https://cdn.jsdelivr.net/npm/twikoo@1.6.44/dist/twikoo.min.js"></script>
           <script>
             twikoo.init({
-              envId: process.env.TWIKOO_ENV_ID,  // 使用环境变量表示 Vercel 部署环境 ID
+              envId: 'https://my-twikoo-nu-lilac.vercel.app/',
               el: '#twikoo',
-              region: process.env.TWIKOO_REGION,  // 使用环境变量表示区域，如 'ap-guangzhou'
+              region: 'ap-guangzhou',
+              lang: 'zh-CN'
             });
           </script>
         </div>
