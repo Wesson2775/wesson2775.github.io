@@ -200,6 +200,15 @@
         </div>
         <div class="article-content">
           <div id="article-md"></div>
+          <div id="twikoo"></div>
+          <script src="https://cdn.jsdelivr.net/npm/twikoo/dist/twikoo.min.js"></script>
+          <script>
+            twikoo.init({
+              envId: process.env.TWIKOO_ENV_ID,  // 使用环境变量表示 Vercel 部署环境 ID
+              el: '#twikoo',
+              region: process.env.TWIKOO_REGION,  // 使用环境变量表示区域，如 'ap-guangzhou'
+            });
+          </script>
         </div>
       </div>
     </div>
