@@ -1130,7 +1130,19 @@
             let dateText = meta.date ? `${meta.date}` : '';
             heroSubtitle.textContent = [tagText, dateText].filter(Boolean).join(' / ');
           }
-          // 目录功能可选保留或移除
+          // --- Twikoo 按文章唯一标识初始化 ---
+          var twikooEl = document.getElementById('twikoo');
+          if (twikooEl) twikooEl.innerHTML = '';
+          if (window.twikoo) {
+            window.twikoo.init({
+              envId: 'https://my-twikoo-nu-lilac.vercel.app/',
+              el: '#twikoo',
+              region: 'ap-guangzhou',
+              lang: 'zh-CN',
+              path: '/article/' + filename
+            });
+          }
+          // --- END ---
         } catch (e) {
           console.error('加载文章详情失败:', e);
           document.getElementById('article-md').innerText = '加载文章内容失败';
