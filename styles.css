@@ -1242,6 +1242,15 @@ html {
   display: none;
 }
 
+/* 评论系统 */
+.twikoo {
+  margin-top: 60px;
+}
+
+.tk-footer a {
+  color: #ccc;
+}
+
 /* 移动端适配 */
 @media (max-width: 768px) {
   .article-page {
