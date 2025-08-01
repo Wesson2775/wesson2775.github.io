@@ -6,41 +6,24 @@
   <link href="https://wesson2775.github.io/atom.xml" rel="self" type="application/atom+xml"/>
   <id>https://wesson2775.github.io/</id>
   <updated>2025-07-19T00:00:00.000Z</updated>
-  <updated>2025-07-18T00:00:00.000Z</updated>
   <author>
     <name>行之</name>
     <email>wesson2775@gmail.com.com</email>
   </author>
   <generator>Custom RSS Generator</generator>
   <entry>
-    <title>suibian</title>
-    <link href="https://wesson2775.github.io/docs/suibian" rel="alternate" type="text/html"/>
-    <id>https://wesson2775.github.io/docs/suibian</id>
+    <title>test</title>
+    <link href="https://wesson2775.github.io/docs/ces" rel="alternate" type="text/html"/>
+    <id>https://wesson2775.github.io/docs/ces</id>
     <updated>2025-07-19T00:00:00.000Z</updated>
-    <summary type="text">#asdf
- asdfagwr</summary>
-    <content type="html" xml:base="https://wesson2775.github.io/docs/suibian">
-      <![CDATA[#asdf
-asdfagwr]]>
+    <summary type="text">#TEST TSTE SDFG HFD</summary>
+    <content type="html" xml:base="https://wesson2775.github.io/docs/ces">
+      <![CDATA[#TEST
+TSTE SDFG HFD]]>
     </content>
-    <category term="个人"/>
+    <category term="test"/>
   </entry>
   <entry>
-    <title>网站收集</title>
-    <link href="https://wesson2775.github.io/docs/网站收集贴" rel="alternate" type="text/html"/>
-    <id>https://wesson2775.github.io/docs/网站收集贴</id>
-    <updated>2025-07-18T00:00:00.000Z</updated>
-    <summary type="text">网站收集
- - https://dongman.theluyuan.com/ 
- - https://receive-smss.com/ 免费接码网站
- - https://music.wjhe.top/ 一个听歌的网站
- - https://quwenjian.cc/#/ 文件快递网站</summary>
-    <content type="html" xml:base="https://wesson2775.github.io/docs/网站收集贴">
-      <![CDATA[# 网站收集
-- https://dongman.theluyuan.com/ 
-- https://receive-smss.com/ 免费接码网站
-- https://music.wjhe.top/ 一个听歌的网站
-- https://quwenjian.cc/#/ 文件快递网站]]>
     <title>网站收集</title>
     <link href="https://wesson2775.github.io/docs/网站收集贴" rel="alternate" type="text/html"/>
     <id>https://wesson2775.github.io/docs/网站收集贴</id>
@@ -53,7 +36,6 @@ asdfagwr]]>
 - https://music.wjhe.top/ 一个听歌的网站
 - https://quwenjian.cc/#/ 文件快递网站]]>
     </content>
-    <category term="个人"/>
     <category term="个人"/>
   </entry>
 </feed>
