@@ -1,17 +1,7 @@
 [
   {
     "title": "联系方式",
-    "content": "- 邮箱：[your-email@example.com](mailto:your-email@example.com)\n- GitHub：[your-username](https://github.com/your-username)\n- Twitter：[@your-username](https://twitter.com/your-username)",
-    "html": "<ul>\n<li>邮箱：<a href=\"mailto:your-email@example.com\">your-email@example.com</a></li>\n<li>GitHub：<a href=\"https://github.com/your-username\">your-username</a></li>\n<li>Twitter：<a href=\"https://twitter.com/your-username\">@your-username</a></li>\n</ul>\n"
-  },
-  {
-    "title": "技术栈",
-    "content": "- HTML5 / CSS3 / JavaScript / TypeScript\n- Vue3 / React / Node.js / Express\n- Git / Webpack / Vite",
-    "html": "<ul>\n<li>HTML5 / CSS3 / JavaScript / TypeScript</li>\n<li>Vue3 / React / Node.js / Express</li>\n<li>Git / Webpack / Vite</li>\n</ul>\n"
-  },
-  {
-    "title": "博客统计",
-    "content": "- 文章总数：**20**\n- 标签分类：**8**\n- 友情链接：**5**\n\n> 欢迎交流与合作，一起进步！",
-    "html": "<ul>\n<li>文章总数：<strong>20</strong></li>\n<li>标签分类：<strong>8</strong></li>\n<li>友情链接：<strong>5</strong></li>\n</ul>\n<blockquote>\n<p>欢迎交流与合作，一起进步！</p>\n</blockquote>\n"
+    "content": "- 邮箱：[im.bro@outlook.com](mailto:im.bro@outlook.com)\n- GitHub：[wesson2775](https://github.com/wesson2775)\n- BiliBili：[@三_行](https://space.bilibili.com/349400474)",
+    "html": "<ul>\n<li>邮箱：<a href=\"mailto:im.bro@outlook.com\">im.bro@outlook.com</a></li>\n<li>GitHub：<a href=\"https://github.com/wesson2775\">wesson2775</a></li>\n<li>BiliBili：<a href=\"https://space.bilibili.com/349400474\">@三_行</a></li>\n</ul>\n"
   }
 ]
