@@ -5,10 +5,32 @@
   <link href="https://wesson2775.github.io" rel="alternate" type="text/html"/>
   <link href="https://wesson2775.github.io/atom.xml" rel="self" type="application/atom+xml"/>
   <id>https://wesson2775.github.io/</id>
-  <updated>2025-08-01T04:37:05.371Z</updated>
+  <updated>2023-07-15T00:00:00.000Z</updated>
   <author>
     <name>行之</name>
     <email>wesson2775@gmail.com.com</email>
   </author>
   <generator>Custom RSS Generator</generator>
+  <entry>
+    <title>SQL实用技巧</title>
+    <link href="https://wesson2775.github.io/docs/2023-07-15-sql-tips" rel="alternate" type="text/html"/>
+    <id>https://wesson2775.github.io/docs/2023-07-15-sql-tips</id>
+    <updated>2023-07-15T00:00:00.000Z</updated>
+    <summary type="text">SQL实用技巧sd 掌握SQL技巧可以高效操作数据库。 技巧 - 多表连接 - 子查询 - 索引优化 总结 SQL是数据处理的基础技能。</summary>
+    <content type="html" xml:base="https://wesson2775.github.io/docs/2023-07-15-sql-tips">
+      <![CDATA[# SQL实用技巧sd
+
+掌握SQL技巧可以高效操作数据库。
+
+## 技巧
+- 多表连接
+- 子查询
+- 索引优化
+
+## 总结
+SQL是数据处理的基础技能。]]>
+    </content>
+    <category term="数据库"/>
+    <category term="SQL"/>
+  </entry>
 </feed>
