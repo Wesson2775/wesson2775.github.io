@@ -111,13 +111,6 @@ jobs:
       - name: Install dependencies
         run: npm ci
       
-      - name: Update RSS feed
-        if: needs.detect-changes.outputs.docs-changed == 'true' || needs.detect-changes.outputs.scripts-changed == 'true'
-        run: |
-          echo "Updating RSS feed..."
-          node generate-rss.js
-          echo "RSS feed updated successfully"
-      
       - name: Update article list
         if: needs.detect-changes.outputs.docs-changed == 'true'
         run: |
@@ -148,6 +141,13 @@ jobs:
           fi
           
           echo "Markdown files processed successfully"
+      
+      - name: Update RSS feed
+        if: needs.detect-changes.outputs.docs-changed == 'true' || needs.detect-changes.outputs.scripts-changed == 'true'
+        run: |
+          echo "Updating RSS feed..."
+          node generate-rss.js
+          echo "RSS feed updated successfully"
       
       - name: Commit and push changes
         run: |

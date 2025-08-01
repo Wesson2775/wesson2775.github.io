@@ -5,32 +5,37 @@
   <link href="https://wesson2775.github.io" rel="alternate" type="text/html"/>
   <link href="https://wesson2775.github.io/atom.xml" rel="self" type="application/atom+xml"/>
   <id>https://wesson2775.github.io/</id>
-  <updated>2023-07-15T00:00:00.000Z</updated>
+  <updated>2025-07-19T00:00:00.000Z</updated>
   <author>
     <name>行之</name>
     <email>wesson2775@gmail.com.com</email>
   </author>
   <generator>Custom RSS Generator</generator>
   <entry>
-    <title>SQL实用技巧</title>
-    <link href="https://wesson2775.github.io/docs/阿斯蒂" rel="alternate" type="text/html"/>
-    <id>https://wesson2775.github.io/docs/阿斯蒂</id>
-    <updated>2023-07-15T00:00:00.000Z</updated>
-    <summary type="text">SQL实用技巧sd  掌握SQL技巧可以高效操作数据库。  技巧 - 多表连接 - 子查询 - 索引优化  总结 SQL是数据处理的基础技能。</summary>
-    <content type="html" xml:base="https://wesson2775.github.io/docs/阿斯蒂">
-      <![CDATA[# SQL实用技巧sd
-
-掌握SQL技巧可以高效操作数据库。
-
-## 技巧
-- 多表连接
-- 子查询
-- 索引优化
-
-## 总结
-SQL是数据处理的基础技能。]]>
+    <title>suibian</title>
+    <link href="https://wesson2775.github.io/docs/suibian" rel="alternate" type="text/html"/>
+    <id>https://wesson2775.github.io/docs/suibian</id>
+    <updated>2025-07-19T00:00:00.000Z</updated>
+    <summary type="text">#asdf asdfagwr</summary>
+    <content type="html" xml:base="https://wesson2775.github.io/docs/suibian">
+      <![CDATA[#asdf
+asdfagwr]]>
     </content>
-    <category term="数据库"/>
-    <category term="SQL"/>
+    <category term="个人"/>
+  </entry>
+  <entry>
+    <title>网站收集</title>
+    <link href="https://wesson2775.github.io/docs/网站收集贴" rel="alternate" type="text/html"/>
+    <id>https://wesson2775.github.io/docs/网站收集贴</id>
+    <updated>2025-07-18T00:00:00.000Z</updated>
+    <summary type="text">网站收集 - https://dongman.theluyuan.com/  - https://receive-smss.com/ 免费接码网站 - https://music.wjhe.top/ 一个听歌的网站 - https://quwenjian.cc/#/ 文件快递网站</summary>
+    <content type="html" xml:base="https://wesson2775.github.io/docs/网站收集贴">
+      <![CDATA[# 网站收集
+- https://dongman.theluyuan.com/ 
+- https://receive-smss.com/ 免费接码网站
+- https://music.wjhe.top/ 一个听歌的网站
+- https://quwenjian.cc/#/ 文件快递网站]]>
+    </content>
+    <category term="个人"/>
   </entry>
 </feed>
