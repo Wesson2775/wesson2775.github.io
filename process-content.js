@@ -13,8 +13,8 @@ marked.setOptions({
 
 // 处理link.md文件
 function processLinkFile() {
-  const linkPath = path.join(__dirname, '..', 'link.md');
-  const outputPath = path.join(__dirname, '..', 'data', 'links.json');
+  const linkPath = path.join(__dirname, 'link.md');
+  const outputPath = path.join(__dirname, 'data', 'links.json');
   
   if (!fs.existsSync(linkPath)) {
     return;
@@ -70,8 +70,8 @@ function processLinkFile() {
 
 // 处理about.md文件
 function processAboutFile() {
-  const aboutPath = path.join(__dirname, '..', 'about.md');
-  const outputPath = path.join(__dirname, '..', 'data', 'about.json');
+  const aboutPath = path.join(__dirname, 'about.md');
+  const outputPath = path.join(__dirname, 'data', 'about.json');
   
   if (!fs.existsSync(aboutPath)) {
     return;
@@ -129,8 +129,8 @@ function processAboutFile() {
 
 // 更新文章列表
 function updateArticleList() {
-  const docsPath = path.join(__dirname, '..', 'docs');
-  const outputPath = path.join(__dirname, '..', 'list.json');
+  const docsPath = path.join(__dirname, 'docs');
+  const outputPath = path.join(__dirname, 'list.json');
   
   if (!fs.existsSync(docsPath)) {
     return;
@@ -144,64 +144,19 @@ function updateArticleList() {
         return b.localeCompare(a);
       });
     
-    const articles = [];
-    
-    for (const file of files) {
-      const filePath = path.join(docsPath, file);
-      const content = fs.readFileSync(filePath, 'utf8');
-      
-      // 提取标题（第一行）
-      const lines = content.split('\n');
-      let title = file.replace('.md', '');
-      let summary = '';
-      let tags = [];
-      let date = '';
-      
-      // 解析front matter或第一行标题
-      for (let i = 0; i < Math.min(lines.length, 10); i++) {
-        const line = lines[i].trim();
-        
-        if (line.startsWith('# ')) {
-          title = line.replace('# ', '').trim();
-        } else if (line.startsWith('tags:')) {
-          tags = line.replace('tags:', '').split(',').map(t => t.trim());
-        } else if (line.startsWith('date:')) {
-          date = line.replace('date:', '').trim();
-        } else if (line && !line.startsWith('---') && !summary) {
-          // 第一段非空内容作为摘要
-          summary = line.substring(0, 100) + (line.length > 100 ? '...' : '');
-        }
-      }
-      
-      // 如果没有找到日期，从文件名提取
-      if (!date) {
-        const dateMatch = file.match(/(\d{4}-\d{2}-\d{2})/);
-        if (dateMatch) {
-          date = dateMatch[1];
-        }
-      }
-      
-      articles.push({
-        filename: file,
-        title: title,
-        summary: summary,
-        tags: tags,
-        date: date,
-        path: `docs/${file}`
-      });
-    }
-    
-    // 写入JSON文件
-    fs.writeFileSync(outputPath, JSON.stringify(articles, null, 2));
+    // 直接输出文件名数组，保持与当前list.json格式一致
+    // 这样前端代码可以继续使用现有的逻辑
+    fs.writeFileSync(outputPath, JSON.stringify(files, null, 2));
     
   } catch (error) {
+    console.error('更新文章列表失败:', error);
   }
 }
 
 // 更新站点配置
 function updateSiteConfig() {
-  const configPath = path.join(__dirname, '..', 'config', 'site.json');
-  const outputPath = path.join(__dirname, '..', 'data', 'site-config.json');
+  const configPath = path.join(__dirname, 'config', 'site.json');
+  const outputPath = path.join(__dirname, 'data', 'site-config.json');
   
   if (!fs.existsSync(configPath)) {
     return;

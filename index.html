@@ -319,6 +319,15 @@
         }
       }
 
+      // 构建文件URL的辅助函数，确保中文文件名正确编码
+      function buildFileUrl(filename) {
+        // 对于中文文件名，需要正确进行URL编码
+        // 但是要保持路径分隔符不被编码
+        const pathParts = filename.split('/');
+        const encodedParts = pathParts.map(part => encodeURIComponent(part));
+        return 'docs/' + encodedParts.join('/');
+      }
+
       // 并行加载站点配置和文章列表
       async function loadSiteConfigAndArticles() {
         try {
@@ -469,7 +478,7 @@
           // 并行读取所有 md 文件
           const articlePromises = files.map(async (file) => {
             try {
-              const text = await fetchWithCache('docs/' + file);
+              const text = await fetchWithCache(buildFileUrl(file));
 
               // 解析 front matter
               const match = text.match(/^---([\s\S]*?)---/);
@@ -538,7 +547,7 @@
         if (articleSummaries[filename]) return articleSummaries[filename];
         
         try {
-          const text = await fetchWithCache('docs/' + filename);
+          const text = await fetchWithCache(buildFileUrl(filename));
         // 解析 front matter 和正文，取前100字
         const match = text.match(/^---[\s\S]*?---/);
         let content = text;
@@ -1151,7 +1160,7 @@
           }
 
           // 加载文章内容（使用缓存）
-          const text = await fetchWithCache('docs/' + filename);
+          const text = await fetchWithCache(buildFileUrl(filename));
 
           // 解析 front matter
           const match = text.match(/^---([\s\S]*?)---/);
@@ -1679,7 +1688,7 @@
           
           // 加载完整文章内容进行搜索
           try {
-            const res = await fetch('docs/' + article.filename);
+            const res = await fetch(buildFileUrl(article.filename));
             const text = await res.text();
             
             // 解析 front matter

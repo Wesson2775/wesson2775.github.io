@@ -1,0 +1,17 @@
+[
+  {
+    "title": "联系方式",
+    "content": "- 邮箱：[your-email@example.com](mailto:your-email@example.com)\r\n- GitHub：[your-username](https://github.com/your-username)\r\n- Twitter：[@your-username](https://twitter.com/your-username)",
+    "html": "<ul>\n<li>邮箱：<a href=\"mailto:your-email@example.com\">your-email@example.com</a></li>\n<li>GitHub：<a href=\"https://github.com/your-username\">your-username</a></li>\n<li>Twitter：<a href=\"https://twitter.com/your-username\">@your-username</a></li>\n</ul>\n"
+  },
+  {
+    "title": "技术栈",
+    "content": "- HTML5 / CSS3 / JavaScript / TypeScript\r\n- Vue3 / React / Node.js / Express\r\n- Git / Webpack / Vite",
+    "html": "<ul>\n<li>HTML5 / CSS3 / JavaScript / TypeScript</li>\n<li>Vue3 / React / Node.js / Express</li>\n<li>Git / Webpack / Vite</li>\n</ul>\n"
+  },
+  {
+    "title": "博客统计",
+    "content": "- 文章总数：**20**\r\n- 标签分类：**8**\r\n- 友情链接：**5**\r\n\r\n> 欢迎交流与合作，一起进步！",
+    "html": "<ul>\n<li>文章总数：<strong>20</strong></li>\n<li>标签分类：<strong>8</strong></li>\n<li>友情链接：<strong>5</strong></li>\n</ul>\n<blockquote>\n<p>欢迎交流与合作，一起进步！</p>\n</blockquote>\n"
+  }
+]
