@@ -2,103 +2,203 @@ name: Auto Update Content
 
 on:
   push:
-    branches: [main, master]
+    branches: [ main, master ]
     paths:
-      - 'articles/**'
+      - 'docs/**'
       - 'link.md'
       - 'about.md'
       - 'config/**'
       - 'generate-rss.js'
       - 'watch-rss.js'
-  workflow_dispatch:
-  repository_dispatch:
-    types: [content_updated]  # 必须与 A 仓库的事件类型匹配
+  workflow_dispatch: # 允许手动触发
 
 jobs:
   detect-changes:
     runs-on: ubuntu-latest
     outputs:
-      articles-changed: ${{ steps.changes.outputs.articles }}
+      docs-changed: ${{ steps.changes.outputs.docs }}
       link-changed: ${{ steps.changes.outputs.link }}
       about-changed: ${{ steps.changes.outputs.about }}
       config-changed: ${{ steps.changes.outputs.config }}
       scripts-changed: ${{ steps.changes.outputs.scripts }}
-
+    
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
         with:
-          fetch-depth: 2
-
+          fetch-depth: 2 # 获取最近两次提交以比较变化
+      
       - name: Detect changes
         id: changes
         run: |
-          if [ "${{ github.event_name }}" = "repository_dispatch" ]; then
-            # 如果是跨仓库触发，强制处理所有内容
-            echo "articles=true" >> $GITHUB_OUTPUT
+          # 获取上次提交的文件变化
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            # 手动触发时，检查所有相关文件
+            echo "docs=true" >> $GITHUB_OUTPUT
             echo "link=true" >> $GITHUB_OUTPUT
             echo "about=true" >> $GITHUB_OUTPUT
             echo "config=true" >> $GITHUB_OUTPUT
             echo "scripts=true" >> $GITHUB_OUTPUT
           else
-            # 原有检测逻辑
+            # 检查具体文件变化
             CHANGED_FILES=$(git diff --name-only HEAD~1 HEAD)
-            echo "articles=$(echo "$CHANGED_FILES" | grep -q "^articles/" && echo true || echo false)" >> $GITHUB_OUTPUT
-            echo "link=$(echo "$CHANGED_FILES" | grep -q "^link.md$" && echo true || echo false)" >> $GITHUB_OUTPUT
-            echo "about=$(echo "$CHANGED_FILES" | grep -q "^about.md$" && echo true || echo false)" >> $GITHUB_OUTPUT
-            echo "config=$(echo "$CHANGED_FILES" | grep -q "^config/" && echo true || echo false)" >> $GITHUB_OUTPUT
-            echo "scripts=$(echo "$CHANGED_FILES" | grep -E "^(generate-rss\.js|watch-rss\.js)$" && echo true || echo false)" >> $GITHUB_OUTPUT
+            
+            # 检查docs目录变化
+            if echo "$CHANGED_FILES" | grep -q "^docs/"; then
+              echo "docs=true" >> $GITHUB_OUTPUT
+            else
+              echo "docs=false" >> $GITHUB_OUTPUT
+            fi
+            
+            # 检查link.md变化
+            if echo "$CHANGED_FILES" | grep -q "^link\.md$"; then
+              echo "link=true" >> $GITHUB_OUTPUT
+            else
+              echo "link=false" >> $GITHUB_OUTPUT
+            fi
+            
+            # 检查about.md变化
+            if echo "$CHANGED_FILES" | grep -q "^about\.md$"; then
+              echo "about=true" >> $GITHUB_OUTPUT
+            else
+              echo "about=false" >> $GITHUB_OUTPUT
+            fi
+            
+            # 检查config目录变化
+            if echo "$CHANGED_FILES" | grep -q "^config/"; then
+              echo "config=true" >> $GITHUB_OUTPUT
+            else
+              echo "config=false" >> $GITHUB_OUTPUT
+            fi
+            
+            # 检查脚本变化
+            if echo "$CHANGED_FILES" | grep -E "^(generate-rss\.js|watch-rss\.js|process-content\.js)$"; then
+              echo "scripts=true" >> $GITHUB_OUTPUT
+            else
+              echo "scripts=false" >> $GITHUB_OUTPUT
+            fi
           fi
+          
+          echo "Changes detected:"
+          echo "  docs: ${{ steps.changes.outputs.docs }}"
+          echo "  link: ${{ steps.changes.outputs.link }}"
+          echo "  about: ${{ steps.changes.outputs.about }}"
+          echo "  config: ${{ steps.changes.outputs.config }}"
+          echo "  scripts: ${{ steps.changes.outputs.scripts }}"
 
   update-content:
     needs: detect-changes
     runs-on: ubuntu-latest
     if: |
-      needs.detect-changes.outputs.articles-changed == 'true' ||
+      needs.detect-changes.outputs.docs-changed == 'true' ||
       needs.detect-changes.outputs.link-changed == 'true' ||
       needs.detect-changes.outputs.about-changed == 'true' ||
       needs.detect-changes.outputs.config-changed == 'true' ||
       needs.detect-changes.outputs.scripts-changed == 'true'
-
+    
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
           node-version: '18'
           cache: 'npm'
-      - run: npm ci
-
-      # 各处理步骤（根据变化类型执行）
+      
+      - name: Install dependencies
+        run: npm ci
+      
       - name: Update RSS feed
-        if: needs.detect-changes.outputs.articles-changed == 'true'
+        if: needs.detect-changes.outputs.docs-changed == 'true' || needs.detect-changes.outputs.scripts-changed == 'true'
         run: |
+          echo "Updating RSS feed..."
           node generate-rss.js
-          git config --local user.name "GitHub Actions"
-          git config --local user.email "actions@github.com"
-          git add atom.xml
-          git commit -m "Update RSS feed" || echo "No RSS changes"
-
-      - name: Process content
+          echo "RSS feed updated successfully"
+      
+      - name: Update article list
+        if: needs.detect-changes.outputs.docs-changed == 'true'
         run: |
-          [ "${{ needs.detect-changes.outputs.articles-changed }}" = "true" ] && node process-content.js articles
-          [ "${{ needs.detect-changes.outputs.link-changed }}" = "true" ] && node process-content.js link
-          [ "${{ needs.detect-changes.outputs.about-changed }}" = "true" ] && node process-content.js about
-          [ "${{ needs.detect-changes.outputs.config-changed }}" = "true" ] && node process-content.js config
-
-      # 最终提交
-      - name: Commit all changes
+          echo "Updating article list..."
+          node process-content.js articles
+          echo "Article list updated successfully"
+      
+      - name: Update site configuration
+        if: needs.detect-changes.outputs.config-changed == 'true'
         run: |
-          git add .
-          if ! git diff --cached --quiet; then
-            git commit -m "Auto-update: ${{ github.event_name }}@${{ github.sha }}"
+          echo "Updating site configuration..."
+          node process-content.js config
+          echo "Site configuration updated successfully"
+      
+      - name: Process markdown files
+        if: needs.detect-changes.outputs.link-changed == 'true' || needs.detect-changes.outputs.about-changed == 'true'
+        run: |
+          echo "Processing markdown files..."
+          
+          if [ "${{ needs.detect-changes.outputs.link-changed }}" = "true" ]; then
+            echo "Processing link.md..."
+            node process-content.js link
+          fi
+          
+          if [ "${{ needs.detect-changes.outputs.about-changed }}" = "true" ]; then
+            echo "Processing about.md..."
+            node process-content.js about
+          fi
+          
+          echo "Markdown files processed successfully"
+      
+      - name: Commit and push changes
+        run: |
+          # 配置Git用户信息
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          
+          # 检查是否有文件变化
+          if git diff --quiet; then
+            echo "No changes to commit"
+          else
+            # 添加所有变化
+            git add .
+            
+            # 提交变化
+            git commit -m "Auto-update content from GitHub Action
+            
+            Changes detected:
+            - docs: ${{ needs.detect-changes.outputs.docs-changed }}
+            - link: ${{ needs.detect-changes.outputs.link-changed }}
+            - about: ${{ needs.detect-changes.outputs.about-changed }}
+            - config: ${{ needs.detect-changes.outputs.config-changed }}
+            - scripts: ${{ needs.detect-changes.outputs.scripts-changed }}
+            
+            Triggered by: ${{ github.event_name }}
+            Commit: ${{ github.sha }}"
+            
+            # 推送到远程仓库
             git push
+            echo "Changes committed and pushed successfully"
           fi
 
   notify:
-    needs: update-content
+    needs: [detect-changes, update-content]
     runs-on: ubuntu-latest
     if: always()
+    
     steps:
-      - name: Notify result
+      - name: Notify on success
+        if: needs.update-content.result == 'success'
         run: |
-          echo "Result: ${{ needs.update-content.result }}"
-          [ "${{ needs.update-content.result }}" = "success" ] && echo "✅ Success" || echo "❌ Failed"
+          echo "✅ Content update completed successfully!"
+          echo "Changes processed:"
+          echo "  - docs: ${{ needs.detect-changes.outputs.docs-changed }}"
+          echo "  - link: ${{ needs.detect-changes.outputs.link-changed }}"
+          echo "  - about: ${{ needs.detect-changes.outputs.about-changed }}"
+          echo "  - config: ${{ needs.detect-changes.outputs.config-changed }}"
+          echo "  - scripts: ${{ needs.detect-changes.outputs.scripts-changed }}"
+      
+      - name: Notify on failure
+        if: needs.update-content.result == 'failure'
+        run: |
+          echo "❌ Content update failed!"
+          echo "Please check the workflow logs for details." 

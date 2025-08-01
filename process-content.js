@@ -129,19 +129,71 @@ function processAboutFile() {
 
 // 更新文章列表
 function updateArticleList() {
-  const articlesPath = path.resolve(__dirname, 'articles');
-  const outputPath = path.resolve(__dirname, 'list.json');
+  const docsPath = path.join(__dirname, '..', 'docs');
+  const outputPath = path.join(__dirname, '..', 'list.json');
   
-  if (!fs.existsSync(articlesPath)) {
+  if (!fs.existsSync(docsPath)) {
     return;
   }
   
   try {
-    const files = fs.readdirSync(articlesPath)
-      .filter(file => file.endsWith('.html'))
-      .sort((a, b) => b.localeCompare(a));
-    // 只输出文件名数组
-    fs.writeFileSync(outputPath, JSON.stringify(files, null, 2));
+    const files = fs.readdirSync(docsPath)
+      .filter(file => file.endsWith('.md'))
+      .sort((a, b) => {
+        // 按文件名排序（通常是日期）
+        return b.localeCompare(a);
+      });
+    
+    const articles = [];
+    
+    for (const file of files) {
+      const filePath = path.join(docsPath, file);
+      const content = fs.readFileSync(filePath, 'utf8');
+      
+      // 提取标题（第一行）
+      const lines = content.split('\n');
+      let title = file.replace('.md', '');
+      let summary = '';
+      let tags = [];
+      let date = '';
+      
+      // 解析front matter或第一行标题
+      for (let i = 0; i < Math.min(lines.length, 10); i++) {
+        const line = lines[i].trim();
+        
+        if (line.startsWith('# ')) {
+          title = line.replace('# ', '').trim();
+        } else if (line.startsWith('tags:')) {
+          tags = line.replace('tags:', '').split(',').map(t => t.trim());
+        } else if (line.startsWith('date:')) {
+          date = line.replace('date:', '').trim();
+        } else if (line && !line.startsWith('---') && !summary) {
+          // 第一段非空内容作为摘要
+          summary = line.substring(0, 100) + (line.length > 100 ? '...' : '');
+        }
+      }
+      
+      // 如果没有找到日期，从文件名提取
+      if (!date) {
+        const dateMatch = file.match(/(\d{4}-\d{2}-\d{2})/);
+        if (dateMatch) {
+          date = dateMatch[1];
+        }
+      }
+      
+      articles.push({
+        filename: file,
+        title: title,
+        summary: summary,
+        tags: tags,
+        date: date,
+        path: `docs/${file}`
+      });
+    }
+    
+    // 写入JSON文件
+    fs.writeFileSync(outputPath, JSON.stringify(articles, null, 2));
+    
   } catch (error) {
   }
 }

@@ -534,7 +534,6 @@ html {
 .about-header {
   text-align: center;
   margin-bottom: 48px;
-  border-bottom: none;
 }
 
 .about-avatar {
@@ -1042,8 +1041,8 @@ html {
   margin: 1.5em 0 0.7em 0;
   font-weight: bold;
 }
-#about-md h1 { font-size: 1.1rem; border-bottom: none; padding-bottom: 0.3em; }
-#about-md h2 { font-size: 1rem; border-bottom: none; padding-bottom: 0.2em; }
+#about-md h1 { font-size: 1.1rem; border-bottom: 1px solid #444; padding-bottom: 0.3em; }
+#about-md h2 { font-size: 1rem; border-bottom: 1px solid #333; padding-bottom: 0.2em; }
 #about-md h3 { font-size: 0.95rem; }
 #about-md h4 { font-size: 0.9rem; }
 #about-md h5 { font-size: 0.85rem; }
@@ -1074,7 +1073,7 @@ html {
 .article-header {
   margin-bottom: 32px;
   padding-bottom: 24px;
-  border-bottom: none;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .article-title {
@@ -1121,9 +1120,6 @@ html {
   line-height: 1.7;
   max-width: 700px;
   margin: 0 auto;
-  border-top: none;
-  border-bottom: none;
-  border: none;
 }
 
 /* 文章内容的 Markdown 样式 */
@@ -1141,8 +1137,8 @@ html {
   font-weight: bold;
 }
 
-#article-md h1 { font-size: 1.3rem; border-bottom: none; padding-bottom: 0.3em; }
-#article-md h2 { font-size: 1.1rem; border-bottom: none; padding-bottom: 0.2em; }
+#article-md h1 { font-size: 1.3rem; border-bottom: 1px solid #444; padding-bottom: 0.3em; }
+#article-md h2 { font-size: 1.1rem; border-bottom: 1px solid #333; padding-bottom: 0.2em; }
 #article-md h3 { font-size: 1rem; }
 #article-md h4 { font-size: 0.95rem; }
 #article-md h5 { font-size: 0.9rem; }
@@ -1239,7 +1235,10 @@ html {
 }
 
 #article-md hr {
-  display: none;
+  border: none;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.1);
+  margin: 2em 0;
 }
 
 /* 评论系统 */
@@ -1778,6 +1777,142 @@ img.lazy:not([src]):not([src=""]) {
   }
   body.home .hero-subtitle {
     font-size: 1.2rem;
+  }
+}
+
+/* Twikoo评论系统样式 */
+.twikoo-container {
+  margin-top: 40px;
+  padding: 20px 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.twikoo-container .twikoo {
+  max-width: 100%;
+  margin: 0 auto;
+}
+
+/* 评论框样式 */
+.twikoo-container .twikoo .twikoo-input {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  color: #fff;
+}
+
+.twikoo-container .twikoo .twikoo-input:focus {
+  border-color: #ffd700;
+  box-shadow: 0 0 0 2px rgba(255, 215, 0, 0.2);
+}
+
+.twikoo-container .twikoo .twikoo-input::placeholder {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+/* 评论列表样式 */
+.twikoo-container .twikoo .twikoo-comments {
+  margin-top: 20px;
+}
+
+.twikoo-container .twikoo .twikoo-comment {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+  margin-bottom: 15px;
+  padding: 15px;
+}
+
+.twikoo-container .twikoo .twikoo-comment:hover {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+/* 评论者信息样式 */
+.twikoo-container .twikoo .twikoo-comment .twikoo-comment-info {
+  color: #ffd700;
+  font-weight: 500;
+}
+
+.twikoo-container .twikoo .twikoo-comment .twikoo-comment-time {
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 0.85rem;
+}
+
+/* 评论内容样式 */
+.twikoo-container .twikoo .twikoo-comment .twikoo-comment-content {
+  color: #fff;
+  line-height: 1.6;
+  margin-top: 8px;
+}
+
+/* 按钮样式 */
+.twikoo-container .twikoo .twikoo-btn {
+  background: #ffd700;
+  color: #222;
+  border: none;
+  border-radius: 6px;
+  padding: 8px 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.twikoo-container .twikoo .twikoo-btn:hover {
+  background: #ffed4e;
+  transform: translateY(-1px);
+}
+
+.twikoo-container .twikoo .twikoo-btn:disabled {
+  background: rgba(255, 215, 0, 0.3);
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* 回复按钮样式 */
+.twikoo-container .twikoo .twikoo-comment .twikoo-comment-reply {
+  color: #ffd700;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 0.85rem;
+  padding: 4px 8px;
+  border-radius: 4px;
+  transition: all 0.3s ease;
+}
+
+.twikoo-container .twikoo .twikoo-comment .twikoo-comment-reply:hover {
+  background: rgba(255, 215, 0, 0.1);
+}
+
+/* 加载状态样式 */
+.twikoo-container .twikoo .twikoo-loading {
+  text-align: center;
+  color: rgba(255, 255, 255, 0.6);
+  padding: 20px;
+}
+
+/* 空状态样式 */
+.twikoo-container .twikoo .twikoo-empty {
+  text-align: center;
+  color: rgba(255, 255, 255, 0.6);
+  padding: 40px 20px;
+}
+
+/* 移动端适配 */
+@media (max-width: 768px) {
+  .twikoo-container {
+    margin-top: 30px;
+    padding: 15px 0;
+  }
+  
+  .twikoo-container .twikoo .twikoo-comment {
+    padding: 12px;
+    margin-bottom: 12px;
+  }
+  
+  .twikoo-container .twikoo .twikoo-btn {
+    padding: 6px 12px;
+    font-size: 0.9rem;
   }
 }
 
