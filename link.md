@@ -8,7 +8,7 @@
   - description: 用文字记录生活
   - avatar: none
  
-- **林海草原**
+- **太隐**
   - url: https://wangyurui.com/
   - description: 一个人的思想发育史就是他的阅读史
-  - avatar: https://wangyurui.com/favicon.ico
+  - avatar: https://i.typlog.com/wangyr45/8247500113_252899.png?x-oss-process=style/ss
