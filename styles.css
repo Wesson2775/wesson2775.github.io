@@ -1249,6 +1249,9 @@ html {
 .tk-footer a {
   color: #ccc;
 }
+.tk-comments{
+  color:  #ccc;
+}
 
 /* 移动端适配 */
 @media (max-width: 768px) {
