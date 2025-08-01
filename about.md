@@ -7,4 +7,4 @@
 
 - 邮箱：[im.bro@outlook.com](mailto:im.bro@outlook.com)
 - GitHub：[wesson2775](https://github.com/wesson2775)
-- BiliBili：[@三_行](https://space.bilibili.com/349400474)
+- BiliBili：[丨爲丨](https://space.bilibili.com/349400474)
