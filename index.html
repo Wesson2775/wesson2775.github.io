@@ -7,9 +7,7 @@
   <link rel="stylesheet" href="styles.css">
   <link rel="icon" href="public/favicon.ico">
   <title></title>
-  <!-- 预加载字体和首屏图片 -->
-  <link rel="preload" href="public/fonts/LXGWWenKai-Regular.ttf" as="font" type="font/ttf" crossorigin>
-  <link rel="preload" href="public/images/1920.jpg" as="image">
+  <!-- 使用 CSS 中的 font-display: swap 避免首屏等待字体下载 -->
   <link rel="dns-prefetch" href="//cdn.jsdelivr.net">
   <link rel="preconnect" href="//cdn.jsdelivr.net">
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js" defer></script>
@@ -1490,16 +1488,7 @@
         });
       }
 
-      function updateHeroParallax() {
-        const hero = document.querySelector('.hero-image');
-        if (!hero) return;
-        const winW = window.innerWidth;
-        // 以1920为基准，窗口越窄图片越大，越宽图片越小，范围[100%, 120%]
-        const scale = Math.max(1, Math.min(1.2, 1920 / winW));
-        hero.style.backgroundSize = `${scale * 100}% auto`;
-      }
-      window.addEventListener('resize', updateHeroParallax);
-      updateHeroParallax(); // 初始调用
+      // 使用 CSS cover 保持首屏背景，避免在窗口尺寸变化时反复计算背景尺寸导致的潜在重复请求
 
       // 移动端汉堡菜单与抽屉交互
       const hamburgerMenu = document.getElementById('hamburger-menu');
